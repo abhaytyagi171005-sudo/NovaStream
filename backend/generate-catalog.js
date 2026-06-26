@@ -187,15 +187,12 @@ async function collectTrending() {
         CONCURRENT_REQUESTS,
 
         async ([id, flags]) => {
-
-            const details = await fetchTVDetails(id);
-
+            const details = await fetchMovieDetails(id);
             if (!details) return;
             if (!details.poster_path) return;
             catalog.push(
-                normalize(details, "series", flags)
+                normalize(details, "movie", flags)
             );
-
         }
 
     );
