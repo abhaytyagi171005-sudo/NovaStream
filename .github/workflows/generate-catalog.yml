@@ -3,10 +3,12 @@ name: Generate TMDB Catalog
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -25,11 +27,7 @@ jobs:
         env:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: node generate-catalog.js
-      - name: Debug Files
-        run: |
-          ls backend/datasets/
-          ls backend/datasets/movies/
-          ls backend/catalog/
+
       - name: Enrich Catalog
         working-directory: backend
         run: node enrich-catalog.js
