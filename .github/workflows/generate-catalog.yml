@@ -10,20 +10,26 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - name: Install Backend Dependencies
         working-directory: backend
         run: npm install
+
       - name: Generate Catalog
         working-directory: backend
         env:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: node generate-catalog.js
-      - name: Upload Catalog
-        uses: actions/upload-artifact@v4
-        with:
-          name: novastream-catalog
-          path: backend/catalog/
+
+      - name: Commit Catalog to Repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add backend/catalog/
+          git commit -m "chore: update catalog [skip ci]"
+          git push
