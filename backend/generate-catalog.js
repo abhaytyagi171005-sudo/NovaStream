@@ -159,11 +159,9 @@ async function collectTrending() {
         CONCURRENT_REQUESTS,
 
         async ([id, flags]) => {
-            if (!details.poster_path) return;
             const details = await fetchMovieDetails(id);
-
             if (!details) return;
-
+            if (!details.poster_path) return;
             catalog.push(
                 normalize(details, "movie", flags)
             );
