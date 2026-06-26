@@ -1,126 +1,251 @@
 const fs = require("fs");
-const axios = require("axios");
-//const { default: pLimit } = require("p-limit");
-require("dotenv").config();
+const path = require("path");
 
-const API_KEY = process.env.TMDB_API_KEY;
-const BASE = "https://api.themoviedb.org/3";
-const IMAGE = "https://image.tmdb.org/t/p";
+const {
+    fetchMovieList,
+    fetchTVList,
+    fetchTrending
+} = require("./lib/fetchLists");
+const {
+    fetchMovieDetails,
+    fetchTVDetails
+} = require("./lib/fetchDetails");
 
-//const limit = pLimit(15);
+const normalize = require("./lib/normalize");
 
 const catalog = [];
-const seen = new Set();
-async function get(endpoint) {
-    const url = `${BASE}${endpoint}${endpoint.includes("?") ? "&" : "?"}api_key=${API_KEY}`;
+const movieIds = new Map();
+const tvIds = new Map();
+async function processInBatches(entries, batchSize, worker) {
 
-    const { data } = await axios.get(url);
+    for (let i = 0; i < entries.length; i += batchSize) {
 
-    return data;
-} function normalize(item, type, flags = {}) {
+        const batch = entries.slice(i, i + batchSize);
 
-    const title = type === "movie"
-        ? item.title
-        : item.name;
+        await Promise.all(
+            batch.map(worker)
+        );
 
-    const year = type === "movie"
-        ? (item.release_date || "").slice(0, 4)
-        : (item.first_air_date || "").slice(0, 4);
+        console.log(
+            `Processed ${Math.min(i + batch.length, entries.length)} / ${entries.length}`
+        );
 
-    return {
-        id: item.id,
-        title,
-        type,
-        year,
+    }
 
-        rating: item.vote_average,
-
-        language: item.original_language,
-
-        description: item.overview,
-
-        poster: item.poster_path
-            ? `${IMAGE}/w500${item.poster_path}`
-            : "",
-
-        backdrop: item.backdrop_path
-            ? `${IMAGE}/original${item.backdrop_path}`
-            : "",
-
-        genres: item.genre_ids || [],
-
-        featured: !!flags.featured,
-        trending: !!flags.trending,
-        popular: !!flags.popular
-    };
 }
-async function fetchCategory(type, endpoint, flags = {}) {
+async function collectMovieIds() {
 
-    console.log(`Fetching ${type} ${endpoint}...`);
+    console.log("🎬 Collecting movie IDs...");
 
-    for (let page = 1; page <= 20; page++) {
+    const movieLists = [
+        { name: "popular", flag: "popular" },
+        { name: "top_rated", flag: "featured" },
+        { name: "now_playing", flag: "trending" },
+        { name: "upcoming", flag: "popular" }
+    ];
 
-        try {
+    for (const list of movieLists) {
 
-            const url =
-                type === "trending"
-                    ? `/trending/${endpoint}?page=${page}`
-                    : `/${type}/${endpoint}?page=${page}`;
+        console.log(`   → ${list.name}`);
 
-            const data = await get(url);
+        for (let page = 1; page <= 20; page++) {
 
-            add(data.results || [], type, flags);
+            const movies = await fetchMovieList(list.name, page);
 
-        } catch (err) {
+            for (const movie of movies) {
 
-            console.log(`Failed ${type}/${endpoint} page ${page}`);
+                const flags = movieIds.get(movie.id) || {
+                    featured: false,
+                    trending: false,
+                    popular: false
+                };
+
+                flags[list.flag] = true;
+
+                movieIds.set(movie.id, flags);
+
+            }
 
         }
 
     }
 
 }
-function add(items, type, flags) {
+async function collectTVIds() {
 
-    for (const item of items) {
+    console.log("📺 Collecting TV IDs...");
 
-        const key = `${type}-${item.id}`;
+    const tvLists = [
+        { name: "popular", flag: "popular" },
+        { name: "top_rated", flag: "featured" },
+        { name: "airing_today", flag: "trending" },
+        { name: "on_the_air", flag: "popular" }
+    ];
 
-        if (seen.has(key)) continue;
+    for (const list of tvLists) {
 
-        seen.add(key);
+        console.log(`   → ${list.name}`);
 
-        catalog.push(
-            normalize(item, type, flags)
-        );
+        for (let page = 1; page <= 20; page++) {
+
+            const shows = await fetchTVList(list.name, page);
+
+            for (const show of shows) {
+
+                const flags = tvIds.get(show.id) || {
+                    featured: false,
+                    trending: false,
+                    popular: false
+                };
+
+                flags[list.flag] = true;
+
+                tvIds.set(show.id, flags);
+
+            }
+
+        }
+
     }
+
 }
-(async () => {
+async function collectTrending() {
 
-    // Movies
-    await Promise.all([
-        fetchCategory("movie", "popular", { popular: true }),
-        fetchCategory("movie", "top_rated", { featured: true }),
-        fetchCategory("movie", "now_playing", { trending: true }),
-        fetchCategory("movie", "upcoming", { popular: true }),
-        fetchCategory("trending", "movie/day", { trending: true })
-    ]);
+    console.log("🔥 Collecting trending titles...");
 
-    // TV
-    await Promise.all([
-        fetchCategory("tv", "popular", { popular: true }),
-        fetchCategory("tv", "top_rated", { featured: true }),
-        fetchCategory("tv", "airing_today", { trending: true }),
-        fetchCategory("tv", "on_the_air", { trending: true }),
-        fetchCategory("trending", "tv/day", { trending: true })
-    ]);
+    const movies = await fetchTrending("movie");
+    const tv = await fetchTrending("tv");
+
+    for (const movie of movies) {
+
+        const flags = movieIds.get(movie.id) || {
+            featured: false,
+            trending: false,
+            popular: false
+        };
+
+        flags.trending = true;
+
+        movieIds.set(movie.id, flags);
+
+    }
+
+    for (const show of tv) {
+
+        const flags = tvIds.get(show.id) || {
+            featured: false,
+            trending: false,
+            popular: false
+        };
+
+        flags.trending = true;
+
+        tvIds.set(show.id, flags);
+
+    }
+
+} async function buildMovies() {
+
+    console.log(`🎥 Fetching ${movieIds.size} movie details...`);
+
+    const {
+        CONCURRENT_REQUESTS
+    } = require("./lib/constants");
+
+    await processInBatches(
+
+        [...movieIds.entries()],
+
+        CONCURRENT_REQUESTS,
+
+        async ([id, flags]) => {
+
+            const details = await fetchMovieDetails(id);
+
+            if (!details) return;
+
+            catalog.push(
+                normalize(details, "movie", flags)
+            );
+
+        }
+
+    );
+
+} async function buildSeries() {
+
+    console.log(`📺 Fetching ${tvIds.size} TV details...`);
+
+    const {
+        CONCURRENT_REQUESTS
+    } = require("./lib/constants");
+
+    await processInBatches(
+
+        [...tvIds.entries()],
+
+        CONCURRENT_REQUESTS,
+
+        async ([id, flags]) => {
+
+            const details = await fetchTVDetails(id);
+
+            if (!details) return;
+
+            catalog.push(
+                normalize(details, "series", flags)
+            );
+
+        }
+
+    );
+
+} async function main() {
+
+    console.log("🚀 Starting NovaStream Catalog Generator...\n");
+
+    await collectMovieIds();
+    await collectTVIds();
+    await collectTrending();
+
+    await buildMovies();
+    await buildSeries();
+
+    const outputDir = path.join(__dirname, "catalog");
+
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    catalog.sort((a, b) => b.popularity - a.popularity);
+
+    const movies = catalog.filter(item => item.type === "movie");
+    const series = catalog.filter(item => item.type === "series");
 
     fs.writeFileSync(
-        "./catalog/catalog.json",
+        path.join(outputDir, "catalog.json"),
         JSON.stringify(catalog, null, 2)
     );
 
-    console.log("\n✅ Catalog created");
-    console.log("Titles:", catalog.length);
+    fs.writeFileSync(
+        path.join(outputDir, "movies.json"),
+        JSON.stringify(movies, null, 2)
+    );
 
-})();
+    fs.writeFileSync(
+        path.join(outputDir, "series.json"),
+        JSON.stringify(series, null, 2)
+    );
+    console.log("\n==============================");
+    console.log("✅ Catalog generation complete!");
+    console.log(`🎬 Movies : ${catalog.filter(x => x.type === "movie").length}`);
+    console.log(`📺 Series : ${catalog.filter(x => x.type === "tv").length}`);
+    console.log(`📦 Total  : ${catalog.length}`);
+    console.log("==============================");
+
+}
+
+main().catch(err => {
+    console.error(err);
+    process.exit(1);
+});

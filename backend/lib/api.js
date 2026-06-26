@@ -23,6 +23,12 @@ async function request(endpoint, retries = 3) {
 
     } catch (err) {
 
+        console.error(
+            `[ERROR] ${endpoint}`,
+            err.code || err.response?.status,
+            err.message
+        );
+
         if (retries > 0) {
 
             console.log(`Retrying ${endpoint}...`);
@@ -32,8 +38,6 @@ async function request(endpoint, retries = 3) {
             return request(endpoint, retries - 1);
 
         }
-
-        console.error(`Failed: ${endpoint}`);
 
         return null;
     }
