@@ -219,33 +219,44 @@ const horrorList = [
    LOAD NETFLIX ROW
 ========================================== */
 
-async function loadSection(movieList, containerId) {
+async function loadSection(category, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = "";
 
-    for (const movieName of movieList) {
-        try {
-            const response = await fetch(
-                `https://novastream-o3ri.onrender.com/api/search?q=${encodeURIComponent(movieName)}&type=movie`
-            );
-            const data = await response.json();
-            if (!data.length) continue;
+    try {
+        const response = await fetch(
+            `https://novastream-o3ri.onrender.com/api/movies?category=${category}&limit=10`
+        );
+        const data = await response.json();
+        if (!data.length) return;
 
-            const movie = data.find(m => m.Poster !== "N/A") || data[0];
-            if (!movie) continue;
-
+        data.forEach(movie => {
+            const poster = movie.Poster && movie.Poster !== "N/A"
+                ? movie.Poster
+                : "images/placeholder.jpg";
             container.innerHTML += `
-                <div class="card" onclick="openMovie('${movie.Title}')">
-                    <img src="${movie.Poster}" alt="${movie.Title}">
+                <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
+                    <img src="${poster}" alt="${movie.Title}">
                     <div class="movie-info"><h3>${movie.Title}</h3></div>
                 </div>
             `;
-        } catch (error) {
-            console.error(error);
-        }
+        });
+    } catch (error) {
+        console.error(error);
     }
 }
+
+/* ==========================================
+   LOAD EVERYTHING
+========================================== */
+loadSection("trending", "trendingMovies");
+loadSection("action", "actionMovies");
+loadSection("scifi", "sciFiMovies");
+loadSection("thriller", "superheroMovies");
+loadSection("drama", "topRated");
+loadSection("comedy", "comedyMovies");
+loadSection("horror", "horrorMovies");
 
 /* ==========================================
    OPEN MOVIE
