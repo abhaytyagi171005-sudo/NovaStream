@@ -8,10 +8,10 @@ require("dotenv").config();
 const app = express();
 app.use(cors());
 const getPremiumMovies = () =>
-    getMovies().filter(x => x.premium);
+    getMovies().filter(x => x.premium && x.poster && x.poster !== "");
 
 const getPremiumSeries = () =>
-    getSeries().filter(x => x.premium);
+    getSeries().filter(x => x.premium && x.poster && x.poster !== "");
 // ── Load catalogs from disk ───────────────────────────────────
 function loadCatalog(filename) {
     const filePath = path.join(__dirname, "catalog", filename);
