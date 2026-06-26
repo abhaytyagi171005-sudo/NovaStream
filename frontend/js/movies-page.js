@@ -220,60 +220,31 @@ const horrorList = [
 ========================================== */
 
 async function loadSection(movieList, containerId) {
-
-    const container =
-        document.getElementById(containerId);
-
+    const container = document.getElementById(containerId);
     if (!container) return;
-
     container.innerHTML = "";
 
     for (const movieName of movieList) {
-
         try {
+            const response = await fetch(
+                `https://novastream-o3ri.onrender.com/api/search?q=${encodeURIComponent(movieName)}&type=movie`
+            );
+            const data = await response.json();
+            if (!data.length) continue;
 
-            const response =
-                await fetch(
-                    `http://localhost:5000/api/search?movie=${encodeURIComponent(movieName)}`
-                );
-
-            const data =
-                await response.json();
-
-            if (!data.Search) continue;
-
-            const movie =
-                data.Search.find(
-                    m => m.Poster !== "N/A"
-                );
-
+            const movie = data.find(m => m.Poster !== "N/A") || data[0];
             if (!movie) continue;
 
             container.innerHTML += `
-                <div class="card"
-                     onclick="openMovie('${movie.Title}')">
-
-                    <img
-                        src="${movie.Poster}"
-                        alt="${movie.Title}">
-
-                    <div class="movie-info">
-                        <h3>${movie.Title}</h3>
-                    </div>
-
+                <div class="card" onclick="openMovie('${movie.Title}')">
+                    <img src="${movie.Poster}" alt="${movie.Title}">
+                    <div class="movie-info"><h3>${movie.Title}</h3></div>
                 </div>
             `;
-
-        }
-
-        catch (error) {
-
+        } catch (error) {
             console.error(error);
-
         }
-
     }
-
 }
 
 /* ==========================================

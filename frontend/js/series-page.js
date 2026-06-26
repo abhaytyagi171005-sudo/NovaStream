@@ -123,7 +123,7 @@ async function showGenre(category) {
     container.scrollIntoView({ behavior: "smooth" });
 
     try {
-        const response = await fetch(`http://localhost:5000/api/series?category=${category}`);
+        const response = await fetch(`https://novastream-o3ri.onrender.com/api/series?category=${category}`);
         const data = await response.json();
 
         if (!Array.isArray(data) || data.length === 0) {
@@ -233,7 +233,7 @@ setInterval(() => {
 // ===============================
 async function loadSection(category, rowId) {
     try {
-        const response = await fetch(`http://localhost:5000/api/series?category=${category}`);
+        const response = await fetch(`https://novastream-o3ri.onrender.com/api/series?category=${category}`);
         const data = await response.json();
         const row = document.getElementById(rowId);
         row.innerHTML = "";

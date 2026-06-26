@@ -23,7 +23,7 @@ async function loadMovie() {
 
         // Step 1: Search for the movie
         const response = await fetch(
-            `http://localhost:5000/api/search?movie=${encodeURIComponent(movieName)}`
+            `https://novastream-o3ri.onrender.com/api/search?movie=${encodeURIComponent(movieName)}`
         );
 
         const data = await response.json();
@@ -37,8 +37,8 @@ async function loadMovie() {
 
         // Step 2: Fetch movie details AND fanart IN PARALLEL (faster!)
         const [detailsResponse, fanartResponse] = await Promise.all([
-            fetch(`http://localhost:5000/api/movie?id=${topMovie.imdbID}`),
-            fetch(`http://localhost:5000/api/fanart?id=${topMovie.imdbID}`)
+            fetch(`https://novastream-o3ri.onrender.com/api/movie?id=${topMovie.imdbID}`),
+            fetch(`https://novastream-o3ri.onrender.com/api/fanart?id=${topMovie.imdbID}`)
         ]);
 
         const [details, fanart] = await Promise.all([

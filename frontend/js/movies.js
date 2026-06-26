@@ -129,7 +129,7 @@ async function loadSection(movieList, containerId) {
 
             const response =
                 await fetch(
-                    `http://localhost:5000/api/search?movie=${encodeURIComponent(movieName)}`
+                    `https://novastream-o3ri.onrender.com/api/search?movie=${encodeURIComponent(movieName)}`
                 );
 
             const data = await response.json();
@@ -273,7 +273,7 @@ searchInput.addEventListener("keyup", async (e) => {
     const query = searchInput.value.trim();
     if (query.length < 2) { searchResults.innerHTML = ""; return; }
 
-    const response = await fetch(`http://localhost:5000/api/search?movie=${query}`);
+    const response = await fetch(`https://novastream-o3ri.onrender.com/api/search?movie=${query}`);
     const data = await response.json();
     searchResults.innerHTML = "";
     if (data.Search) {

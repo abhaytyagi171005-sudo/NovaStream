@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api";
+const API = "https://novastream-o3ri.onrender.com/api";
 
 async function fetchData(endpoint) {
     const res = await fetch(`${API}${endpoint}`);
