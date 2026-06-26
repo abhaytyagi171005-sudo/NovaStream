@@ -16,8 +16,7 @@ Thumbs.db
 # VS Code
 .vscode/
 
-# Generated catalog (can be regenerated)
-backend/catalog/catalog.json
+
 
 # Temporary files
 *.tmp
@@ -28,6 +27,3 @@ backend/datasets/
 # Generated indexes
 backend/**/movies-index.json
 backend/**/tv-index.json
-
-# Generated catalog
-backend/catalog/catalog.json
