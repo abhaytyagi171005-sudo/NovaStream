@@ -26,6 +26,14 @@ jobs:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: node generate-catalog.js
 
+      - name: Enrich Catalog
+        working-directory: backend
+        run: node enrich-catalog.js
+
+      - name: Build Premium
+        working-directory: backend
+        run: node build-premium.js
+
       - name: Commit Catalog to Repo
         run: |
           git config user.name "github-actions"
