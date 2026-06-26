@@ -159,7 +159,7 @@ async function collectTrending() {
         CONCURRENT_REQUESTS,
 
         async ([id, flags]) => {
-
+            if (!details.poster_path) return;
             const details = await fetchMovieDetails(id);
 
             if (!details) return;
@@ -191,7 +191,7 @@ async function collectTrending() {
             const details = await fetchTVDetails(id);
 
             if (!details) return;
-
+            if (!details.poster_path) return;
             catalog.push(
                 normalize(details, "series", flags)
             );
@@ -239,7 +239,7 @@ async function collectTrending() {
     console.log("\n==============================");
     console.log("✅ Catalog generation complete!");
     console.log(`🎬 Movies : ${catalog.filter(x => x.type === "movie").length}`);
-    console.log(`📺 Series : ${catalog.filter(x => x.type === "tv").length}`);
+    console.log(`📺 Series : ${catalog.filter(x => x.type === "series").length}`);
     console.log(`📦 Total  : ${catalog.length}`);
     console.log("==============================");
 
