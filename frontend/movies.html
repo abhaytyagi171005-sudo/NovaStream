@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Movies – NovaStream</title>
+
+    <link rel="stylesheet" href="css/movies.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+
+            <span class="logo-icon">▶</span>
+
+            <h1>Nova<span>Stream</span></h1>
+
+        </div>
+
+        <ul>
+
+            <li onclick="window.location.href='home.html'">
+                Home
+            </li>
+
+            <li class="active">
+                Movies
+            </li>
+
+            <li onclick="window.location.href='series.html'">
+                Series
+            </li>
+
+            <li>New & Popular</li>
+
+            <li onclick="window.location.href='mylist.html'">
+                My List
+            </li>
+
+        </ul>
+
+        <div class="nav-right">
+
+            <div class="genre-dropdown">
+
+                <button class="genre-btn">
+                    Genres ▼
+                </button>
+
+                <div class="genre-menu">
+                    <div class="genre-menu-grid">
+                        <div class="genre-col">
+                            <p onclick="filterGenre('action')">💥 Action</p>
+                            <p onclick="filterGenre('scifi')">🚀 Sci-Fi</p>
+                            <p onclick="filterGenre('thriller')">🔪 Thriller</p>
+                            <p onclick="filterGenre('horror')">👻 Horror</p>
+                            <p onclick="filterGenre('comedy')">😂 Comedy</p>
+                            <p onclick="filterGenre('romance')">❤️ Romance</p>
+                            <p onclick="filterGenre('drama')">🎭 Drama</p>
+                        </div>
+                        <div class="genre-col">
+                            <p onclick="filterGenre('superhero')">🦸 Superhero</p>
+                            <p onclick="filterGenre('animation')">🎨 Animation</p>
+                            <p onclick="filterGenre('crime')">🕵️ Crime</p>
+                            <p onclick="filterGenre('fantasy')">🧙 Fantasy</p>
+                            <p onclick="filterGenre('bollywood')">🎬 Bollywood</p>
+                            <p onclick="filterGenre('hollywood')">🌟 Hollywood</p>
+                            <p onclick="filterGenre('documentary')">🎥 Documentary</p>
+                        </div>
+                        <div class="genre-col">
+                            <p onclick="filterGenre('hindi')">🇮🇳 Hindi</p>
+                            <p onclick="filterGenre('tamil')">🎵 Tamil</p>
+                            <p onclick="filterGenre('anime')">⛩️ Anime</p>
+                            <p onclick="filterGenre('sports')">🏆 Sports</p>
+                            <p onclick="filterGenre('standup')">🎤 Stand-Up</p>
+                            <p onclick="filterGenre('family')">👨‍👩‍👧 Family</p>
+                            <p onclick="filterGenre('all')">🎬 All Movies</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="movies-hero" id="moviesHero">
+
+        <video id="hero-video" autoplay muted playsinline>
+
+            <source id="hero-video-source" src="" type="video/mp4">
+
+        </video>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <span class="featured">
+                FEATURED MOVIES
+            </span>
+
+            <h1 id="movieHeroTitle">
+                DUNE PART TWO
+            </h1>
+
+            <div class="movie-meta">
+
+                <span id="movieHeroYear">2024</span>
+                <span>PG-13</span>
+                <span>Action</span>
+
+            </div>
+
+            <p id="movieHeroDescription">
+
+                Paul Atreides unites with the Fremen and
+                seeks revenge against those who destroyed
+                his family.
+
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="watch-btn">
+                    ▶ Watch Now
+                </button>
+
+                <button class="info-btn">
+                    More Info
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- HERO PREVIEW STRIP -->
+
+        <div class="hero-preview-strip" id="heroPreviewStrip">
+
+        </div>
+
+    </section>
+
+    <!-- MOVIE SECTIONS -->
+
+    <section class="movies-section" id="sectionTrending">
+
+        <h2>Trending Now</h2>
+
+        <div class="movie-row" id="trendingMovies"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionAction">
+
+        <h2>Action Movies</h2>
+
+        <div class="movie-row" id="actionMovies"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionSciFi">
+
+        <h2>Sci-Fi Collection</h2>
+
+        <div class="movie-row" id="sciFiMovies"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionSuperhero">
+
+        <h2>Superhero Universe</h2>
+
+        <div class="movie-row" id="superheroMovies"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionTopRated">
+
+        <h2>Top Rated</h2>
+
+        <div class="movie-row" id="topRated"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionComedy">
+
+        <h2>Comedy Collection</h2>
+
+        <div class="movie-row" id="comedyMovies"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionHorror">
+
+        <h2>Horror Collection</h2>
+
+        <div class="movie-row" id="horrorMovies"></div>
+
+    </section>
+
+    <section class="movies-section" id="sectionThriller" style="display:none;">
+        <h2>Thriller Collection</h2>
+        <div class="movie-row" id="thrillerMovies"></div>
+    </section>
+
+    <div id="movieSectionsContainer">
+        <section class="movies-section" id="sectionRomance" style="display:none;">
+            <h2>Romance Collection</h2>
+            <div class="movie-row" id="romanceMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionDrama" style="display:none;">
+            <h2>Drama</h2>
+            <div class="movie-row" id="dramaMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionAnimation" style="display:none;">
+            <h2>Animation</h2>
+            <div class="movie-row" id="animationMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionCrime" style="display:none;">
+            <h2>Crime</h2>
+            <div class="movie-row" id="crimeMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionFantasy" style="display:none;">
+            <h2>Fantasy</h2>
+            <div class="movie-row" id="fantasyMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionBollywood" style="display:none;">
+            <h2>Bollywood</h2>
+            <div class="movie-row" id="bollywoodMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionHollywood" style="display:none;">
+            <h2>Hollywood</h2>
+            <div class="movie-row" id="hollywoodMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionHindi" style="display:none;">
+            <h2>Hindi</h2>
+            <div class="movie-row" id="hindiMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionTamil" style="display:none;">
+            <h2>Tamil</h2>
+            <div class="movie-row" id="tamilMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionAnime" style="display:none;">
+            <h2>Anime</h2>
+            <div class="movie-row" id="animeMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionSports" style="display:none;">
+            <h2>Sports</h2>
+            <div class="movie-row" id="sportsMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionFamily" style="display:none;">
+            <h2>Family</h2>
+            <div class="movie-row" id="familyMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionDocumentary" style="display:none;">
+            <h2>Documentary</h2>
+            <div class="movie-row" id="documentaryMovies"></div>
+        </section>
+        <section class="movies-section" id="sectionStandup" style="display:none;">
+            <h2>Stand-Up Comedy</h2>
+            <div class="movie-row" id="standupMovies"></div>
+        </section>
+    </div>
+
+    <script src="js/movies-page.js"></script>
+
+</body>
+
+</html>

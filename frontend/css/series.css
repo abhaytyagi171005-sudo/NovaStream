@@ -1,0 +1,350 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0a0a0a;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ── NAVBAR ── */
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 60px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: #e50914;
+    font-size: 1.8rem;
+}
+
+.logo h1 {
+    font-size: 2rem;
+}
+
+.logo span {
+    color: #e50914;
+}
+
+ul {
+    display: flex;
+    gap: 35px;
+    list-style: none;
+}
+
+ul li {
+    cursor: pointer;
+    transition: .2s;
+}
+
+ul li:hover,
+ul li.active {
+    color: #e50914;
+}
+
+/* ── GENRE DROPDOWN ── */
+.genre-dropdown {
+    position: relative;
+}
+
+.genre-btn {
+    background: #151515;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: .9rem;
+}
+
+.genre-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #151515;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    min-width: 560px;
+    padding: 8px 0;
+}
+
+/* Dropdown open/close is handled by JS with a delay timer — no CSS hover needed */
+
+/* FIX 1: Proper 3-column grid — ALL items inside the grid */
+.genre-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+}
+
+.genre-menu-grid p {
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: #ccc;
+    white-space: nowrap;
+}
+
+.genre-menu-grid p:hover {
+    background: #e50914;
+    color: white;
+}
+
+/* ── HERO ── */
+.series-hero {
+    height: 100vh;
+    position: relative;
+    background:
+        linear-gradient(to right, rgba(0, 0, 0, .92), rgba(0, 0, 0, .35)),
+        url("../images/banners/breakingbad-banner.jpg");
+    background-size: cover;
+    background-position: center;
+    transition: background-image .8s ease-in-out;
+}
+
+#hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(to top, #0a0a0a, transparent 30%);
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    transform: translateY(-50%);
+    max-width: 650px;
+    z-index: 10;
+    transition: opacity .8s ease, transform .8s ease;
+}
+
+.featured {
+    color: #d4af37;
+    letter-spacing: 4px;
+    font-size: .85rem;
+}
+
+.hero-content h1 {
+    font-size: clamp(1rem, 4vw, 3rem);
+    max-width: 700px;
+    line-height: 1.05;
+    margin: 5px 0;
+    word-break: break-word;
+}
+
+.series-meta {
+    display: flex;
+    gap: 15px;
+    color: #d4af37;
+    margin-bottom: 20px;
+}
+
+.hero-content p {
+    line-height: 1.8;
+    color: #ddd;
+    margin-bottom: 25px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.watch-btn {
+    background: #e50914;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+.info-btn {
+    background: rgba(255, 255, 255, .12);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ── HERO PREVIEW STRIP ── */
+.hero-preview-strip {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    gap: 12px;
+    z-index: 20;
+}
+
+.preview-card {
+    width: 140px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: .3s;
+}
+
+.preview-card:hover {
+    transform: scale(1.08);
+}
+
+.preview-card.active {
+    border-color: #e50914;
+}
+
+.preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ── SERIES SECTIONS ── */
+.series-section {
+    padding: 50px 80px;
+}
+
+.series-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* ── SERIES ROW ── */
+.series-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 10px;
+}
+
+.series-row::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── CARD ── */
+.card {
+    min-width: 220px;
+    height: 320px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: .3s;
+    background: #111;
+    flex-shrink: 0;
+}
+
+.card:hover {
+    transform: scale(1.08);
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.series-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 15px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, .95));
+}
+
+.series-info h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.series-info p {
+    color: #ccc;
+    font-size: .85rem;
+}
+
+/* ── FADE ANIMATIONS ── */
+.fade-out {
+    opacity: 0;
+    transform: translateY(25px);
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+    nav {
+        padding: 20px 20px;
+    }
+
+    .hero-content {
+        left: 30px;
+        max-width: 90%;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .series-section {
+        padding: 30px 20px;
+    }
+
+    .hero-preview-strip {
+        display: none;
+    }
+
+    .genre-menu {
+        min-width: 320px;
+        right: -60px;
+    }
+
+    .genre-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,345 @@
+/* ==========================
+   MY LIST DASHBOARD
+========================== */
+
+.mylist-page {
+    position: relative;
+    z-index: 2;
+
+    width: 1200px;
+    max-width: 95%;
+
+    margin: auto;
+
+    padding-top: 110px;
+    padding-bottom: 40px;
+}
+
+/* HEADER */
+
+.mylist-header {
+    margin-bottom: 25px;
+}
+
+.mylist-title-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mylist-icon-wrap {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: #e50914;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.4rem;
+
+    box-shadow: 0 0 25px rgba(229, 9, 20, .4);
+}
+
+.mylist-header h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: #f1df9d;
+}
+
+.mylist-subtitle {
+    margin-top: 10px;
+    color: #aaa;
+}
+
+.mylist-count-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 20px;
+
+    padding: 10px 20px;
+
+    border-radius: 40px;
+
+    background: rgba(255, 255, 255, .05);
+
+    border: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* MAIN PANEL */
+
+/* MAIN PANEL (GLASSMORPHISM STYLE) */
+.dashboard-panel {
+    /* Lowered the alpha/opacity values to .25 and .20 so the background peeks through */
+    background:
+        linear-gradient(135deg,
+            rgba(15, 18, 36, 0.25),
+            rgba(10, 10, 15, 0.20));
+
+    /* Subtle border to catch the light and give the box structure */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 30px;
+
+    /* This creates the beautiful frosted glass effect over your background collage */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    /* Safari support */
+
+    /* Deep soft shadow to separate the glass container from the background */
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================
+   UPDATED STRUCTURAL LAYOUT
+========================== */
+
+/* Instead of side-by-side columns, stack the sections vertically */
+.mylist-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* Generous separation between Saved and Recommended */
+}
+
+/* SAVED MOVIES SECTION */
+
+/* ==========================
+   FIXED SAVED MOVIES SECTION 
+========================== */
+
+.mylist-saved {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+    /* Forces clear spacing before recommendations */
+}
+
+.mylist-saved h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+/* THE GRID FIX: Arranges your landscape cards side-by-side.
+   Adjust 'minmax(280px, 1fr)' if you want them slightly smaller or larger.
+*/
+.saved-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+/* CARD FIX: Forces a uniform landscape aspect ratio 
+   so wide images scale beautifully without expanding infinitely.
+*/
+.mylist-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    /* Guarantees standard streaming landscape shapes */
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: #111;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mylist-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Ensures the backdrop imagery covers the landscape card safely */
+.mylist-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Elegant text overlay on the bottom portion of the landscape card */
+.overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 30px 15px 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
+    pointer-events: none;
+    /* Allows clicks to pass through if needed */
+}
+
+/* Aligns the movie title text clean against the left edge */
+.overlay h3,
+.mylist-card .movie-title-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* X BUTTON FIX: Scales down relative to the card size 
+   and keeps it perfectly positioned in the top-right corner.
+*/
+.remove-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(229, 9, 20, 0.9);
+    /* Netflix red with slight transparency */
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.remove-btn:hover {
+    background: #ff1d25;
+    transform: scale(1.08);
+}
+
+/* LOADING BAR */
+
+.recs-loading-bar {
+    height: 6px;
+    width: 100%;
+    max-width: 300px;
+    /* Keep loading bar compact */
+    border-radius: 50px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .08);
+}
+
+.recs-loading-fill {
+    height: 100%;
+
+    background:
+        linear-gradient(90deg,
+            #5f7cff,
+            #e50914);
+
+    animation: loadFill 3s linear forwards;
+}
+
+@keyframes loadFill {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* RECOMMENDATION GRID */
+
+.recs-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.rec-card {
+    display: flex;
+    flex-direction: column;
+
+    background:
+        rgba(255, 255, 255, .04);
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    padding: 10px;
+    transition: background 0.2s ease;
+}
+
+.rec-card:hover {
+    background: rgba(255, 255, 255, .07);
+}
+
+.rec-poster {
+    width: 100%;
+    height: 230px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+}
+
+.rec-info {
+    margin-top: 10px;
+    flex-grow: 1;
+    /* Pushes button cleanly to the bottom if text scales */
+}
+
+.rec-info h4 {
+    color: white;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.rec-info p {
+    color: #aaa;
+    font-size: .8rem;
+}
+
+.rec-save-btn {
+    margin-top: 12px;
+
+    border: none;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.rec-save-btn:hover {
+    opacity: 0.9;
+}
+
+.color-green {
+    background: #22c55e;
+}
+
+.color-purple {
+    background: #9333ea;
+}
+
+.color-orange {
+    background: #f97316;
+}

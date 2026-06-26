@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series – NovaStream</title>
+    <link rel="stylesheet" href="css/series.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">▶</span>
+            <h1>Nova<span>Stream</span></h1>
+        </div>
+
+        <ul>
+            <li onclick="window.location.href='home.html'">Home</li>
+            <li onclick="window.location.href='movies.html'">Movies</li>
+            <li class="active">Series</li>
+            <li>New &amp; Popular</li>
+            <li onclick="window.location.href='mylist.html'">My List</li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="genre-dropdown">
+                <button class="genre-btn">Genres ▼</button>
+
+                <div class="genre-menu">
+                    <!-- FIX 1: ALL items are direct children of the grid — clean 3-col layout -->
+                    <div class="genre-menu-grid">
+                        <p onclick="showGenre('crime')">🕵 Crime</p>
+                        <p onclick="showGenre('thriller')">🔪 Thriller</p>
+                        <p onclick="showGenre('mystery')">🔍 Mystery</p>
+
+                        <p onclick="showGenre('action')">⚔ Action</p>
+                        <p onclick="showGenre('drama')">🎭 Drama</p>
+                        <p onclick="showGenre('comedy')">😂 Comedy</p>
+
+                        <p onclick="showGenre('scifi')">🚀 Sci-Fi</p>
+                        <p onclick="showGenre('animation')">🎨 Animation</p>
+                        <p onclick="showGenre('anime')">⛩ Anime</p>
+
+                        <p onclick="showGenre('family')">👨‍👩‍👧 Family</p>
+                        <p onclick="showGenre('sitcom')">📺 Sitcom</p>
+                        <p onclick="showGenre('korean')">🇰🇷 Korean</p>
+
+                        <p onclick="showGenre('japanese')">🇯🇵 Japanese</p>
+                        <p onclick="showGenre('indian')">🇮🇳 Indian</p>
+                        <p onclick="showGenre('historical')">📜 Historical</p>
+
+                        <p onclick="showGenre('documentary')">🎥 Documentary</p>
+                        <p></p>
+                        <!-- FIX 2: All Series scrolls DOWN to sections, not to page top -->
+                        <p onclick="showHomeSections()">📺 All Series</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+    <section class="series-hero" id="seriesHero">
+        <video id="hero-video" autoplay muted loop playsinline>
+            <source id="hero-video-source" src="" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="featured">FEATURED SERIES</span>
+            <h1 id="seriesHeroTitle">BREAKING BAD</h1>
+            <div class="series-meta">
+                <span id="seriesHeroYear">2008</span>
+                <span>TV-MA</span>
+                <span>Crime Drama</span>
+            </div>
+            <p id="seriesHeroDescription">
+                A high-school chemistry teacher diagnosed with cancer begins manufacturing methamphetamine to secure his
+                family's future.
+            </p>
+            <div class="hero-buttons">
+                <button class="watch-btn">▶ Watch Now</button>
+                <button class="info-btn">More Info</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SERIES ROWS ================= -->
+    <section class="series-section" id="sectionTrending">
+        <h2>🔥 Trending Series</h2>
+        <div class="series-row" id="trendingSeries"></div>
+    </section>
+
+    <section class="series-section" id="sectionAction">
+        <h2>⚔ Action &amp; Adventure</h2>
+        <div class="series-row" id="actionSeries"></div>
+    </section>
+
+    <section class="series-section" id="sectionCrime">
+        <h2>🕵 Crime &amp; Mystery</h2>
+        <div class="series-row" id="crimeSeries"></div>
+    </section>
+
+    <section class="series-section" id="sectionDrama">
+        <h2>🎭 Drama</h2>
+        <div class="series-row" id="dramaSeries"></div>
+    </section>
+
+    <section class="series-section" id="sectionComedy">
+        <h2>😂 Comedy</h2>
+        <div class="series-row" id="comedySeries"></div>
+    </section>
+
+    <section class="series-section" id="sectionSciFi">
+        <h2>🚀 Sci-Fi &amp; Fantasy</h2>
+        <div class="series-row" id="scifiSeries"></div>
+    </section>
+
+    <section class="series-section" id="sectionTop">
+        <h2>⭐ Critics' Choice</h2>
+        <div class="series-row" id="topSeries"></div>
+    </section>
+
+    <!-- Dynamic Genre Sections injected here -->
+    <div id="dynamicGenreSections"></div>
+
+    <script src="js/series-page.js"></script>
+    <script>
+        // Sticky dropdown: stays open while moving mouse from button → menu
+        const dropdown = document.querySelector('.genre-dropdown');
+        const menu = document.querySelector('.genre-menu');
+        let closeTimer = null;
+
+        dropdown.addEventListener('mouseenter', () => {
+            clearTimeout(closeTimer);
+            menu.style.display = 'block';
+        });
+        dropdown.addEventListener('mouseleave', () => {
+            closeTimer = setTimeout(() => { menu.style.display = 'none'; }, 180);
+        });
+        menu.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+        menu.addEventListener('mouseleave', () => {
+            closeTimer = setTimeout(() => { menu.style.display = 'none'; }, 180);
+        });
+    </script>
+
+</body>
+
+</html>

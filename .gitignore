@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Generated catalog (can be regenerated)
+backend/catalog/catalog.json
+
+# Temporary files
+*.tmp
+*.cache
+# Large datasets
+backend/datasets/
+
+# Generated indexes
+backend/**/movies-index.json
+backend/**/tv-index.json
+
+# Generated catalog
+backend/catalog/catalog.json

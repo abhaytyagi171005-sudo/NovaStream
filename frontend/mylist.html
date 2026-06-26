@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My List – NovaStream</title>
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/mylist.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">▶</span>
+            <h1>Nova<span>Stream</span></h1>
+        </div>
+        <ul>
+            <li onclick="window.location.href='home.html'">Home</li>
+            <li>Movies</li>
+            <li>Series</li>
+            <li>New & Popular</li>
+            <li class="active">My List</li>
+        </ul>
+    </nav>
+
+    <!-- BACKGROUND COLLAGE -->
+    <div class="mylist-bg">
+        <div class="mylist-bg-collage" id="bgCollage"></div>
+        <div class="mylist-bg-overlay"></div>
+    </div>
+
+    <section class="mylist-page">
+
+        <!-- HEADER -->
+        <div class="mylist-header">
+            <div class="mylist-title-row">
+                <div class="mylist-icon-wrap">♥</div>
+                <h1>My List</h1>
+            </div>
+            <p class="mylist-subtitle">All the movies you've saved to watch later.</p>
+            <div class="mylist-count-wrap">
+                <span class="mylist-bookmark">🔖</span>
+                <span class="mylist-count">0 movies saved</span>
+            </div>
+        </div>
+        <div class="saved-grid" id="myListMovies"></div>
+
+        <!-- SAVED MOVIES + RECOMMENDATIONS SIDE BY SIDE -->
+        <div class="dashboard-panel">
+            <div class="mylist-layout">
+
+                <div class="mylist-saved">
+                    <h2>Your Collection</h2>
+                    <div class="saved-grid" id="myListMovies">
+                    </div>
+                </div>
+
+                <div class="mylist-recs" id="recsSection" style="display:none;">
+                    <div class="recs-header">
+                        <div>
+                            <span class="recs-title">Recommended for You</span>
+                            <span class="recs-subtitle"> based on your saved list</span>
+                        </div>
+                        <div class="recs-icons">⚙️ ⊞</div>
+                    </div>
+
+                    <div class="recs-loading" id="recsLoading">
+                        <div class="recs-loading-bar">
+                            <div class="recs-loading-fill"></div>
+                        </div>
+                        <span id="recsLoadingText">Loading recommendations...</span>
+                    </div>
+
+                    <div class="recs-list" id="recsList"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TOAST -->
+        <div id="toast" class="toast">
+            <span class="toast-icon">♥</span>
+            <span id="toastMsg">Added to My List</span>
+        </div>
+
+        <script src="js/mylist.js"></script>
+
+</body>
+
+</html>

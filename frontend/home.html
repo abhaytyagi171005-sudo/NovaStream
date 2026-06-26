@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NovaStream</title>
+
+    <link rel="stylesheet" href="css/home.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+
+            <span class="logo-icon">▶</span>
+
+            <h1>
+                Nova<span>Stream</span>
+            </h1>
+
+        </div>
+
+        <ul>
+
+            <li>Home</li>
+            <li onclick="window.location.href='movies.html'">
+                Movies
+            </li>
+            <li onclick="window.location.href='series.html'">
+                Series
+            </li>
+            <li>New & Popular</li>
+            <li onclick="window.location.href='mylist.html'">
+                My List
+            </li>
+
+        </ul>
+
+        <div class="nav-right">
+
+            <div class="search-container">
+
+                <input type="text" id="searchInput" placeholder="Search movies..." onkeydown="handleSearch(event)">
+
+                <div id="searchResults"></div>
+
+            </div>
+
+            <div class="profile">
+
+                <span>A</span>
+
+                <div class="dropdown">
+
+                    <p>Profile</p>
+                    <p>My List</p>
+                    <p>Settings</p>
+                    <p>Logout</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- HERO SECTION -->
+
+    <section class="hero" id="heroBanner">
+
+        <video id="hero-video" autoplay muted playsinline
+            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1s ease;">
+            <source id="hero-video-source" src="" type="video/mp4">
+        </video>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <span class="featured">
+                FEATURED TODAY
+            </span>
+
+            <h1 id="heroTitle">
+                DUNE
+            </h1>
+
+            <div class="movie-meta">
+
+                <span id="heroYear">2024</span>
+                <span>PG-13</span>
+                <span>2h 46m</span>
+                <span>Sci-Fi</span>
+
+            </div>
+
+            <p id="heroDescription">
+
+                Paul Atreides joins the Fremen and fights
+                for Arrakis.
+
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="watch-btn">
+                    ▶ Watch Now
+                </button>
+
+                <button class="info-btn">
+                    More Info
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CONTINUE WATCHING -->
+
+    <section class="movies">
+
+        <h2>Continue Watching</h2>
+
+        <div class="movie-row" id="continueWatching"></div>
+
+    </section>
+
+    <!-- TRENDING -->
+
+    <section class="movies">
+
+        <h2>Trending Now</h2>
+
+        <div class="movie-row" id="trendingMovies"></div>
+
+    </section>
+
+    <!-- TOP RATED -->
+
+    <section class="movies">
+
+        <h2>Top Rated</h2>
+
+        <div class="movie-row" id="topRated"></div>
+
+    </section>
+
+    <!-- SCI-FI -->
+
+    <section class="movies">
+
+        <h2>Sci-Fi Collection</h2>
+
+        <div class="movie-row" id="sciFiMovies"></div>
+
+    </section>
+
+    <!-- SUPERHERO -->
+
+    <section class="movies">
+
+        <h2>Superhero Universe</h2>
+
+        <div class="movie-row" id="superheroMovies"></div>
+
+    </section>
+
+    <div id="toast" class="toast">
+        <span class="toast-icon">♥</span>
+        <span id="toastMsg">Added to My List</span>
+    </div>
+
+    <!-- JS -->
+
+    <script src="js/home.js"></script>
+    <script>
+
+        // Search handler - navigates to search.html with clean URL
+        function handleSearch(event) {
+            if (event.key === "Enter") {
+                const query = document.getElementById("searchInput").value.trim();
+                if (query) {
+                    window.location.href = "search.html?movie=" + encodeURIComponent(query);
+                }
+            }
+        }
+
+        fetch("http://localhost:5000/api/test")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+
+    </script>
+
+</body>
+
+</html>
