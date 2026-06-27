@@ -76,7 +76,7 @@
     "title": "Michael",
     "type": "movie",
     "year": "2026",
-    "rating": 8.692,
+    "rating": 8.693,
     "runtime": 128,
     "genres": [
       "Music",
@@ -99,7 +99,7 @@
     "title": "Toy Story 5",
     "type": "movie",
     "year": "2026",
-    "rating": 7.45,
+    "rating": 7.462,
     "runtime": 102,
     "genres": [
       "Animation",
@@ -114,7 +114,7 @@
     "description": "When Bonnie receives a Lilypad tablet as a gift and becomes obsessed, Buzz, Woody, Jessie and the rest of the gang's jobs become exponentially harder when they have to go head to head with the all-new threat to playtime.",
     "poster": "https://image.tmdb.org/t/p/w500/pxG26JdyuiDvJbSoucknaFiLeZD.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/qjTqY5coNiz6sVtPng40IzltsoN.jpg",
-    "popularity": 306.5614,
+    "popularity": 336.0809,
     "featured": false,
     "trending": true,
     "popular": true
@@ -148,7 +148,7 @@
     "title": "Mortal Kombat II",
     "type": "movie",
     "year": "2026",
-    "rating": 7.996,
+    "rating": 7.995,
     "runtime": 116,
     "genres": [
       "Action",
@@ -799,29 +799,6 @@
     "popular": true
   },
   {
-    "id": 1431068,
-    "title": "Main Vaapas Aaunga",
-    "type": "movie",
-    "year": "2026",
-    "rating": 6.857,
-    "runtime": 166,
-    "genres": [
-      "Romance",
-      "Drama"
-    ],
-    "language": "Hindi",
-    "countries": [
-      "India"
-    ],
-    "description": "An elderly man remains haunted by a childhood romance and memories of love lost during the 1947 Partition of India. As he shares his story with his grandson, the past unfolds through memories of migration, longing, and a love that endures across generations.",
-    "poster": "https://image.tmdb.org/t/p/w500/8n7OeeyAqwmGS81Is2c6Ho65tgW.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/bWw9PuPH6vFXlezBoHZ6D9XBhQW.jpg",
-    "popularity": 117.8555,
-    "featured": false,
-    "trending": true,
-    "popular": true
-  },
-  {
     "id": 1582770,
     "title": "Dhurandhar: The Revenge",
     "type": "movie",
@@ -889,6 +866,29 @@
     "poster": "https://image.tmdb.org/t/p/w500/dQgIcW6Th08kMRf2HBoYWoFE6OD.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/qcIKxhqGMIj8uujsSoSMZWr8QqU.jpg",
     "popularity": 111.0813,
+    "featured": false,
+    "trending": true,
+    "popular": true
+  },
+  {
+    "id": 1431068,
+    "title": "Main Vaapas Aaunga",
+    "type": "movie",
+    "year": "2026",
+    "rating": 6.857,
+    "runtime": 166,
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "language": "Hindi",
+    "countries": [
+      "India"
+    ],
+    "description": "An elderly man remains haunted by a childhood romance and memories of love lost during the 1947 Partition of India. As he shares his story with his grandson, the past unfolds through memories of migration, longing, and a love that endures across generations.",
+    "poster": "https://image.tmdb.org/t/p/w500/8n7OeeyAqwmGS81Is2c6Ho65tgW.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/bWw9PuPH6vFXlezBoHZ6D9XBhQW.jpg",
+    "popularity": 104.6241,
     "featured": false,
     "trending": true,
     "popular": true
@@ -2853,7 +2853,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/m3Pom6pbD51bBv3syz8NMHda3fz.jpg",
     "popularity": 39.8789,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -4006,7 +4006,7 @@
     "title": "Kraken",
     "type": "movie",
     "year": "2026",
-    "rating": 6.425,
+    "rating": 6.445,
     "runtime": 94,
     "genres": [
       "Horror",
@@ -4020,7 +4020,7 @@
     "description": "A marine biologist is doing research on a fish farm when she encounters several strange occurrences. Along with the brutal deaths of two teenagers, all signs point to the deep fjord; can there be more to the depths than the eye can see?",
     "poster": "https://image.tmdb.org/t/p/w500/xdZ8k5s8DTwWyPBMIcflrYLgcAK.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/oV472EbPedkc5QzqolGc7sCgCnn.jpg",
-    "popularity": 31.4333,
+    "popularity": 31.368,
     "featured": false,
     "trending": true,
     "popular": true
@@ -4274,7 +4274,7 @@
     "title": "Blade Runner 2049",
     "type": "movie",
     "year": "2017",
-    "rating": 7.596,
+    "rating": 7.595,
     "runtime": 164,
     "genres": [
       "Science Fiction",
@@ -4539,7 +4539,7 @@
     "title": "Your Name.",
     "type": "movie",
     "year": "2016",
-    "rating": 8.481,
+    "rating": 8.482,
     "runtime": 106,
     "genres": [
       "Animation",
@@ -4940,7 +4940,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/dzWGnIAjUafpmY57F6vnm44FwWB.jpg",
     "popularity": 27.4073,
     "featured": false,
-    "trending": false,
+    "trending": true,
     "popular": true
   },
   {
@@ -5154,6 +5154,31 @@
     "poster": "https://image.tmdb.org/t/p/w500/bnZJrLRnoQHpzEJdka1KYfsAF3N.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/crKA6WzkjWhvGdzvonRnGr1ZFv8.jpg",
     "popularity": 26.8563,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 1641319,
+    "title": "Sniper: No Nation",
+    "type": "movie",
+    "year": "2026",
+    "rating": 6.697,
+    "runtime": 96,
+    "genres": [
+      "Action",
+      "Thriller"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America",
+      "Canada",
+      "South Africa"
+    ],
+    "description": "Brandon Beckett and Agent Zero lead a rescue mission in Costa Verde when their friends are taken hostage.",
+    "poster": "https://image.tmdb.org/t/p/w500/tUmARo0TZEK1EaSuS6dU35FhDyU.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/7lizs4SuEU2ihkkAa0SZ66NtHbl.jpg",
+    "popularity": 26.8492,
     "featured": false,
     "trending": false,
     "popular": true
@@ -5874,30 +5899,6 @@
     "popular": true
   },
   {
-    "id": 429617,
-    "title": "Spider-Man: Far From Home",
-    "type": "movie",
-    "year": "2019",
-    "rating": 7.4,
-    "runtime": 129,
-    "genres": [
-      "Action",
-      "Adventure",
-      "Science Fiction"
-    ],
-    "language": "Czech",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "Peter Parker and his friends go on a summer trip to Europe. However, they will hardly be able to rest - Peter will have to agree to help Nick Fury uncover the mystery of creatures that cause natural disasters and destruction throughout the continent.",
-    "poster": "https://image.tmdb.org/t/p/w500/4q2NNj4S5dG2RLF9CpXsej7yXl.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/34jW8LvjRplM8Pv06cBFDpLlenR.jpg",
-    "popularity": 24.6989,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 1584215,
     "title": "The Internship",
     "type": "movie",
@@ -6011,6 +6012,30 @@
     "poster": "https://image.tmdb.org/t/p/w500/2ynUMfrwnEdGmkZmpiiJmTdTi4w.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/6muIb4lmdF2uJmrAY4zyH11wYxW.jpg",
     "popularity": 24.4809,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 429617,
+    "title": "Spider-Man: Far From Home",
+    "type": "movie",
+    "year": "2019",
+    "rating": 7.396,
+    "runtime": 129,
+    "genres": [
+      "Action",
+      "Adventure",
+      "Science Fiction"
+    ],
+    "language": "Czech",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "Peter Parker and his friends go on a summer trip to Europe. However, they will hardly be able to rest - Peter will have to agree to help Nick Fury uncover the mystery of creatures that cause natural disasters and destruction throughout the continent.",
+    "poster": "https://image.tmdb.org/t/p/w500/4q2NNj4S5dG2RLF9CpXsej7yXl.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/34jW8LvjRplM8Pv06cBFDpLlenR.jpg",
+    "popularity": 24.4777,
     "featured": false,
     "trending": false,
     "popular": true
@@ -6287,31 +6312,6 @@
     "popular": true
   },
   {
-    "id": 1641319,
-    "title": "Sniper: No Nation",
-    "type": "movie",
-    "year": "2026",
-    "rating": 6.697,
-    "runtime": 96,
-    "genres": [
-      "Action",
-      "Thriller"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America",
-      "Canada",
-      "South Africa"
-    ],
-    "description": "Brandon Beckett and Agent Zero lead a rescue mission in Costa Verde when their friends are taken hostage.",
-    "poster": "https://image.tmdb.org/t/p/w500/tUmARo0TZEK1EaSuS6dU35FhDyU.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/7lizs4SuEU2ihkkAa0SZ66NtHbl.jpg",
-    "popularity": 23.7033,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 226674,
     "title": "The Adolescent",
     "type": "movie",
@@ -6547,31 +6547,6 @@
     "popular": true
   },
   {
-    "id": 98,
-    "title": "Gladiator",
-    "type": "movie",
-    "year": "2000",
-    "rating": 8.227,
-    "runtime": 155,
-    "genres": [
-      "Action",
-      "Drama",
-      "Adventure"
-    ],
-    "language": "English",
-    "countries": [
-      "United Kingdom",
-      "United States of America"
-    ],
-    "description": "After the death of Emperor Marcus Aurelius, his devious son takes power and demotes Maximus, one of Rome's most capable generals who Marcus preferred. Eventually, Maximus is forced to become a gladiator and battle to the death against other men for the amusement of paying audiences.",
-    "poster": "https://image.tmdb.org/t/p/w500/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/jhk6D8pim3yaByu1801kMoxXFaX.jpg",
-    "popularity": 22.9483,
-    "featured": true,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 875828,
     "title": "Peaky Blinders: The Immortal Man",
     "type": "movie",
@@ -6781,6 +6756,31 @@
     "popular": true
   },
   {
+    "id": 98,
+    "title": "Gladiator",
+    "type": "movie",
+    "year": "2000",
+    "rating": 8.226,
+    "runtime": 155,
+    "genres": [
+      "Action",
+      "Drama",
+      "Adventure"
+    ],
+    "language": "English",
+    "countries": [
+      "United Kingdom",
+      "United States of America"
+    ],
+    "description": "After the death of Emperor Marcus Aurelius, his devious son takes power and demotes Maximus, one of Rome's most capable generals who Marcus preferred. Eventually, Maximus is forced to become a gladiator and battle to the death against other men for the amusement of paying audiences.",
+    "poster": "https://image.tmdb.org/t/p/w500/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/jhk6D8pim3yaByu1801kMoxXFaX.jpg",
+    "popularity": 22.5665,
+    "featured": true,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 1560681,
     "title": "Colors of Evil: Black",
     "type": "movie",
@@ -6876,29 +6876,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/hba8zREJpP1AYhaXgb2oJLQeO0K.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/4QLdZ2A8mkDWp2rpfgDrwmeCtUW.jpg",
     "popularity": 22.3589,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 1290417,
-    "title": "Thrash",
-    "type": "movie",
-    "year": "2026",
-    "rating": 6.062,
-    "runtime": 84,
-    "genres": [
-      "Horror",
-      "Thriller"
-    ],
-    "language": "French",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "When a Category 5 hurricane decimates a coastal town, the storm surge brings devastation, chaos, and something far more frightening onto shore: hungry sharks.",
-    "poster": "https://image.tmdb.org/t/p/w500/adk8weka3O5648g3de4z3y4aE7G.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/hniERZojXCEc7Fp3yljZUigOAhm.jpg",
-    "popularity": 22.1278,
     "featured": false,
     "trending": false,
     "popular": true
@@ -7261,6 +7238,31 @@
     "poster": "https://image.tmdb.org/t/p/w500/gwTKiJF57VknDuNCWgoHaJamm82.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/3kb5b8IQCX4vd3baNBoZqAboP41.jpg",
     "popularity": 21.5685,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 9806,
+    "title": "The Incredibles",
+    "type": "movie",
+    "year": "2004",
+    "rating": 7.726,
+    "runtime": 115,
+    "genres": [
+      "Action",
+      "Adventure",
+      "Animation",
+      "Family"
+    ],
+    "language": "French",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "Bob Parr has given up his superhero days to log in time as an insurance adjuster and raise his three children with his formerly heroic wife in suburbia. But when he receives a mysterious assignment, it's time to get back into costume.",
+    "poster": "https://image.tmdb.org/t/p/w500/2LqaLgk4Z226KkgPJuiOQ58wvrm.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/lxwzY9vNwjDgxWKt3zZ6zcU6rEJ.jpg",
+    "popularity": 21.4439,
     "featured": false,
     "trending": false,
     "popular": true
@@ -8305,30 +8307,6 @@
     "popular": true
   },
   {
-    "id": 767,
-    "title": "Harry Potter and the Half-Blood Prince",
-    "type": "movie",
-    "year": "2009",
-    "rating": 7.681,
-    "runtime": 153,
-    "genres": [
-      "Adventure",
-      "Fantasy"
-    ],
-    "language": "English",
-    "countries": [
-      "United Kingdom",
-      "United States of America"
-    ],
-    "description": "Dumbledore tries to prepare Harry for the final battle with Voldemort while Death Eaters wreak havoc in both Muggle and Wizard worlds.",
-    "poster": "https://image.tmdb.org/t/p/w500/z7uo9zmQdQwU5ZJHFpv2Upl30i1.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/urDWNffjwmNi5IQaezw9GwqkUXa.jpg",
-    "popularity": 19.8337,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 796,
     "title": "Cruel Intentions",
     "type": "movie",
@@ -9087,7 +9065,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/2fgcRuaseQ9RIiTAUDbLtymnj2z.jpg",
     "popularity": 18.6188,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -9095,7 +9073,7 @@
     "title": "Door",
     "type": "movie",
     "year": "1988",
-    "rating": 6.093,
+    "rating": 6.161,
     "runtime": 94,
     "genres": [
       "Horror",
@@ -9135,7 +9113,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/hX6jtlcsyGR5LMOP4Q26LREiUlf.jpg",
     "popularity": 18.5636,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -9891,6 +9869,28 @@
     "popular": true
   },
   {
+    "id": 1410937,
+    "title": "Balan - The Boy",
+    "type": "movie",
+    "year": "2026",
+    "rating": 6,
+    "runtime": 147,
+    "genres": [
+      "Drama"
+    ],
+    "language": "Malayalam",
+    "countries": [
+      "India"
+    ],
+    "description": "A teenage boy searches for his missing mother following a turbulent childhood and her subsequent disappearance, exploring his search for closure and the truth about his past.",
+    "poster": "https://image.tmdb.org/t/p/w500/boKxdR9tgXfkazf6yWgiDdleBy0.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/cb4b4K3E2jBGaSjkuIkZHJHmoWG.jpg",
+    "popularity": 16.6973,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
     "id": 402431,
     "title": "Wicked",
     "type": "movie",
@@ -10056,6 +10056,30 @@
     "popular": false
   },
   {
+    "id": 11324,
+    "title": "Shutter Island",
+    "type": "movie",
+    "year": "2010",
+    "rating": 8.198,
+    "runtime": 138,
+    "genres": [
+      "Drama",
+      "Thriller",
+      "Mystery"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "World War II soldier-turned-U.S. Marshal Teddy Daniels investigates the disappearance of a patient from a hospital for the criminally insane, but his efforts are compromised by troubling visions and a mysterious doctor.",
+    "poster": "https://image.tmdb.org/t/p/w500/nrmXQ0zcZUL8jFLrakWc90IR8z9.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/rbZvGN1A1QyZuoKzhCw8QPmf2q0.jpg",
+    "popularity": 16.0962,
+    "featured": true,
+    "trending": false,
+    "popular": false
+  },
+  {
     "id": 823219,
     "title": "Flow",
     "type": "movie",
@@ -10174,30 +10198,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/tuFaWiqX0TXoWu7DGNcmX3UW7sT.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/5lAMQMWpXMsirvtLLvW7cJgEPkU.jpg",
     "popularity": 15.2972,
-    "featured": true,
-    "trending": false,
-    "popular": false
-  },
-  {
-    "id": 11324,
-    "title": "Shutter Island",
-    "type": "movie",
-    "year": "2010",
-    "rating": 8.198,
-    "runtime": 138,
-    "genres": [
-      "Drama",
-      "Thriller",
-      "Mystery"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "World War II soldier-turned-U.S. Marshal Teddy Daniels investigates the disappearance of a patient from a hospital for the criminally insane, but his efforts are compromised by troubling visions and a mysterious doctor.",
-    "poster": "https://image.tmdb.org/t/p/w500/nrmXQ0zcZUL8jFLrakWc90IR8z9.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/rbZvGN1A1QyZuoKzhCw8QPmf2q0.jpg",
-    "popularity": 15.2886,
     "featured": true,
     "trending": false,
     "popular": false
@@ -10632,6 +10632,31 @@
     "popular": true
   },
   {
+    "id": 4348,
+    "title": "Pride & Prejudice",
+    "type": "movie",
+    "year": "2005",
+    "rating": 8.055,
+    "runtime": 128,
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "language": "English",
+    "countries": [
+      "France",
+      "United Kingdom",
+      "United States of America"
+    ],
+    "description": "A story of love and life among the landed English gentry during the Georgian era. Mr. Bennet is a gentleman living in Hertfordshire with his overbearing wife and five daughters, but if he dies their house will be inherited by a distant cousin whom they have never met, so the family's future happiness and security is dependent on the daughters making good marriages.",
+    "poster": "https://image.tmdb.org/t/p/w500/o8UhmEbWPHmTUxP0lMuCoqNkbB3.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/1Onam6oWyFAUCcoxtdWkACtEiNr.jpg",
+    "popularity": 14.0801,
+    "featured": true,
+    "trending": false,
+    "popular": false
+  },
+  {
     "id": 508442,
     "title": "Soul",
     "type": "movie",
@@ -10943,31 +10968,6 @@
     "featured": false,
     "trending": false,
     "popular": true
-  },
-  {
-    "id": 4348,
-    "title": "Pride & Prejudice",
-    "type": "movie",
-    "year": "2005",
-    "rating": 8.055,
-    "runtime": 128,
-    "genres": [
-      "Drama",
-      "Romance"
-    ],
-    "language": "English",
-    "countries": [
-      "France",
-      "United Kingdom",
-      "United States of America"
-    ],
-    "description": "A story of love and life among the landed English gentry during the Georgian era. Mr. Bennet is a gentleman living in Hertfordshire with his overbearing wife and five daughters, but if he dies their house will be inherited by a distant cousin whom they have never met, so the family's future happiness and security is dependent on the daughters making good marriages.",
-    "poster": "https://image.tmdb.org/t/p/w500/o8UhmEbWPHmTUxP0lMuCoqNkbB3.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/1Onam6oWyFAUCcoxtdWkACtEiNr.jpg",
-    "popularity": 13.509,
-    "featured": true,
-    "trending": false,
-    "popular": false
   },
   {
     "id": 68718,
@@ -12229,7 +12229,7 @@
     "title": "The Grand Budapest Hotel",
     "type": "movie",
     "year": "2014",
-    "rating": 8,
+    "rating": 8.028,
     "runtime": 100,
     "genres": [
       "Comedy",
@@ -13038,28 +13038,6 @@
     "featured": false,
     "trending": true,
     "popular": true
-  },
-  {
-    "id": 1410937,
-    "title": "Balan - The Boy",
-    "type": "movie",
-    "year": "2026",
-    "rating": 6,
-    "runtime": 147,
-    "genres": [
-      "Drama"
-    ],
-    "language": "Malayalam",
-    "countries": [
-      "India"
-    ],
-    "description": "A teenage boy searches for his missing mother following a turbulent childhood and her subsequent disappearance, exploring his search for closure and the truth about his past.",
-    "poster": "https://image.tmdb.org/t/p/w500/boKxdR9tgXfkazf6yWgiDdleBy0.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/cb4b4K3E2jBGaSjkuIkZHJHmoWG.jpg",
-    "popularity": 9.3133,
-    "featured": false,
-    "trending": true,
-    "popular": false
   },
   {
     "id": 930094,
@@ -15808,6 +15786,30 @@
     "popular": true
   },
   {
+    "id": 449176,
+    "title": "Love, Simon",
+    "type": "movie",
+    "year": "2018",
+    "rating": 7.971,
+    "runtime": 110,
+    "genres": [
+      "Comedy",
+      "Drama",
+      "Romance"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "Everyone deserves a great love story, but for 17-year-old Simon Spier, it's a little more complicated. He hasn't told his family or friends that he's gay, and he doesn't know the identity of the anonymous classmate that he's fallen for online.",
+    "poster": "https://image.tmdb.org/t/p/w500/snIsqVPmlu4LPjvToHpDotxa7Eh.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/nJSPkq5dtASykhiYIZhpCX9Zgeq.jpg",
+    "popularity": 6.3051,
+    "featured": true,
+    "trending": false,
+    "popular": false
+  },
+  {
     "id": 568160,
     "title": "Weathering with You",
     "type": "movie",
@@ -15833,28 +15835,28 @@
     "popular": false
   },
   {
-    "id": 449176,
-    "title": "Love, Simon",
+    "id": 72976,
+    "title": "Lincoln",
     "type": "movie",
-    "year": "2018",
-    "rating": 7.971,
-    "runtime": 110,
+    "year": "2012",
+    "rating": 6.847,
+    "runtime": 150,
     "genres": [
-      "Comedy",
-      "Drama",
-      "Romance"
+      "History",
+      "Drama"
     ],
     "language": "English",
     "countries": [
-      "United States of America"
+      "United States of America",
+      "India"
     ],
-    "description": "Everyone deserves a great love story, but for 17-year-old Simon Spier, it's a little more complicated. He hasn't told his family or friends that he's gay, and he doesn't know the identity of the anonymous classmate that he's fallen for online.",
-    "poster": "https://image.tmdb.org/t/p/w500/snIsqVPmlu4LPjvToHpDotxa7Eh.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/nJSPkq5dtASykhiYIZhpCX9Zgeq.jpg",
-    "popularity": 6.2679,
-    "featured": true,
+    "description": "The revealing story of the 16th US President's tumultuous final months in office. In a nation divided by war and the strong winds of change, Lincoln pursues a course of action designed to end the war, unite the country and abolish slavery. With the moral courage and fierce determination to succeed, his choices during this critical moment will change the fate of generations to come.",
+    "poster": "https://image.tmdb.org/t/p/w500/7mUYEkv9W3ek61eetZCfMQYVoi.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/hwOFrwHladQ8FktYn3aJNAt8KA1.jpg",
+    "popularity": 6.2274,
+    "featured": false,
     "trending": false,
-    "popular": false
+    "popular": true
   },
   {
     "id": 935,
@@ -17192,6 +17194,28 @@
     "popular": true
   },
   {
+    "id": 265177,
+    "title": "Mommy",
+    "type": "movie",
+    "year": "2014",
+    "rating": 8.204,
+    "runtime": 138,
+    "genres": [
+      "Drama"
+    ],
+    "language": "French",
+    "countries": [
+      "Canada"
+    ],
+    "description": "A peculiar neighbor offers hope to a recent widow who is struggling to raise a teenager who is unpredictable and, sometimes, violent.",
+    "poster": "https://image.tmdb.org/t/p/w500/uPDP0cHGOpkr47rdCdHWo4CyiPj.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/dIHezuC3AmylT8mkXQiWSjz2wJR.jpg",
+    "popularity": 5.4206,
+    "featured": true,
+    "trending": false,
+    "popular": false
+  },
+  {
     "id": 592350,
     "title": "My Hero Academia: Heroes Rising",
     "type": "movie",
@@ -17386,53 +17410,6 @@
     "featured": false,
     "trending": false,
     "popular": true
-  },
-  {
-    "id": 1140521,
-    "title": "The Magic Faraway Tree",
-    "type": "movie",
-    "year": "2026",
-    "rating": 6.389,
-    "runtime": 110,
-    "genres": [
-      "Adventure",
-      "Family",
-      "Fantasy"
-    ],
-    "language": "English",
-    "countries": [
-      "United Kingdom",
-      "United States of America"
-    ],
-    "description": "A modern family relocates to the countryside where the children discover a magical tree with eccentric residents. They're transported to fantastical lands, rekindling their family bond through adventures.",
-    "poster": "https://image.tmdb.org/t/p/w500/udXvLxC5gAqN8SinemyFBEcHpTf.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/ldsy8TYJuHxVlq8T5bHQkrS5jsR.jpg",
-    "popularity": 5.3215,
-    "featured": false,
-    "trending": true,
-    "popular": false
-  },
-  {
-    "id": 265177,
-    "title": "Mommy",
-    "type": "movie",
-    "year": "2014",
-    "rating": 8.204,
-    "runtime": 138,
-    "genres": [
-      "Drama"
-    ],
-    "language": "French",
-    "countries": [
-      "Canada"
-    ],
-    "description": "A peculiar neighbor offers hope to a recent widow who is struggling to raise a teenager who is unpredictable and, sometimes, violent.",
-    "poster": "https://image.tmdb.org/t/p/w500/uPDP0cHGOpkr47rdCdHWo4CyiPj.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/dIHezuC3AmylT8mkXQiWSjz2wJR.jpg",
-    "popularity": 5.3201,
-    "featured": true,
-    "trending": false,
-    "popular": false
   },
   {
     "id": 1303331,
@@ -17668,6 +17645,31 @@
     "poster": "https://image.tmdb.org/t/p/w500/sHewWBdFBJ1IDIvzCEpLOaeqTb9.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/8BHZ6wUtvYlzib44dqPheODJZ2x.jpg",
     "popularity": 5.2424,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
+    "id": 1140521,
+    "title": "The Magic Faraway Tree",
+    "type": "movie",
+    "year": "2026",
+    "rating": 6.389,
+    "runtime": 110,
+    "genres": [
+      "Adventure",
+      "Family",
+      "Fantasy"
+    ],
+    "language": "English",
+    "countries": [
+      "United Kingdom",
+      "United States of America"
+    ],
+    "description": "A modern family relocates to the countryside where the children discover a magical tree with eccentric residents. They're transported to fantastical lands, rekindling their family bond through adventures.",
+    "poster": "https://image.tmdb.org/t/p/w500/udXvLxC5gAqN8SinemyFBEcHpTf.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/ldsy8TYJuHxVlq8T5bHQkrS5jsR.jpg",
+    "popularity": 5.2266,
     "featured": false,
     "trending": true,
     "popular": false
@@ -18474,30 +18476,6 @@
     "popular": false
   },
   {
-    "id": 1154538,
-    "title": "Nirvanna the Band the Show the Movie",
-    "type": "movie",
-    "year": "2026",
-    "rating": 7.596,
-    "runtime": 100,
-    "genres": [
-      "Comedy",
-      "Science Fiction",
-      "Adventure"
-    ],
-    "language": "English",
-    "countries": [
-      "Canada"
-    ],
-    "description": "When their plan to book a show at the Rivoli goes horribly wrong, Matt and Jay accidentally travel back to the year 2008.",
-    "poster": "https://image.tmdb.org/t/p/w500/sm5TGX8WbnCd9Uo26cLyTxVwA1n.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/gYxOlYtLvGNrzYm6kQBcY5mqKja.jpg",
-    "popularity": 4.6888,
-    "featured": false,
-    "trending": true,
-    "popular": true
-  },
-  {
     "id": 434853,
     "title": "Space/Time",
     "type": "movie",
@@ -18614,6 +18592,30 @@
     "featured": false,
     "trending": true,
     "popular": false
+  },
+  {
+    "id": 1154538,
+    "title": "Nirvanna the Band the Show the Movie",
+    "type": "movie",
+    "year": "2026",
+    "rating": 7.596,
+    "runtime": 100,
+    "genres": [
+      "Comedy",
+      "Science Fiction",
+      "Adventure"
+    ],
+    "language": "English",
+    "countries": [
+      "Canada"
+    ],
+    "description": "When their plan to book a show at the Rivoli goes horribly wrong, Matt and Jay accidentally travel back to the year 2008.",
+    "poster": "https://image.tmdb.org/t/p/w500/sm5TGX8WbnCd9Uo26cLyTxVwA1n.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/gYxOlYtLvGNrzYm6kQBcY5mqKja.jpg",
+    "popularity": 4.6234,
+    "featured": false,
+    "trending": true,
+    "popular": true
   },
   {
     "id": 213,
@@ -19205,7 +19207,7 @@
     "title": "Yi Yi",
     "type": "movie",
     "year": "2000",
-    "rating": 7.941,
+    "rating": 7.944,
     "runtime": 174,
     "genres": [
       "Drama"
@@ -19904,7 +19906,7 @@
     "title": "Master of the Universe",
     "type": "movie",
     "year": "2026",
-    "rating": 3.583,
+    "rating": 3.6,
     "runtime": 81,
     "genres": [
       "Adventure",
@@ -19915,7 +19917,7 @@
       "United States of America"
     ],
     "description": "A young man must use his untapped powers to fight back against an evil alien and their army, who will stop at nothing to take over Earth and then the universe.",
-    "poster": "https://image.tmdb.org/t/p/w500/5BoP5TmqCnbjPGf7ROYm9LdxtKw.jpg",
+    "poster": "https://image.tmdb.org/t/p/w500/gcUI9aI8i8LmwivJiLTTgDBTC9r.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/ehozSQRKL0g0xU8NsiR1vHDudMn.jpg",
     "popularity": 4.089,
     "featured": false,
@@ -20296,31 +20298,6 @@
     "popular": false
   },
   {
-    "id": 15916,
-    "title": "Angel's Egg",
-    "type": "movie",
-    "year": "1985",
-    "rating": 7.71,
-    "runtime": 71,
-    "genres": [
-      "Animation",
-      "Fantasy",
-      "Mystery",
-      "Science Fiction"
-    ],
-    "language": "Japanese",
-    "countries": [
-      "Japan"
-    ],
-    "description": "In the ruins of a strange city, a young girl takes care of a large egg she holds carefully in her arms. She bonds with a boy who is searching for a bird he saw in a dream.",
-    "poster": "https://image.tmdb.org/t/p/w500/dcEUGvckbePFzPKhGXnS9T3kZMG.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/nZn384qWYugXu6U1N8Ya0Iv0NXE.jpg",
-    "popularity": 3.919,
-    "featured": false,
-    "trending": true,
-    "popular": false
-  },
-  {
     "id": 1702441,
     "title": "Ember",
     "type": "movie",
@@ -20653,31 +20630,6 @@
     "featured": false,
     "trending": true,
     "popular": false
-  },
-  {
-    "id": 1636,
-    "title": "Bedazzled",
-    "type": "movie",
-    "year": "2000",
-    "rating": 6.116,
-    "runtime": 93,
-    "genres": [
-      "Fantasy",
-      "Comedy",
-      "Romance"
-    ],
-    "language": "English",
-    "countries": [
-      "Germany",
-      "United States of America"
-    ],
-    "description": "Elliot Richards, a socially awkward IT worker, is given seven wishes to get the girl of his dreams when he meets a very seductive Satan. The catch: his soul. Some of his wishes include being a 7 foot basketball star, a wealthy, powerful man, and a sensitive caring guy. But, as could be expected, the Devil puts her own little twist on each of his fantasies.",
-    "poster": "https://image.tmdb.org/t/p/w500/sBV28EVvWsJRosMsEFCbVmpAZEl.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/uaTVgIzIn02wd1SBTDXouGTpiIG.jpg",
-    "popularity": 3.7931,
-    "featured": false,
-    "trending": false,
-    "popular": true
   },
   {
     "id": 7347,
@@ -21687,6 +21639,31 @@
     "poster": "https://image.tmdb.org/t/p/w500/rSuN4hg2igakTspwKTpMKfkH4hG.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/zp8hs6KYg6WXShicqYyUSbjWkxL.jpg",
     "popularity": 3.3504,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
+    "id": 15916,
+    "title": "Angel's Egg",
+    "type": "movie",
+    "year": "1985",
+    "rating": 7.71,
+    "runtime": 71,
+    "genres": [
+      "Animation",
+      "Fantasy",
+      "Mystery",
+      "Science Fiction"
+    ],
+    "language": "Japanese",
+    "countries": [
+      "Japan"
+    ],
+    "description": "In the ruins of a strange city, a young girl takes care of a large egg she holds carefully in her arms. She bonds with a boy who is searching for a bird he saw in a dream.",
+    "poster": "https://image.tmdb.org/t/p/w500/dcEUGvckbePFzPKhGXnS9T3kZMG.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/nZn384qWYugXu6U1N8Ya0Iv0NXE.jpg",
+    "popularity": 3.3342,
     "featured": false,
     "trending": true,
     "popular": false
@@ -23343,6 +23320,29 @@
     "popular": false
   },
   {
+    "id": 1248251,
+    "title": "Mollywood Times",
+    "type": "movie",
+    "year": "2026",
+    "rating": 5.667,
+    "runtime": 167,
+    "genres": [
+      "Comedy",
+      "Drama"
+    ],
+    "language": "Malayalam",
+    "countries": [
+      "India"
+    ],
+    "description": "Vineeth Madhavan tries hard to become Malayalam cinema's greatest horror filmmaker, but will the toxic industry affect his dream?",
+    "poster": "https://image.tmdb.org/t/p/w500/zUBCBtMsQ8dxnhJhhng4C8U80IU.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/4OX2PvjRS1r2aFjxSKQLX9E5Pkf.jpg",
+    "popularity": 2.8133,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
     "id": 2517,
     "title": "Nobody Knows",
     "type": "movie",
@@ -24367,52 +24367,6 @@
     "popular": false
   },
   {
-    "id": 1519340,
-    "title": "Jangan Buang Ibu",
-    "type": "movie",
-    "year": "2026",
-    "rating": 6,
-    "runtime": 119,
-    "genres": [
-      "Drama",
-      "Family"
-    ],
-    "language": "Indonesian",
-    "countries": [
-      "Indonesia"
-    ],
-    "description": "Ristiana, a single mother, struggles to raise her three children after her husband left her with significant debt. Her decisions strain her relationship with her children. Despite the distance and longing, her three children remain devoted to their mother and strive to repair their relationship before it's too late.",
-    "poster": "https://image.tmdb.org/t/p/w500/zGcRp2tNTn6fwW8vK4cIUkHop42.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/sBwhJiHNOssdvQ4BFoAEh0zq9oI.jpg",
-    "popularity": 2.4959,
-    "featured": false,
-    "trending": true,
-    "popular": true
-  },
-  {
-    "id": 1248251,
-    "title": "Mollywood Times",
-    "type": "movie",
-    "year": "2026",
-    "rating": 5.667,
-    "runtime": 167,
-    "genres": [
-      "Comedy",
-      "Drama"
-    ],
-    "language": "Malayalam",
-    "countries": [
-      "India"
-    ],
-    "description": "Vineeth Madhavan tries hard to become Malayalam cinema's greatest horror filmmaker, but will the toxic industry affect his dream?",
-    "poster": "https://image.tmdb.org/t/p/w500/zUBCBtMsQ8dxnhJhhng4C8U80IU.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/4OX2PvjRS1r2aFjxSKQLX9E5Pkf.jpg",
-    "popularity": 2.4911,
-    "featured": false,
-    "trending": true,
-    "popular": false
-  },
-  {
     "id": 14424,
     "title": "Sex and Death 101",
     "type": "movie",
@@ -24435,6 +24389,29 @@
     "featured": false,
     "trending": false,
     "popular": true
+  },
+  {
+    "id": 6715,
+    "title": "The Cure",
+    "type": "movie",
+    "year": "1995",
+    "rating": 7.9,
+    "runtime": 97,
+    "genres": [
+      "Drama",
+      "Family"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "Erik, a loner, finds a friend in Dexter, an eleven-year-old boy with AIDS. They vow to find a cure for AIDS together and save Dexter's life in an eventful summer.",
+    "poster": "https://image.tmdb.org/t/p/w500/irl4zGq3rh8UF0Ra0gvNg7mY5my.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/cXliQvK1xSi9lSqP7qaBUyED1Az.jpg",
+    "popularity": 2.4804,
+    "featured": true,
+    "trending": false,
+    "popular": false
   },
   {
     "id": 1476614,
@@ -24483,6 +24460,30 @@
     "poster": "https://image.tmdb.org/t/p/w500/aDuie7u8AL3J6ZH2LS5ySnPkX1W.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/qOqpRqFulhrOox5GTuh29MtQ3pU.jpg",
     "popularity": 2.4693,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
+    "id": 1717461,
+    "title": "Інтроверт: Хто я?",
+    "type": "movie",
+    "year": "2026",
+    "rating": 10,
+    "runtime": 0,
+    "genres": [
+      "Thriller",
+      "Drama",
+      "Horror"
+    ],
+    "language": "Ukrainian",
+    "countries": [
+      "Ukraine"
+    ],
+    "description": "",
+    "poster": "https://image.tmdb.org/t/p/w500/8Y2PMzU3YBQ7nMGAOpLSafPPdbh.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/uBDpMAZEUxk2Kd9kgtG8R2aNyTW.jpg",
+    "popularity": 2.4574,
     "featured": false,
     "trending": true,
     "popular": false
@@ -24891,29 +24892,6 @@
     "popular": false
   },
   {
-    "id": 6715,
-    "title": "The Cure",
-    "type": "movie",
-    "year": "1995",
-    "rating": 7.9,
-    "runtime": 97,
-    "genres": [
-      "Drama",
-      "Family"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "Erik, a loner, finds a friend in Dexter, an eleven-year-old boy with AIDS. They vow to find a cure for AIDS together and save Dexter's life in an eventful summer.",
-    "poster": "https://image.tmdb.org/t/p/w500/irl4zGq3rh8UF0Ra0gvNg7mY5my.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/cXliQvK1xSi9lSqP7qaBUyED1Az.jpg",
-    "popularity": 2.3735,
-    "featured": true,
-    "trending": false,
-    "popular": false
-  },
-  {
     "id": 1287819,
     "title": "A Samurai in Time",
     "type": "movie",
@@ -24981,32 +24959,6 @@
     "featured": false,
     "trending": false,
     "popular": true
-  },
-  {
-    "id": 1337985,
-    "title": "A Pale View of Hills",
-    "type": "movie",
-    "year": "2025",
-    "rating": 7.647,
-    "runtime": 123,
-    "genres": [
-      "Drama",
-      "History"
-    ],
-    "language": "English",
-    "countries": [
-      "Japan",
-      "United Kingdom",
-      "Poland",
-      "Singapore"
-    ],
-    "description": "Dual timelines explore a Japanese widow's memories spanning post-war Nagasaki in 1950s and England during 1980s Cold War era, unraveling secrets that intertwine her past and present experiences across borders.",
-    "poster": "https://image.tmdb.org/t/p/w500/9A9FOqFH4UX9EGPxg9SFxO9gnag.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/AiHIpQXEcRFi1YLpmNs7h2KhqaI.jpg",
-    "popularity": 2.3568,
-    "featured": false,
-    "trending": true,
-    "popular": false
   },
   {
     "id": 1052,
@@ -25623,6 +25575,29 @@
     "popular": false
   },
   {
+    "id": 1519340,
+    "title": "Jangan Buang Ibu",
+    "type": "movie",
+    "year": "2026",
+    "rating": 6,
+    "runtime": 119,
+    "genres": [
+      "Drama",
+      "Family"
+    ],
+    "language": "Indonesian",
+    "countries": [
+      "Indonesia"
+    ],
+    "description": "Ristiana, a single mother, struggles to raise her three children after her husband left her with significant debt. Her decisions strain her relationship with her children. Despite the distance and longing, her three children remain devoted to their mother and strive to repair their relationship before it's too late.",
+    "poster": "https://image.tmdb.org/t/p/w500/zGcRp2tNTn6fwW8vK4cIUkHop42.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/sBwhJiHNOssdvQ4BFoAEh0zq9oI.jpg",
+    "popularity": 2.2239,
+    "featured": false,
+    "trending": true,
+    "popular": true
+  },
+  {
     "id": 2734,
     "title": "David",
     "type": "movie",
@@ -25933,7 +25908,7 @@
     "title": "Central Station",
     "type": "movie",
     "year": "1998",
-    "rating": 8.13,
+    "rating": 8.123,
     "runtime": 111,
     "genres": [
       "Drama"
@@ -26023,6 +25998,32 @@
     "popular": true
   },
   {
+    "id": 1337985,
+    "title": "A Pale View of Hills",
+    "type": "movie",
+    "year": "2025",
+    "rating": 7.647,
+    "runtime": 123,
+    "genres": [
+      "Drama",
+      "History"
+    ],
+    "language": "English",
+    "countries": [
+      "Japan",
+      "United Kingdom",
+      "Poland",
+      "Singapore"
+    ],
+    "description": "Dual timelines explore a Japanese widow's memories spanning post-war Nagasaki in 1950s and England during 1980s Cold War era, unraveling secrets that intertwine her past and present experiences across borders.",
+    "poster": "https://image.tmdb.org/t/p/w500/9A9FOqFH4UX9EGPxg9SFxO9gnag.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/AiHIpQXEcRFi1YLpmNs7h2KhqaI.jpg",
+    "popularity": 2.1455,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
     "id": 21634,
     "title": "Prayers for Bobby",
     "type": "movie",
@@ -26067,30 +26068,6 @@
     "featured": false,
     "trending": false,
     "popular": true
-  },
-  {
-    "id": 1528577,
-    "title": "Bunny!!",
-    "type": "movie",
-    "year": "2026",
-    "rating": 7,
-    "runtime": 127,
-    "genres": [
-      "Romance",
-      "Drama",
-      "Thriller"
-    ],
-    "language": "Vietnamese",
-    "countries": [
-      "Vietnam"
-    ],
-    "description": "A host of a relationship advice television programme starts to see cracks in her own marriage after the appearance of a mysterious guest.",
-    "poster": "https://image.tmdb.org/t/p/w500/hYUBNcOwAzjdJIbtjGHvz3eH0Tg.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/wDUrTRRXh7DzhZtTI1YkAkTc89S.jpg",
-    "popularity": 2.0817,
-    "featured": false,
-    "trending": true,
-    "popular": false
   },
   {
     "id": 503314,
@@ -26281,6 +26258,30 @@
     "popular": false
   },
   {
+    "id": 1528577,
+    "title": "Bunny!!",
+    "type": "movie",
+    "year": "2026",
+    "rating": 7,
+    "runtime": 127,
+    "genres": [
+      "Romance",
+      "Drama",
+      "Thriller"
+    ],
+    "language": "Vietnamese",
+    "countries": [
+      "Vietnam"
+    ],
+    "description": "A host of a relationship advice television programme starts to see cracks in her own marriage after the appearance of a mysterious guest.",
+    "poster": "https://image.tmdb.org/t/p/w500/hYUBNcOwAzjdJIbtjGHvz3eH0Tg.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/wDUrTRRXh7DzhZtTI1YkAkTc89S.jpg",
+    "popularity": 2.0212,
+    "featured": false,
+    "trending": true,
+    "popular": false
+  },
+  {
     "id": 65733,
     "title": "An Ideal Adventure",
     "type": "movie",
@@ -26345,30 +26346,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/voXT2JWo6XTohm4rFLygJkik8Ja.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/hXRw0AVY8avc0koUXj2rMY6q2N8.jpg",
     "popularity": 2.0012,
-    "featured": false,
-    "trending": true,
-    "popular": false
-  },
-  {
-    "id": 1717461,
-    "title": "Інтроверт: Хто я?",
-    "type": "movie",
-    "year": "2026",
-    "rating": 10,
-    "runtime": 0,
-    "genres": [
-      "Thriller",
-      "Drama",
-      "Horror"
-    ],
-    "language": "Ukrainian",
-    "countries": [
-      "Ukraine"
-    ],
-    "description": "",
-    "poster": "https://image.tmdb.org/t/p/w500/8Y2PMzU3YBQ7nMGAOpLSafPPdbh.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/uBDpMAZEUxk2Kd9kgtG8R2aNyTW.jpg",
-    "popularity": 1.9989,
     "featured": false,
     "trending": true,
     "popular": false
@@ -27319,7 +27296,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/8cyxP51631Pfi2yMfYafkcg7y7u.jpg",
     "popularity": 1.7412,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -28171,7 +28148,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/2UPzDBkfOsClubCtG6Hk44jI2rT.jpg",
     "popularity": 1.5693,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -29457,6 +29434,29 @@
     "popular": true
   },
   {
+    "id": 1031084,
+    "title": "The Currents",
+    "type": "movie",
+    "year": "2025",
+    "rating": 6.2,
+    "runtime": 104,
+    "genres": [
+      "Drama"
+    ],
+    "language": "Spanish",
+    "countries": [
+      "Argentina",
+      "Switzerland"
+    ],
+    "description": "At the height of her career, Lina, a 34-year-old Argentine stylist, is driven by a sudden impulse after an award ceremony in Switzerland. Back in Buenos Aires, she says nothing, but something in her has shifted – quiet and invisible, it subtly unravels a past she thought she had left behind.",
+    "poster": "https://image.tmdb.org/t/p/w500/2FoJ5yI1sJGAiehBnIaxraWp6Gp.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/fNbAvZdaDqMTG6Q8wQdC44TE5zj.jpg",
+    "popularity": 1.2707,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 1413,
     "title": "M. Butterfly",
     "type": "movie",
@@ -29476,6 +29476,28 @@
     "poster": "https://image.tmdb.org/t/p/w500/vfutnJ9sgpAtNuPemksd26gd5dC.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/pxZG68WgGqijh1TjxLEJqTRt5jw.jpg",
     "popularity": 1.2672,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 250937,
+    "title": "Crystal Hunt",
+    "type": "movie",
+    "year": "1992",
+    "rating": 5.7,
+    "runtime": 89,
+    "genres": [
+      "Action"
+    ],
+    "language": "Cantonese",
+    "countries": [
+      "Hong Kong"
+    ],
+    "description": "Two cops search for a mysterious crystal with healing powers to cure a sick old man. On the trail they come up against a team treasure hunter/smugglers with impressive combat skills and big guns.",
+    "poster": "https://image.tmdb.org/t/p/w500/kjkcFG9g37lyAJU1r4phLTCZdmd.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/rab77IY5kn6sWDVLrnsG53mxgKp.jpg",
+    "popularity": 1.2648,
     "featured": false,
     "trending": false,
     "popular": true
@@ -29715,7 +29737,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/lzfDcppvRnsf9LJFwjLWQkuB4GC.jpg",
     "popularity": 1.19,
     "featured": true,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -30283,29 +30305,6 @@
     "popular": false
   },
   {
-    "id": 1031084,
-    "title": "The Currents",
-    "type": "movie",
-    "year": "2025",
-    "rating": 6.2,
-    "runtime": 104,
-    "genres": [
-      "Drama"
-    ],
-    "language": "Spanish",
-    "countries": [
-      "Argentina",
-      "Switzerland"
-    ],
-    "description": "At the height of her career, Lina, a 34-year-old Argentine stylist, is driven by a sudden impulse after an award ceremony in Switzerland. Back in Buenos Aires, she says nothing, but something in her has shifted – quiet and invisible, it subtly unravels a past she thought she had left behind.",
-    "poster": "https://image.tmdb.org/t/p/w500/2FoJ5yI1sJGAiehBnIaxraWp6Gp.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/fNbAvZdaDqMTG6Q8wQdC44TE5zj.jpg",
-    "popularity": 1.0803,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 574074,
     "title": "Kitbull",
     "type": "movie",
@@ -30701,6 +30700,29 @@
     "popular": true
   },
   {
+    "id": 323660,
+    "title": "Avengers Grimm",
+    "type": "movie",
+    "year": "2015",
+    "rating": 4.145,
+    "runtime": 90,
+    "genres": [
+      "Action",
+      "Fantasy"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "When Rumpelstiltskin destroys the Magic Mirror and escapes to the modern world, the four princesses of \"Once Upon a Time\"-Cinderella, Sleeping Beauty, Snow White, and Rapunzel-are sucked through the portal too. Well-trained and endowed with magical powers, the four women must fight Rumpelstiltskin and his army of thralls before he enslaves everyone on Earth.",
+    "poster": "https://image.tmdb.org/t/p/w500/9sdAHQxt53W8gZKivX0Pdk4DuXA.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/tui9Z2QEoZSIPZMfpvPcNP9HIoA.jpg",
+    "popularity": 1.0037,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 1708043,
     "title": "Election Day",
     "type": "movie",
@@ -30813,7 +30835,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/lIl843Q1zpczDEB74YSBToLueA2.jpg",
     "popularity": 0.9918,
     "featured": false,
-    "trending": false,
+    "trending": true,
     "popular": true
   },
   {
@@ -31119,6 +31141,29 @@
     "featured": true,
     "trending": false,
     "popular": false
+  },
+  {
+    "id": 90966,
+    "title": "Magic Town",
+    "type": "movie",
+    "year": "1947",
+    "rating": 6.7,
+    "runtime": 103,
+    "genres": [
+      "Comedy",
+      "Romance"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "Rip Smith's opinion-poll business is a failure...until he discovers that the small town of Grandview is statistically identical to the entire country. He and his assistants go there to run polls cheaply and easily, in total secrecy (it would be fatal to let the townsfolk get self-conscious). And of course, civic crusader Mary Peterman must be kept from changing things too much. But romantic involvement with Mary complicates life for Rip; then suddenly everything changes.",
+    "poster": "https://image.tmdb.org/t/p/w500/plCn5h9s98MgqEpvqyuw7ZtZ1JX.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/kZ18VKdD1q1NtikeIdR3Fps4ae2.jpg",
+    "popularity": 0.9585,
+    "featured": false,
+    "trending": false,
+    "popular": true
   },
   {
     "id": 4613,
@@ -31428,29 +31473,6 @@
     "popular": true
   },
   {
-    "id": 90966,
-    "title": "Magic Town",
-    "type": "movie",
-    "year": "1947",
-    "rating": 6.7,
-    "runtime": 103,
-    "genres": [
-      "Comedy",
-      "Romance"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "Rip Smith's opinion-poll business is a failure...until he discovers that the small town of Grandview is statistically identical to the entire country. He and his assistants go there to run polls cheaply and easily, in total secrecy (it would be fatal to let the townsfolk get self-conscious). And of course, civic crusader Mary Peterman must be kept from changing things too much. But romantic involvement with Mary complicates life for Rip; then suddenly everything changes.",
-    "poster": "https://image.tmdb.org/t/p/w500/plCn5h9s98MgqEpvqyuw7ZtZ1JX.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/kZ18VKdD1q1NtikeIdR3Fps4ae2.jpg",
-    "popularity": 0.9054,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 210865,
     "title": "Seventeen Ninja",
     "type": "movie",
@@ -31493,6 +31515,29 @@
     "poster": "https://image.tmdb.org/t/p/w500/oI7lZLax8wHBaBhkQnFh6uLC6HJ.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/5uuTwHfgGrP8QRZOjegZxCZxr3X.jpg",
     "popularity": 0.9035,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 71912,
+    "title": "The Runestone",
+    "type": "movie",
+    "year": "1991",
+    "rating": 4.824,
+    "runtime": 105,
+    "genres": [
+      "Horror",
+      "Adventure"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "A New York detective takes the case of a bulletproof monster sprung to life from Viking legend.",
+    "poster": "https://image.tmdb.org/t/p/w500/mN6cVMyUhJBcNAley0zdFomImvl.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/adk2efkC3Lpc6d5YkODhguKjiGw.jpg",
+    "popularity": 0.9034,
     "featured": false,
     "trending": false,
     "popular": true
@@ -31674,7 +31719,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/p0GnEo9gl5OpJDnLVmIZ2y59BcT.jpg",
     "popularity": 0.8782,
     "featured": false,
-    "trending": false,
+    "trending": true,
     "popular": true
   },
   {
@@ -32206,6 +32251,31 @@
     "popular": true
   },
   {
+    "id": 48891,
+    "title": "The Stranger Beside Me",
+    "type": "movie",
+    "year": "2003",
+    "rating": 6.033,
+    "runtime": 89,
+    "genres": [
+      "Thriller",
+      "Drama",
+      "Crime",
+      "TV Movie"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "While working at a Seattle clinic for women in the 1970s, Ann Rule becomes friends with Ted Bundy. Based on a book by Ann Rule.",
+    "poster": "https://image.tmdb.org/t/p/w500/rSqNYIYRLSfbHeZ6ExSrei8zWZI.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/52jkSMfWowsOBQZTJvbUiJUCtqw.jpg",
+    "popularity": 0.8224,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 1303657,
     "title": "Allegro Pastell",
     "type": "movie",
@@ -32224,30 +32294,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/vSjTGafv8OosVEIFzz18pq3inch.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/vOBjs6laaX6APuOH0KVweAU4vkd.jpg",
     "popularity": 0.8222,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 328083,
-    "title": "Main Theme",
-    "type": "movie",
-    "year": "1984",
-    "rating": 6.375,
-    "runtime": 101,
-    "genres": [
-      "Comedy",
-      "Drama",
-      "Romance"
-    ],
-    "language": "Japanese",
-    "countries": [
-      "Japan"
-    ],
-    "description": "A kindergarten teacher meets a novice magician and together they travel to another city to find love.",
-    "poster": "https://image.tmdb.org/t/p/w500/rT8mc772dBm23wYSA8xZ1oQLzPg.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/hdg9Ma4YNVq50Yo16o9iUw4iPIw.jpg",
-    "popularity": 0.8215,
     "featured": false,
     "trending": false,
     "popular": true
@@ -32339,31 +32385,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/eQZxm6cSRwrXT4410slJnJhGbdd.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/ld3PIgbveWOPF2B8s5iwENDk7YM.jpg",
     "popularity": 0.8139,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 48891,
-    "title": "The Stranger Beside Me",
-    "type": "movie",
-    "year": "2003",
-    "rating": 6.033,
-    "runtime": 89,
-    "genres": [
-      "Thriller",
-      "Drama",
-      "Crime",
-      "TV Movie"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "While working at a Seattle clinic for women in the 1970s, Ann Rule becomes friends with Ted Bundy. Based on a book by Ann Rule.",
-    "poster": "https://image.tmdb.org/t/p/w500/rSqNYIYRLSfbHeZ6ExSrei8zWZI.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/52jkSMfWowsOBQZTJvbUiJUCtqw.jpg",
-    "popularity": 0.8117,
     "featured": false,
     "trending": false,
     "popular": true
@@ -32856,28 +32877,6 @@
     "popular": true
   },
   {
-    "id": 51049,
-    "title": "Pontiac Moon",
-    "type": "movie",
-    "year": "1994",
-    "rating": 5.5,
-    "runtime": 113,
-    "genres": [
-      "Drama"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "An absent-minded-professor father and his son take off in an old Pontiac to bond during a symbolic road trip through the Western U.S. This while his wife tries to overcome her neuroses to save the family.",
-    "poster": "https://image.tmdb.org/t/p/w500/9nqZXNL0cmCMjyb9nvV0Mf3OlS3.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/5Ae2fCpn31wNtG6sAVl7EqZB92W.jpg",
-    "popularity": 0.7538,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 122186,
     "title": "A Crowd of Three",
     "type": "movie",
@@ -32944,6 +32943,52 @@
     "poster": "https://image.tmdb.org/t/p/w500/e2vjNiWk4Zh7JyZWr1u5F72G9vv.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/bNR7wqkmW1Hzjv3XreTk9eW39nh.jpg",
     "popularity": 0.7439,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 328083,
+    "title": "Main Theme",
+    "type": "movie",
+    "year": "1984",
+    "rating": 6.375,
+    "runtime": 101,
+    "genres": [
+      "Comedy",
+      "Drama",
+      "Romance"
+    ],
+    "language": "Japanese",
+    "countries": [
+      "Japan"
+    ],
+    "description": "A kindergarten teacher meets a novice magician and together they travel to another city to find love.",
+    "poster": "https://image.tmdb.org/t/p/w500/rT8mc772dBm23wYSA8xZ1oQLzPg.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/hdg9Ma4YNVq50Yo16o9iUw4iPIw.jpg",
+    "popularity": 0.7392,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 51049,
+    "title": "Pontiac Moon",
+    "type": "movie",
+    "year": "1994",
+    "rating": 5.5,
+    "runtime": 113,
+    "genres": [
+      "Drama"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "An absent-minded-professor father and his son take off in an old Pontiac to bond during a symbolic road trip through the Western U.S. This while his wife tries to overcome her neuroses to save the family.",
+    "poster": "https://image.tmdb.org/t/p/w500/9nqZXNL0cmCMjyb9nvV0Mf3OlS3.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/5Ae2fCpn31wNtG6sAVl7EqZB92W.jpg",
+    "popularity": 0.7364,
     "featured": false,
     "trending": false,
     "popular": true
@@ -33474,7 +33519,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/jPyNwWXoB6zSXFpkzJVnv1gE7Xu.jpg",
     "popularity": 0.688,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -33592,6 +33637,30 @@
     "featured": false,
     "trending": false,
     "popular": true
+  },
+  {
+    "id": 25778,
+    "title": "Felicity: An American Girl Adventure",
+    "type": "movie",
+    "year": "2005",
+    "rating": 6.742,
+    "runtime": 86,
+    "genres": [
+      "Action",
+      "Drama",
+      "Family",
+      "Thriller",
+      "TV Movie"
+    ],
+    "language": "English",
+    "countries": [],
+    "description": "A pre-American Revolution Virginian girl's love for the outdoors leads to the friendship of a lifetime. Felicity loves horses, and though her parents plead with her to remain indoors, she yearns to ride the open plains. When Felicity comes into contact with a beautiful mare which has suffered at the hands of its callous owner, she takes it upon herself to care for the creature.",
+    "poster": "https://image.tmdb.org/t/p/w500/b5whGifOJWI6v93DJEClzxYiZKS.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/2dBobVrDc5ZFy2Y1Yuo8iCLpTQr.jpg",
+    "popularity": 0.6743,
+    "featured": false,
+    "trending": true,
+    "popular": false
   },
   {
     "id": 33765,
@@ -34116,30 +34185,6 @@
     "popular": true
   },
   {
-    "id": 1855,
-    "title": "Le avventure e gli amori di Miguel Cervantes",
-    "type": "movie",
-    "year": "1967",
-    "rating": 7.688,
-    "runtime": 94,
-    "genres": [
-      "Adventure"
-    ],
-    "language": "English",
-    "countries": [
-      "Spain",
-      "France",
-      "Italy"
-    ],
-    "description": "This epic Spanish biopic chronicles the life of Cervantes, Spain's great novelist, playwright and poet, during the 16th-century, when as a young man he goes to Italy to become a soldier for the Pope. Later he helps the Pope's emissary wage war against the Spanish Moors. His exploits win him great favor. He falls in love with a famous Italian courtesan and she with him. Unfortunately, the Pope splits them apart with his newest decree which demands that all prostitutes leave the city. Upset, Cervantes goes to fight in the famed sea battle of Lepanto and comes back a hero. Later he is captured by Barbary pirates and ransomed by Trinitarian friars.",
-    "poster": "https://image.tmdb.org/t/p/w500/nl7GcqEoBybJUz2zadeSkQB3wJz.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/8hkW8KB2EkLVW1vGGexLGAh5uHt.jpg",
-    "popularity": 0.6347,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 1255369,
     "title": "Finnick 2",
     "type": "movie",
@@ -34298,29 +34343,6 @@
     "popular": false
   },
   {
-    "id": 71912,
-    "title": "The Runestone",
-    "type": "movie",
-    "year": "1991",
-    "rating": 4.848,
-    "runtime": 105,
-    "genres": [
-      "Horror",
-      "Adventure"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "A New York detective takes the case of a bulletproof monster sprung to life from Viking legend.",
-    "poster": "https://image.tmdb.org/t/p/w500/mN6cVMyUhJBcNAley0zdFomImvl.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/adk2efkC3Lpc6d5YkODhguKjiGw.jpg",
-    "popularity": 0.6256,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 4595,
     "title": "Jour de Fête",
     "type": "movie",
@@ -34364,6 +34386,29 @@
     "featured": false,
     "trending": false,
     "popular": true
+  },
+  {
+    "id": 100049,
+    "title": "La gran mentira",
+    "type": "movie",
+    "year": "1956",
+    "rating": 6.25,
+    "runtime": 97,
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "language": "Spanish",
+    "countries": [
+      "Spain"
+    ],
+    "description": "César Neira, an almost forgotten Spanish actor, gets involved by chance with Teresa, a teacher from a small village in the province of Cáceres, who has won a radio contest. The prize is a trip to Madrid to experience just for a fortnight the life of the famous and wealthy people.",
+    "poster": "https://image.tmdb.org/t/p/w500/yVwkjAYifh8Vh1mWzHR5XBkulen.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/umo3eImCcmebakrchJTBfNw1cTD.jpg",
+    "popularity": 0.6211,
+    "featured": true,
+    "trending": false,
+    "popular": false
   },
   {
     "id": 76121,
@@ -34613,7 +34658,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/bBa9ierJhYeRHkKbXZLwBoRLwlW.jpg",
     "popularity": 0.5978,
     "featured": true,
-    "trending": false,
+    "trending": true,
     "popular": true
   },
   {
@@ -34656,6 +34701,52 @@
     "poster": "https://image.tmdb.org/t/p/w500/iIhTeR5kRcnXU03VPEeUIAPf3Sh.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/o56cK4HUVVHtOD6AWdL8hV3yyhL.jpg",
     "popularity": 0.5961,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 39351,
+    "title": "Animal Attraction: Carnal Desires",
+    "type": "movie",
+    "year": "1999",
+    "rating": 5.344,
+    "runtime": 87,
+    "genres": [
+      "Romance"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "A massage parlor gets way more business than it can handle when Mick, an excellent and handsome masseur, begins working there. He quickly gets a reputation for being one of the best in the business and suddenly finds himself unable to satisfy his customers' growing demands. He also wants to open his own business. But he is forced to choose between his loyalties and his desires.",
+    "poster": "https://image.tmdb.org/t/p/w500/qQGOxfkEWc62VGJXq9WU0Twm3ai.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/8YLVlfOiy98uOPyDzLD6O1heFrf.jpg",
+    "popularity": 0.5952,
+    "featured": true,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 39224,
+    "title": "The Deal: El trato",
+    "type": "movie",
+    "year": "2006",
+    "rating": 4.329,
+    "runtime": 0,
+    "genres": [
+      "Action",
+      "Comedy",
+      "Thriller"
+    ],
+    "language": "English",
+    "countries": [
+      "Spain"
+    ],
+    "description": "Laura loses her family in a tragic fire while living in Spain. Just as she prepares to return home to the States, a member of the American embassy provides proof that it wasn't an accident. Laura decides to stay and uncover the truth about her family's death, a decision which soon places her own life in jeopardy as she becomes embroiled in murder, stolen diamonds, cover-ups, and the Colombian mob.",
+    "poster": "https://image.tmdb.org/t/p/w500/6h55gYLZdMDsKm4ZnIOI4Ig4EQj.jpg",
+    "backdrop": "",
+    "popularity": 0.5952,
     "featured": false,
     "trending": false,
     "popular": true
@@ -34829,29 +34920,6 @@
     "featured": false,
     "trending": false,
     "popular": true
-  },
-  {
-    "id": 100049,
-    "title": "La gran mentira",
-    "type": "movie",
-    "year": "1956",
-    "rating": 6.25,
-    "runtime": 97,
-    "genres": [
-      "Drama",
-      "Romance"
-    ],
-    "language": "Spanish",
-    "countries": [
-      "Spain"
-    ],
-    "description": "César Neira, an almost forgotten Spanish actor, gets involved by chance with Teresa, a teacher from a small village in the province of Cáceres, who has won a radio contest. The prize is a trip to Madrid to experience just for a fortnight the life of the famous and wealthy people.",
-    "poster": "https://image.tmdb.org/t/p/w500/yVwkjAYifh8Vh1mWzHR5XBkulen.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/umo3eImCcmebakrchJTBfNw1cTD.jpg",
-    "popularity": 0.5785,
-    "featured": true,
-    "trending": false,
-    "popular": false
   },
   {
     "id": 326488,
@@ -35315,29 +35383,6 @@
     "popular": true
   },
   {
-    "id": 67070,
-    "title": "The Sensual Man",
-    "type": "movie",
-    "year": "1973",
-    "rating": 5.9,
-    "runtime": 120,
-    "genres": [
-      "Comedy",
-      "Drama"
-    ],
-    "language": "Italian",
-    "countries": [
-      "Italy"
-    ],
-    "description": "The Catanese baron Paolo Castorini leaves the closed Sicilian environment and moves to Rome where he enters into erotic relationships with women of all classes. He, however, feels dissatisfied with a life of only the body, compared to his journalist friend Vincenzo and his own father, a sober and serious thinker. But is it too late for him?",
-    "poster": "https://image.tmdb.org/t/p/w500/nb03HHqLefGOqRIeWEuma6VGoqr.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/xNtYHeLjq33t7zLAGMaZ3fOQen.jpg",
-    "popularity": 0.5512,
-    "featured": true,
-    "trending": false,
-    "popular": false
-  },
-  {
     "id": 22980,
     "title": "Fearless Dragons",
     "type": "movie",
@@ -35517,28 +35562,6 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/ick2XJQrRCa711VtGOr2G6Xk4OR.jpg",
     "popularity": 0.5411,
     "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 39351,
-    "title": "Animal Attraction: Carnal Desires",
-    "type": "movie",
-    "year": "1999",
-    "rating": 5.344,
-    "runtime": 87,
-    "genres": [
-      "Romance"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "A massage parlor gets way more business than it can handle when Mick, an excellent and handsome masseur, begins working there. He quickly gets a reputation for being one of the best in the business and suddenly finds himself unable to satisfy his customers' growing demands. He also wants to open his own business. But he is forced to choose between his loyalties and his desires.",
-    "poster": "https://image.tmdb.org/t/p/w500/qQGOxfkEWc62VGJXq9WU0Twm3ai.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/8YLVlfOiy98uOPyDzLD6O1heFrf.jpg",
-    "popularity": 0.5391,
-    "featured": true,
     "trending": false,
     "popular": true
   },
@@ -36122,30 +36145,6 @@
     "popular": true
   },
   {
-    "id": 25778,
-    "title": "Felicity: An American Girl Adventure",
-    "type": "movie",
-    "year": "2005",
-    "rating": 6.742,
-    "runtime": 86,
-    "genres": [
-      "Action",
-      "Drama",
-      "Family",
-      "Thriller",
-      "TV Movie"
-    ],
-    "language": "English",
-    "countries": [],
-    "description": "A pre-American Revolution Virginian girl's love for the outdoors leads to the friendship of a lifetime. Felicity loves horses, and though her parents plead with her to remain indoors, she yearns to ride the open plains. When Felicity comes into contact with a beautiful mare which has suffered at the hands of its callous owner, she takes it upon herself to care for the creature.",
-    "poster": "https://image.tmdb.org/t/p/w500/b5whGifOJWI6v93DJEClzxYiZKS.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/2dBobVrDc5ZFy2Y1Yuo8iCLpTQr.jpg",
-    "popularity": 0.5047,
-    "featured": false,
-    "trending": true,
-    "popular": false
-  },
-  {
     "id": 610461,
     "title": "Veinteañera, divorciada y fantástica",
     "type": "movie",
@@ -36436,6 +36435,29 @@
     "featured": false,
     "trending": true,
     "popular": true
+  },
+  {
+    "id": 67070,
+    "title": "The Sensual Man",
+    "type": "movie",
+    "year": "1973",
+    "rating": 5.9,
+    "runtime": 120,
+    "genres": [
+      "Comedy",
+      "Drama"
+    ],
+    "language": "Italian",
+    "countries": [
+      "Italy"
+    ],
+    "description": "The Catanese baron Paolo Castorini leaves the closed Sicilian environment and moves to Rome where he enters into erotic relationships with women of all classes. He, however, feels dissatisfied with a life of only the body, compared to his journalist friend Vincenzo and his own father, a sober and serious thinker. But is it too late for him?",
+    "poster": "https://image.tmdb.org/t/p/w500/nb03HHqLefGOqRIeWEuma6VGoqr.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/xNtYHeLjq33t7zLAGMaZ3fOQen.jpg",
+    "popularity": 0.4898,
+    "featured": true,
+    "trending": false,
+    "popular": false
   },
   {
     "id": 78191,
@@ -37107,29 +37129,6 @@
     "popular": true
   },
   {
-    "id": 1322532,
-    "title": "Cek Khodam",
-    "type": "movie",
-    "year": "2026",
-    "rating": 0,
-    "runtime": 0,
-    "genres": [
-      "Comedy",
-      "Horror"
-    ],
-    "language": "Indonesian",
-    "countries": [
-      "Indonesia"
-    ],
-    "description": "Nowadays, people are more afraid of empty wallets, late payments, and the end of the month than ghosts. Ghosts are even used as entertainment through the content Cek Khodam (Hodgkin's Check) created by three friends, Sakti, Wira, and Bima. Unbeknownst to them, their actions have drastically reduced the Human Fear Score (AKM). To restore the dignity of the supernatural world and raise the human fear score, the Commander of the Khodam is tasked with descending directly into the human world. However, the mission does not go according to plan. The harder the khodam try to scare humans, the more chaos they create.",
-    "poster": "https://image.tmdb.org/t/p/w500/o2aUDzJxXJOGxfCyKF6oawHBf2d.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/f4P6rDf6FuXe1wtw2ZYJgVtu4G0.jpg",
-    "popularity": 0.4572,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 65701,
     "title": "Women in Prison",
     "type": "movie",
@@ -37174,6 +37173,30 @@
     "featured": true,
     "trending": false,
     "popular": false
+  },
+  {
+    "id": 1855,
+    "title": "Le avventure e gli amori di Miguel Cervantes",
+    "type": "movie",
+    "year": "1967",
+    "rating": 7.688,
+    "runtime": 94,
+    "genres": [
+      "Adventure"
+    ],
+    "language": "English",
+    "countries": [
+      "Spain",
+      "France",
+      "Italy"
+    ],
+    "description": "This epic Spanish biopic chronicles the life of Cervantes, Spain's great novelist, playwright and poet, during the 16th-century, when as a young man he goes to Italy to become a soldier for the Pope. Later he helps the Pope's emissary wage war against the Spanish Moors. His exploits win him great favor. He falls in love with a famous Italian courtesan and she with him. Unfortunately, the Pope splits them apart with his newest decree which demands that all prostitutes leave the city. Upset, Cervantes goes to fight in the famed sea battle of Lepanto and comes back a hero. Later he is captured by Barbary pirates and ransomed by Trinitarian friars.",
+    "poster": "https://image.tmdb.org/t/p/w500/nl7GcqEoBybJUz2zadeSkQB3wJz.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/8hkW8KB2EkLVW1vGGexLGAh5uHt.jpg",
+    "popularity": 0.4512,
+    "featured": false,
+    "trending": false,
+    "popular": true
   },
   {
     "id": 838301,
@@ -38405,7 +38428,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/kXPet5lpTsLPBhmjsbP8dSkJHJ8.jpg",
     "popularity": 0.3928,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -38609,6 +38632,28 @@
     "popular": false
   },
   {
+    "id": 273263,
+    "title": "Five Girls and a Rope",
+    "type": "movie",
+    "year": "1990",
+    "rating": 6,
+    "runtime": 123,
+    "genres": [
+      "Drama"
+    ],
+    "language": "Mandarin",
+    "countries": [
+      "Taiwan"
+    ],
+    "description": "Five girls grow up in China during the first years of the twentieth century. When they become adults they have to learn that women are almost without rights. Other women close to them are suppressed in the most brutal way. When Mingtao is to marry a mentally deficient but rich man, she and her friends decide to escape and to search for the mythical \"garden\" where a woman's life is worth living.",
+    "poster": "https://image.tmdb.org/t/p/w500/ev0PKmkUpQWe0KvcHCL329NKNDF.jpg",
+    "backdrop": "",
+    "popularity": 0.3778,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 46994,
     "title": "Love 65",
     "type": "movie",
@@ -38767,6 +38812,29 @@
     "popular": true
   },
   {
+    "id": 1322532,
+    "title": "Cek Khodam",
+    "type": "movie",
+    "year": "2026",
+    "rating": 0,
+    "runtime": 0,
+    "genres": [
+      "Comedy",
+      "Horror"
+    ],
+    "language": "Indonesian",
+    "countries": [
+      "Indonesia"
+    ],
+    "description": "Nowadays, people are more afraid of empty wallets, late payments, and the end of the month than ghosts. Ghosts are even used as entertainment through the content Cek Khodam (Hodgkin's Check) created by three friends, Sakti, Wira, and Bima. Unbeknownst to them, their actions have drastically reduced the Human Fear Score (AKM). To restore the dignity of the supernatural world and raise the human fear score, the Commander of the Khodam is tasked with descending directly into the human world. However, the mission does not go according to plan. The harder the khodam try to scare humans, the more chaos they create.",
+    "poster": "https://image.tmdb.org/t/p/w500/o2aUDzJxXJOGxfCyKF6oawHBf2d.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/f4P6rDf6FuXe1wtw2ZYJgVtu4G0.jpg",
+    "popularity": 0.3712,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 81044,
     "title": "Sunday Buddies",
     "type": "movie",
@@ -38852,7 +38920,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/uELgxd1iXSsi0VFuSv7JTZbeWiv.jpg",
     "popularity": 0.3682,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -39172,6 +39240,28 @@
     "popular": true
   },
   {
+    "id": 280945,
+    "title": "Nambiyaar",
+    "type": "movie",
+    "year": "2016",
+    "rating": 3.8,
+    "runtime": 140,
+    "genres": [
+      "Comedy"
+    ],
+    "language": "Tamil",
+    "countries": [
+      "India"
+    ],
+    "description": "Ramachandran, a young man who is preparing for his IAS exam, battles his id, which keeps getting him into problems.",
+    "poster": "https://image.tmdb.org/t/p/w500/blMyOjBSPQ5Xcx5n9bkiTy74MT1.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/nUajc8ocvJDwJMiXSRCJKuA5Qff.jpg",
+    "popularity": 0.3558,
+    "featured": true,
+    "trending": false,
+    "popular": false
+  },
+  {
     "id": 76747,
     "title": "Burning Daylight",
     "type": "movie",
@@ -39218,6 +39308,26 @@
     "popular": false
   },
   {
+    "id": 71789,
+    "title": "Pulse: A Stomp Odyssey",
+    "type": "movie",
+    "year": "2002",
+    "rating": 7.25,
+    "runtime": 40,
+    "genres": [
+      "Music"
+    ],
+    "language": "English",
+    "countries": [],
+    "description": "PULSE: a STOMP Odyssey takes us on a world tour of music, rhythm and dance. The film follows the dancers from the celebrated touring show Stomp around the world as they collaborate with musicians and dancers from Spain, Brazil, South Africa, and many other countries and cultures (including a number of diverse North American traditions).",
+    "poster": "https://image.tmdb.org/t/p/w500/mvY3NUK5DcsbmAS4mBK3772uKZo.jpg",
+    "backdrop": "",
+    "popularity": 0.3529,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 112470,
     "title": "The Dark Dancer",
     "type": "movie",
@@ -39237,7 +39347,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/4Ehza5VMY4Ro5XidvbXGKXEqrAi.jpg",
     "popularity": 0.3505,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -39735,30 +39845,6 @@
     "popular": true
   },
   {
-    "id": 1528000,
-    "title": "Faraway Home",
-    "type": "movie",
-    "year": "2026",
-    "rating": 0,
-    "runtime": 0,
-    "genres": [
-      "Drama"
-    ],
-    "language": "English",
-    "countries": [
-      "Ireland",
-      "United Kingdom",
-      "Austria"
-    ],
-    "description": "Two young Jewish children are sent by their parents away from Nazi occupied Austria during WWII, on the Kindertransport, where they end up at a refugee farm in Northern Ireland.",
-    "poster": "https://image.tmdb.org/t/p/w500/aMxAUbjIJQGmyga8x8yi4JgS8Kc.jpg",
-    "backdrop": "",
-    "popularity": 0.3326,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 62110,
     "title": "Les cavaliers de la canette",
     "type": "movie",
@@ -39869,7 +39955,7 @@
     "backdrop": "",
     "popularity": 0.3253,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -40293,29 +40379,6 @@
     "popular": true
   },
   {
-    "id": 1710008,
-    "title": "Nothing to Lose",
-    "type": "movie",
-    "year": "2026",
-    "rating": 0,
-    "runtime": 0,
-    "genres": [
-      "Drama",
-      "Action"
-    ],
-    "language": "French",
-    "countries": [
-      "France"
-    ],
-    "description": "She gave everything to become a mother, so when her young son falls ill, Jada will stop at  nothing to find a donor and save him — no matter the cost.",
-    "poster": "https://image.tmdb.org/t/p/w500/3SKN8QZptMm8KfCCQtEmyh1Zkgz.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/4aItlv6M7Lag8ZcCHEZmVRquO1R.jpg",
-    "popularity": 0.3073,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
     "id": 196944,
     "title": "Chili's Blues",
     "type": "movie",
@@ -40429,28 +40492,6 @@
     "popular": true
   },
   {
-    "id": 280945,
-    "title": "Nambiyaar",
-    "type": "movie",
-    "year": "2016",
-    "rating": 3.8,
-    "runtime": 140,
-    "genres": [
-      "Comedy"
-    ],
-    "language": "Tamil",
-    "countries": [
-      "India"
-    ],
-    "description": "Ramachandran, a young man who is preparing for his IAS exam, battles his id, which keeps getting him into problems.",
-    "poster": "https://image.tmdb.org/t/p/w500/blMyOjBSPQ5Xcx5n9bkiTy74MT1.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/nUajc8ocvJDwJMiXSRCJKuA5Qff.jpg",
-    "popularity": 0.3059,
-    "featured": true,
-    "trending": false,
-    "popular": false
-  },
-  {
     "id": 1446390,
     "title": "Nyepi",
     "type": "movie",
@@ -40493,6 +40534,28 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/9iSvBCo7Nm5vdq7czts2RrIE4hT.jpg",
     "popularity": 0.3036,
     "featured": true,
+    "trending": false,
+    "popular": true
+  },
+  {
+    "id": 4656,
+    "title": "Snipers Valley",
+    "type": "movie",
+    "year": "2007",
+    "rating": 4.6,
+    "runtime": 91,
+    "genres": [
+      "Drama"
+    ],
+    "language": "Albanian",
+    "countries": [
+      "Germany"
+    ],
+    "description": "Young Bundeswehr soldiers Tom and Charly are stationed in Kosovo with the KFOR peacekeeping force. Their mission is to secure peace. Although the brutal war between the enemy Serbs and Albanians is officially over, the hatred between people continues to smoulder. When Tom and Charly rescue the young Serbian Mirjana from the fatal shot of the young sniper Durcan, they get caught between all fronts. They lose their professional distance due to the resulting closeness to Mirjana - who has to learn that her father was a war criminal - but also to Durcan - whose entire family was wiped out. Soon they are entangled in a conflict about guilt, manipulation, love and revenge...",
+    "poster": "https://image.tmdb.org/t/p/w500/90fNjrXfRwm5E9f8uK9IJ6z6j6u.jpg",
+    "backdrop": "",
+    "popularity": 0.3032,
+    "featured": false,
     "trending": false,
     "popular": true
   },
@@ -40724,6 +40787,28 @@
     "popular": true
   },
   {
+    "id": 286069,
+    "title": "The Marriage Swindler",
+    "type": "movie",
+    "year": "1938",
+    "rating": 7,
+    "runtime": 90,
+    "genres": [
+      "Comedy"
+    ],
+    "language": "German",
+    "countries": [
+      "Germany"
+    ],
+    "description": "A confidence trickster is released from prison and travels to a village where he blackmails and tricks women out of their savings.",
+    "poster": "https://image.tmdb.org/t/p/w500/wjRPPOB2wNxb0IhOotgkcyI4b3.jpg",
+    "backdrop": "",
+    "popularity": 0.2963,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 107113,
     "title": "How We Stole the Atomic Bomb",
     "type": "movie",
@@ -40814,6 +40899,30 @@
     "popular": true
   },
   {
+    "id": 1528000,
+    "title": "Faraway Home",
+    "type": "movie",
+    "year": "2026",
+    "rating": 0,
+    "runtime": 0,
+    "genres": [
+      "Drama"
+    ],
+    "language": "English",
+    "countries": [
+      "Ireland",
+      "United Kingdom",
+      "Austria"
+    ],
+    "description": "Two young Jewish children are sent by their parents away from Nazi occupied Austria during WWII, on the Kindertransport, where they end up at a refugee farm in Northern Ireland.",
+    "poster": "https://image.tmdb.org/t/p/w500/aMxAUbjIJQGmyga8x8yi4JgS8Kc.jpg",
+    "backdrop": "",
+    "popularity": 0.2922,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 1495025,
     "title": "First Light",
     "type": "movie",
@@ -40832,28 +40941,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/ag69an1UXe3bil4XjtYKKG6vv2g.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/m6m9C6CvFzSDEnCTzjBI5XumQue.jpg",
     "popularity": 0.2917,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 4656,
-    "title": "Snipers Valley",
-    "type": "movie",
-    "year": "2007",
-    "rating": 4.6,
-    "runtime": 91,
-    "genres": [
-      "Drama"
-    ],
-    "language": "Albanian",
-    "countries": [
-      "Germany"
-    ],
-    "description": "Young Bundeswehr soldiers Tom and Charly are stationed in Kosovo with the KFOR peacekeeping force. Their mission is to secure peace. Although the brutal war between the enemy Serbs and Albanians is officially over, the hatred between people continues to smoulder. When Tom and Charly rescue the young Serbian Mirjana from the fatal shot of the young sniper Durcan, they get caught between all fronts. They lose their professional distance due to the resulting closeness to Mirjana - who has to learn that her father was a war criminal - but also to Durcan - whose entire family was wiped out. Soon they are entangled in a conflict about guilt, manipulation, love and revenge...",
-    "poster": "https://image.tmdb.org/t/p/w500/90fNjrXfRwm5E9f8uK9IJ6z6j6u.jpg",
-    "backdrop": "",
-    "popularity": 0.2916,
     "featured": false,
     "trending": false,
     "popular": true
@@ -41241,7 +41328,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/l5ZxRoSF8zNK7ZOWpmTiSNXevu7.jpg",
     "popularity": 0.2777,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -41334,29 +41421,6 @@
     "popular": true
   },
   {
-    "id": 98986,
-    "title": "Manolito Four Eyes: The Mischievous Holidays",
-    "type": "movie",
-    "year": "2001",
-    "rating": 4.633,
-    "runtime": 92,
-    "genres": [
-      "Family",
-      "Comedy"
-    ],
-    "language": "Spanish",
-    "countries": [
-      "Spain"
-    ],
-    "description": "This is a hilarious look at contemporary Madrid from the point of view of ten year old Manolito. Witty, funny and moving, the film has crossed-over from Spain to become a classic family entertainment.On this particular occasion, Manolito is in the middle of Chrismas break and ready to celebrate the holidays with his nutty family: his mother, Cata, his father, Manolo, Grandpa and Imbecile. This year holds a big surprise: Uncle Nico, his mother's brother who lives an works in Oslo as a waiter. Uncle Nico shows up in an unbelieveable motor home to spend Christmas Eve with the family.\r He is accompanied by his flashy Norwegian fiancée, Trudi Bergenkoklass, who is something like part fairy, part Viking and part Pippi Long Stocking. This lady immediately catches Manolito's eye.",
-    "poster": "https://image.tmdb.org/t/p/w500/tj4J6pR6JieIDykknr2rex1uo0j.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/nVROSUf5ke4W1VUpFPjuyjUYH55.jpg",
-    "popularity": 0.2716,
-    "featured": true,
-    "trending": false,
-    "popular": false
-  },
-  {
     "id": 276161,
     "title": "The Adventures of Mary-Kate & Ashley: The Case of the Hotel Who-Done-It",
     "type": "movie",
@@ -41416,6 +41480,29 @@
     "featured": false,
     "trending": false,
     "popular": true
+  },
+  {
+    "id": 98986,
+    "title": "Manolito Four Eyes: The Mischievous Holidays",
+    "type": "movie",
+    "year": "2001",
+    "rating": 4.633,
+    "runtime": 92,
+    "genres": [
+      "Family",
+      "Comedy"
+    ],
+    "language": "Spanish",
+    "countries": [
+      "Spain"
+    ],
+    "description": "This is a hilarious look at contemporary Madrid from the point of view of ten year old Manolito. Witty, funny and moving, the film has crossed-over from Spain to become a classic family entertainment.On this particular occasion, Manolito is in the middle of Chrismas break and ready to celebrate the holidays with his nutty family: his mother, Cata, his father, Manolo, Grandpa and Imbecile. This year holds a big surprise: Uncle Nico, his mother's brother who lives an works in Oslo as a waiter. Uncle Nico shows up in an unbelieveable motor home to spend Christmas Eve with the family.\r He is accompanied by his flashy Norwegian fiancée, Trudi Bergenkoklass, who is something like part fairy, part Viking and part Pippi Long Stocking. This lady immediately catches Manolito's eye.",
+    "poster": "https://image.tmdb.org/t/p/w500/tj4J6pR6JieIDykknr2rex1uo0j.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/nVROSUf5ke4W1VUpFPjuyjUYH55.jpg",
+    "popularity": 0.2682,
+    "featured": true,
+    "trending": false,
+    "popular": false
   },
   {
     "id": 62602,
@@ -42553,7 +42640,7 @@
     "popularity": 0.2253,
     "featured": false,
     "trending": true,
-    "popular": false
+    "popular": true
   },
   {
     "id": 324059,
@@ -43167,6 +43254,28 @@
     "popular": true
   },
   {
+    "id": 298101,
+    "title": "Too Busy to Work",
+    "type": "movie",
+    "year": "1932",
+    "rating": 6.5,
+    "runtime": 76,
+    "genres": [
+      "Drama"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "A hobo searches the countryside for the daughter he lost when his wife left him...",
+    "poster": "https://image.tmdb.org/t/p/w500/ms8iCeEKcj08lZ81UWlkADaeUHN.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/8ckPxbtfxjJgSsdDe1iqeCEKnHJ.jpg",
+    "popularity": 0.201,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 316178,
     "title": "Bix: Ain't None of Them Play Like Him Yet",
     "type": "movie",
@@ -43593,6 +43702,29 @@
     "popular": false
   },
   {
+    "id": 316294,
+    "title": "Naughty But Nice",
+    "type": "movie",
+    "year": "1927",
+    "rating": 9,
+    "runtime": 70,
+    "genres": [
+      "Romance",
+      "Comedy"
+    ],
+    "language": "en",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "Naughty But Nice was based on The Bigamists, a story by Lewis Alen Brown. Gawky country girl Berenice Summers (Colleen Moore) is catapulted head-first into High Society when her Uncle Seth (Burr McIntosh) strikes oil. Shipped off to a fancy boarding school, Berenice suffers at the hands of her snooty classmates, but the last straw comes when she's publicly humiliated by local wise-guy Paul Carroll (Donald Reed).",
+    "poster": "https://image.tmdb.org/t/p/w500/kfkXxOGBqNEJvA0CAlv0u8R6gb0.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/eObYJcWNmbS1z4wqnlbVIfIkhEN.jpg",
+    "popularity": 0.1896,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 271048,
     "title": "Meet the Missus",
     "type": "movie",
@@ -43743,6 +43875,29 @@
     "popular": false
   },
   {
+    "id": 123876,
+    "title": "Blood and Rain",
+    "type": "movie",
+    "year": "2010",
+    "rating": 5.1,
+    "runtime": 109,
+    "genres": [
+      "Drama"
+    ],
+    "language": "Spanish",
+    "countries": [
+      "Argentina",
+      "Colombia"
+    ],
+    "description": "Taxi driver Jorge begins his night shift bent on revenge after his brother's murder at the hands of a violent gang. But when an accident brings him unexpectedly closer to his party-girl fare Angela, the damaged pair must struggle against forces already set in motion, drawing them inexorably into the rain soaked underworld of Bogota",
+    "poster": "https://image.tmdb.org/t/p/w500/lJq2mePPr2eBl5zWz9oCJMrK3kb.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/2mc0JHFKZ2w3DljLelvwwVjFPwd.jpg",
+    "popularity": 0.1805,
+    "featured": true,
+    "trending": false,
+    "popular": false
+  },
+  {
     "id": 285797,
     "title": "The Plague in Florence",
     "type": "movie",
@@ -43762,26 +43917,6 @@
     "poster": "https://image.tmdb.org/t/p/w500/9GkxU3rJx7oLRas2lUQAAi0tJWQ.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/3TMBiqH3lWUXFm6kE3ZI7TZX8D4.jpg",
     "popularity": 0.1801,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 71789,
-    "title": "Pulse: A Stomp Odyssey",
-    "type": "movie",
-    "year": "2002",
-    "rating": 7.25,
-    "runtime": 40,
-    "genres": [
-      "Music"
-    ],
-    "language": "English",
-    "countries": [],
-    "description": "PULSE: a STOMP Odyssey takes us on a world tour of music, rhythm and dance. The film follows the dancers from the celebrated touring show Stomp around the world as they collaborate with musicians and dancers from Spain, Brazil, South Africa, and many other countries and cultures (including a number of diverse North American traditions).",
-    "poster": "https://image.tmdb.org/t/p/w500/mvY3NUK5DcsbmAS4mBK3772uKZo.jpg",
-    "backdrop": "",
-    "popularity": 0.1783,
     "featured": false,
     "trending": false,
     "popular": true
@@ -43935,30 +44070,6 @@
     "featured": true,
     "trending": false,
     "popular": false
-  },
-  {
-    "id": 76479,
-    "title": "Deceived",
-    "type": "movie",
-    "year": "2011",
-    "rating": 7.125,
-    "runtime": 91,
-    "genres": [
-      "Thriller",
-      "Crime",
-      "Drama"
-    ],
-    "language": "English",
-    "countries": [
-      "United States of America"
-    ],
-    "description": "After a man is accused of murdering his ex wife and all the evidence is against him, a woman enters his life that he can't seem to get off his mind. Nothing seems right and now he must try to find out why he is being blamed for the crime he didn't commit and find out who is truly behind it and why.",
-    "poster": "https://image.tmdb.org/t/p/w500/vfs0BRFPvVLIdbHXhHCWAWE00IH.jpg",
-    "backdrop": "",
-    "popularity": 0.1724,
-    "featured": true,
-    "trending": false,
-    "popular": true
   },
   {
     "id": 259844,
@@ -44221,29 +44332,6 @@
     "featured": true,
     "trending": false,
     "popular": true
-  },
-  {
-    "id": 123876,
-    "title": "Blood and Rain",
-    "type": "movie",
-    "year": "2010",
-    "rating": 5.1,
-    "runtime": 109,
-    "genres": [
-      "Drama"
-    ],
-    "language": "Spanish",
-    "countries": [
-      "Argentina",
-      "Colombia"
-    ],
-    "description": "Taxi driver Jorge begins his night shift bent on revenge after his brother's murder at the hands of a violent gang. But when an accident brings him unexpectedly closer to his party-girl fare Angela, the damaged pair must struggle against forces already set in motion, drawing them inexorably into the rain soaked underworld of Bogota",
-    "poster": "https://image.tmdb.org/t/p/w500/lJq2mePPr2eBl5zWz9oCJMrK3kb.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/2mc0JHFKZ2w3DljLelvwwVjFPwd.jpg",
-    "popularity": 0.1596,
-    "featured": true,
-    "trending": false,
-    "popular": false
   },
   {
     "id": 81329,
@@ -44579,6 +44667,30 @@
     "popular": true
   },
   {
+    "id": 76479,
+    "title": "Deceived",
+    "type": "movie",
+    "year": "2011",
+    "rating": 7.125,
+    "runtime": 91,
+    "genres": [
+      "Thriller",
+      "Crime",
+      "Drama"
+    ],
+    "language": "English",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "After a man is accused of murdering his ex wife and all the evidence is against him, a woman enters his life that he can't seem to get off his mind. Nothing seems right and now he must try to find out why he is being blamed for the crime he didn't commit and find out who is truly behind it and why.",
+    "poster": "https://image.tmdb.org/t/p/w500/vfs0BRFPvVLIdbHXhHCWAWE00IH.jpg",
+    "backdrop": "",
+    "popularity": 0.1487,
+    "featured": true,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 221851,
     "title": "Pasión adolescente",
     "type": "movie",
@@ -44824,26 +44936,24 @@
     "popular": true
   },
   {
-    "id": 106292,
-    "title": "Flowers of Evil",
+    "id": 305567,
+    "title": "En tierra extraña",
     "type": "movie",
-    "year": "2012",
-    "rating": 6.1,
-    "runtime": 99,
+    "year": "2014",
+    "rating": 3.5,
+    "runtime": 72,
     "genres": [
-      "Drama"
+      "Documentary"
     ],
-    "language": "French",
-    "countries": [
-      "France"
-    ],
-    "description": "Paris-Tehran. A rootless love story between Gecko, young and free, and Anahita, an Iranian woman in exile - tangled up in History and steeped in Internet, unique and spontaneous",
-    "poster": "https://image.tmdb.org/t/p/w500/ocMgBEwD2EVuavE4zQrwDvrBcRo.jpg",
+    "language": "es",
+    "countries": [],
+    "description": "A documentary about the life of young Spanish immigrants in Edinburgh, Scotland, who had to leave Spain due to recession and unemployment.",
+    "poster": "https://image.tmdb.org/t/p/w500/3OZV0Cfv2dcagJAj37iWWi0vlXC.jpg",
     "backdrop": "",
-    "popularity": 0.1381,
-    "featured": true,
+    "popularity": 0.1392,
+    "featured": false,
     "trending": false,
-    "popular": false
+    "popular": true
   },
   {
     "id": 320516,
@@ -45063,6 +45173,28 @@
     "featured": false,
     "trending": false,
     "popular": true
+  },
+  {
+    "id": 106292,
+    "title": "Flowers of Evil",
+    "type": "movie",
+    "year": "2012",
+    "rating": 6.1,
+    "runtime": 99,
+    "genres": [
+      "Drama"
+    ],
+    "language": "French",
+    "countries": [
+      "France"
+    ],
+    "description": "Paris-Tehran. A rootless love story between Gecko, young and free, and Anahita, an Iranian woman in exile - tangled up in History and steeped in Internet, unique and spontaneous",
+    "poster": "https://image.tmdb.org/t/p/w500/ocMgBEwD2EVuavE4zQrwDvrBcRo.jpg",
+    "backdrop": "",
+    "popularity": 0.1317,
+    "featured": true,
+    "trending": false,
+    "popular": false
   },
   {
     "id": 124265,
@@ -45467,7 +45599,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/weanMzu1Gufj1dzOPCXljONZhRX.jpg",
     "popularity": 0.1008,
     "featured": false,
-    "trending": false,
+    "trending": true,
     "popular": true
   },
   {
@@ -45852,6 +45984,24 @@
     "popular": true
   },
   {
+    "id": 284022,
+    "title": "The Midget Crane",
+    "type": "movie",
+    "year": "2009",
+    "rating": 2,
+    "runtime": 2,
+    "genres": [],
+    "language": "en",
+    "countries": [],
+    "description": "(Fictional history):\r Year: 1926\r Filmmaker: Albert Grass\r Transfer note: copied at 18 frames per second from a 16mm black and white Kodak safely film original.\r Running time: 2 minutes 41 seconds\r Silent",
+    "poster": "https://image.tmdb.org/t/p/w500/pGvzApXux6HjSr7pKCYt4kg3iSf.jpg",
+    "backdrop": "",
+    "popularity": 0.0806,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 322193,
     "title": "A Shallow Grave",
     "type": "movie",
@@ -45978,26 +46128,6 @@
     "popularity": 0.075,
     "featured": false,
     "trending": true,
-    "popular": true
-  },
-  {
-    "id": 305567,
-    "title": "En tierra extraña",
-    "type": "movie",
-    "year": "2014",
-    "rating": 3.5,
-    "runtime": 72,
-    "genres": [
-      "Documentary"
-    ],
-    "language": "es",
-    "countries": [],
-    "description": "A documentary about the life of young Spanish immigrants in Edinburgh, Scotland, who had to leave Spain due to recession and unemployment.",
-    "poster": "https://image.tmdb.org/t/p/w500/3OZV0Cfv2dcagJAj37iWWi0vlXC.jpg",
-    "backdrop": "",
-    "popularity": 0.0738,
-    "featured": false,
-    "trending": false,
     "popular": true
   },
   {
@@ -46324,6 +46454,24 @@
     "popular": true
   },
   {
+    "id": 301557,
+    "title": "Monsters of Metal Vol. 3",
+    "type": "movie",
+    "year": "2006",
+    "rating": 10,
+    "runtime": 260,
+    "genres": [],
+    "language": "en",
+    "countries": [],
+    "description": "Bands like Nightwish, Edguy, Machine Head, Apocalyptica and Iced Earth, all to be found on this DVD, can really stand their ground against their pop colleagues. If these video clips can not be found on TV, then the congenial DVD-series brings it to your screen. Nothing that can not be shown, every metal genre essential release, and no act too small. That is what I call a perfect co-existence.",
+    "poster": "https://image.tmdb.org/t/p/w500/90qXr9orajlUqaPkE8uH340D9Gp.jpg",
+    "backdrop": "",
+    "popularity": 0.051,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 75214,
     "title": "Barbara the Barbarian",
     "type": "movie",
@@ -46551,6 +46699,24 @@
     "popular": true
   },
   {
+    "id": 320089,
+    "title": "Age of Deceit 2: Alchemy and the Rise of the Beast Image",
+    "type": "movie",
+    "year": "2014",
+    "rating": 0,
+    "runtime": 180,
+    "genres": [],
+    "language": "en",
+    "countries": [],
+    "description": "Filmmaker, podcaster and blogger Gonzo Shimura has officially released his much anticipated sequel documentary Age of Deceit 2: Alchemy and the Rise of the Beast Image. After releasing his first film, Age of Deceit: Fallen Angels and the New World Order on YouTube in 2011, which has gotten over 3 million views, Gonzo decided to tackle the topic of ancient alchemy and how its philosophical principles tie into current trends of science, technology and future events described in the book of Revelation.",
+    "poster": "https://image.tmdb.org/t/p/w500/1iHLmeFGPJ3MBIcJeXQ94YIlM0I.jpg",
+    "backdrop": "",
+    "popularity": 0.0362,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 86342,
     "title": "War by Deception",
     "type": "movie",
@@ -46589,6 +46755,29 @@
     "popular": true
   },
   {
+    "id": 284568,
+    "title": "Closure",
+    "type": "movie",
+    "year": "2013",
+    "rating": 7.2,
+    "runtime": 76,
+    "genres": [
+      "Documentary",
+      "Adventure"
+    ],
+    "language": "en",
+    "countries": [
+      "United States of America"
+    ],
+    "description": "A documentary about a trans-racial adoptee who finds her birth mother, and meets the rest of a family who didn't know she existed, including her birth father.  A story about identity, the complexities of trans-racial adoption, and most importantly, CLOSURE.",
+    "poster": "https://image.tmdb.org/t/p/w500/7O6vp8ewFJ75er3jtjpHBUZwuWV.jpg",
+    "backdrop": "",
+    "popularity": 0.0286,
+    "featured": false,
+    "trending": false,
+    "popular": true
+  },
+  {
     "id": 315038,
     "title": "To Siomai Love",
     "type": "movie",
@@ -46607,7 +46796,7 @@
     "backdrop": "",
     "popularity": 0.0281,
     "featured": false,
-    "trending": true,
+    "trending": false,
     "popular": true
   },
   {
@@ -46691,36 +46880,20 @@
     "popular": false
   },
   {
-    "id": 301557,
-    "title": "Monsters of Metal Vol. 3",
+    "id": 283534,
+    "title": "Jimmy Eat World: Live at iTunes Festival 2013",
     "type": "movie",
-    "year": "2006",
-    "rating": 10,
-    "runtime": 260,
-    "genres": [],
+    "year": "2013",
+    "rating": 5.2,
+    "runtime": 42,
+    "genres": [
+      "Music"
+    ],
     "language": "en",
     "countries": [],
-    "description": "Bands like Nightwish, Edguy, Machine Head, Apocalyptica and Iced Earth, all to be found on this DVD, can really stand their ground against their pop colleagues. If these video clips can not be found on TV, then the congenial DVD-series brings it to your screen. Nothing that can not be shown, every metal genre essential release, and no act too small. That is what I call a perfect co-existence.",
-    "poster": "https://image.tmdb.org/t/p/w500/90qXr9orajlUqaPkE8uH340D9Gp.jpg",
-    "backdrop": "",
-    "popularity": 0.0143,
-    "featured": false,
-    "trending": false,
-    "popular": true
-  },
-  {
-    "id": 320089,
-    "title": "Age of Deceit 2: Alchemy and the Rise of the Beast Image",
-    "type": "movie",
-    "year": "2014",
-    "rating": 0,
-    "runtime": 180,
-    "genres": [],
-    "language": "en",
-    "countries": [],
-    "description": "Filmmaker, podcaster and blogger Gonzo Shimura has officially released his much anticipated sequel documentary Age of Deceit 2: Alchemy and the Rise of the Beast Image. After releasing his first film, Age of Deceit: Fallen Angels and the New World Order on YouTube in 2011, which has gotten over 3 million views, Gonzo decided to tackle the topic of ancient alchemy and how its philosophical principles tie into current trends of science, technology and future events described in the book of Revelation.",
-    "poster": "https://image.tmdb.org/t/p/w500/1iHLmeFGPJ3MBIcJeXQ94YIlM0I.jpg",
-    "backdrop": "",
+    "description": "Recorded at the iTunes Festival—a month of exclusive live performances at the legendary Roundhouse in London.",
+    "poster": "https://image.tmdb.org/t/p/w500/kw3i6vjPk8p5DzYzVWPCMeHvD6K.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/pikL8ri3IK8XXYaGUY8ycRzBwz1.jpg",
     "popularity": 0.0143,
     "featured": false,
     "trending": false,
@@ -46892,7 +47065,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/dEJ9tgpv8Ly9VeH2TW1wAm4gBbY.jpg",
     "popularity": 0,
     "featured": false,
-    "trending": false,
+    "trending": true,
     "popular": true
   },
   {
@@ -47038,24 +47211,6 @@
     "popular": true
   },
   {
-    "id": 317379,
-    "title": "Mamazon",
-    "type": "movie",
-    "year": "2009",
-    "rating": 6.9,
-    "runtime": 158,
-    "genres": [],
-    "language": "English",
-    "countries": [],
-    "description": "Explorers, searching deep in the jungle for a legendary relic that can make all women stacked, are taken prisoner by the Mamazon tribe: six horny, exotic babes with huge tits. Have the explorers finally discovered the source of their bounty? Maybe, but to find out, they'll have to survive the wildest sex of their lives with their cum-hungry captors!",
-    "poster": "https://image.tmdb.org/t/p/w500/mXHUF4MSXstQV8XKvmY90Clq2ao.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/kg3TG1xdwItID1Ii3u3JpGCXkfM.jpg",
-    "popularity": 0,
-    "featured": false,
-    "trending": true,
-    "popular": true
-  },
-  {
     "id": 70620,
     "title": "South Beach Cruisin'",
     "type": "movie",
@@ -47072,7 +47227,25 @@
     "backdrop": "",
     "popularity": 0,
     "featured": false,
-    "trending": false,
+    "trending": true,
+    "popular": true
+  },
+  {
+    "id": 317379,
+    "title": "Mamazon",
+    "type": "movie",
+    "year": "2009",
+    "rating": 6.9,
+    "runtime": 158,
+    "genres": [],
+    "language": "English",
+    "countries": [],
+    "description": "Explorers, searching deep in the jungle for a legendary relic that can make all women stacked, are taken prisoner by the Mamazon tribe: six horny, exotic babes with huge tits. Have the explorers finally discovered the source of their bounty? Maybe, but to find out, they'll have to survive the wildest sex of their lives with their cum-hungry captors!",
+    "poster": "https://image.tmdb.org/t/p/w500/mXHUF4MSXstQV8XKvmY90Clq2ao.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/kg3TG1xdwItID1Ii3u3JpGCXkfM.jpg",
+    "popularity": 0,
+    "featured": false,
+    "trending": true,
     "popular": true
   },
   {
