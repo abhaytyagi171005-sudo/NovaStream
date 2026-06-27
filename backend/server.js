@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
+
 const getPremiumMovies = () =>
     getMovies().filter(x => x.premium && x.poster && x.poster !== "");
 
@@ -30,6 +31,27 @@ const getSeries = () => CATALOG.filter(item => item.type === "series");
 
 function shuffle(arr) {
     return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function mapCategory(category) {
+    const map = {
+        "scifi": "science fiction",
+        "sitcom": "comedy",
+        "korean": "drama",
+        "japanese": "animation",
+        "indian": "drama",
+        "historical": "history",
+        "anime": "animation",
+        "superhero": "action",
+        "bollywood": "drama",
+        "hindi": "drama",
+        "tamil": "drama",
+        "hollywood": "drama",
+        "standup": "comedy",
+        "sports": "documentary",
+        "fantasy": "science fiction"
+    };
+    return map[category.toLowerCase()] || category.toLowerCase();
 }
 
 function mapToResponse(item) {
@@ -58,8 +80,9 @@ app.get("/api/series", (req, res) => {
     let results = getPremiumSeries();
 
     if (category) {
+        const cat = mapCategory(category);
         results = getSeries().filter(s =>
-            (s.genres || []).some(g => g.toLowerCase().includes(category.toLowerCase()))
+            (s.genres || []).some(g => g.toLowerCase().includes(cat))
         );
     }
 
@@ -75,7 +98,7 @@ app.get("/api/movies", (req, res) => {
     let results = getPremiumMovies();
 
     if (category) {
-        const cat = category.toLowerCase();
+        const cat = mapCategory(category);
         results = getMovies().filter(movie =>
             (movie.genres || []).some(g => g.toLowerCase().includes(cat))
         );
@@ -135,12 +158,13 @@ app.get("/api/stats", (req, res) => {
     };
 
     genres.forEach(g => {
+        const mapped = mapCategory(g);
         stats.movieGenres[g] = getMovies().filter(m =>
-            (m.genres || []).some(genre => genre.toLowerCase().includes(g))
+            (m.genres || []).some(genre => genre.toLowerCase().includes(mapped))
         ).length;
 
         stats.seriesGenres[g] = getSeries().filter(s =>
-            (s.genres || []).some(genre => genre.toLowerCase().includes(g))
+            (s.genres || []).some(genre => genre.toLowerCase().includes(mapped))
         ).length;
     });
 
