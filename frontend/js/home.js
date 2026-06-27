@@ -47,12 +47,18 @@ function openMovie(title) {
 
 async function loadHome() {
     await loadRow("/trending", "trendingMovies", "sectionTrending");
-    await loadRow("/movies", "topRated", "sectionTopRated");
-    await loadRow("/movies?category=scifi", "sciFiMovies", "sectionSciFi");
-    await loadRow("/movies?category=action", "superheroMovies", "sectionSuperhero");
-    await loadRow("/movies?category=comedy", "comedyMovies", "sectionComedy");
-    await loadRow("/movies?category=drama", "dramaMovies", "sectionDrama");
-    await loadRow("/movies?category=horror", "horrorMovies", "sectionHorror");
+    await loadRow("/movies?category=drama&limit=20", "topRated", "sectionTopRated");
+    await loadRow("/movies?category=scifi&limit=20", "sciFiMovies", "sectionSciFi");
+    await loadRow("/movies?category=action&limit=20", "superheroMovies", "sectionSuperhero");
+    await loadRow("/movies?category=comedy&limit=20", "comedyMovies", "sectionComedy");
+    await loadRow("/movies?category=drama&limit=20", "dramaMovies", "sectionDrama");
+    await loadRow("/movies?category=horror&limit=20", "horrorMovies", "sectionHorror");
+    await loadRow("/movies?category=thriller&limit=20", "thrillerMovies", "sectionThriller");
+    await loadRow("/movies?category=crime&limit=20", "crimeMovies", "sectionCrime");
+    await loadRow("/movies?category=animation&limit=20", "animationMovies", "sectionAnimation");
+    await loadRow("/movies?category=anime&limit=20", "animeMovies", "sectionAnime");
+    await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
+    await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
+    await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
 }
-
 loadHome();
