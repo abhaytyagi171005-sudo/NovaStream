@@ -23,9 +23,14 @@ async function request(endpoint, retries = 3) {
 
     } catch (err) {
 
+        const status = err.response?.status;
+
+        // Don't retry on 404 - item doesn't exist on TMDB
+        if (status === 404) return null;
+
         console.error(
             `[ERROR] ${endpoint}`,
-            err.code || err.response?.status,
+            err.code || status,
             err.message
         );
 
