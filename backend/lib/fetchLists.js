@@ -15,8 +15,22 @@ async function fetchTrending(type) {
     return data?.results || [];
 }
 
+async function fetchDiscoverMovies(params, page = 1) {
+    const query = new URLSearchParams({ ...params, page }).toString();
+    const data = await request(`/discover/movie?${query}`);
+    return data?.results || [];
+}
+
+async function fetchDiscoverTV(params, page = 1) {
+    const query = new URLSearchParams({ ...params, page }).toString();
+    const data = await request(`/discover/tv?${query}`);
+    return data?.results || [];
+}
+
 module.exports = {
     fetchMovieList,
     fetchTVList,
-    fetchTrending
+    fetchTrending,
+    fetchDiscoverMovies,
+    fetchDiscoverTV
 };
