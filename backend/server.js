@@ -33,7 +33,7 @@ function shuffle(arr) {
     return [...arr].sort(() => Math.random() - 0.5);
 }
 
-function mapCategory(category) {
+function mapMovieCategory(category) {
 
     const map = {
         trending: "trending",
@@ -67,6 +67,36 @@ function mapCategory(category) {
     return map[category.toLowerCase()] || category.toLowerCase();
 
 }
+function mapSeriesCategory(category) {
+
+    const map = {
+        trending: "trending",
+
+        action: "action & adventure",
+        adventure: "action & adventure",
+
+        scifi: "sci-fi & fantasy",
+        fantasy: "sci-fi & fantasy",
+
+        comedy: "comedy",
+        crime: "crime",
+        drama: "drama",
+        mystery: "mystery",
+        documentary: "documentary",
+        animation: "animation",
+        family: "family",
+
+        anime: "animation",
+        korean: "drama",
+        japanese: "animation",
+        indian: "drama",
+        hindi: "drama",
+        tamil: "drama"
+    };
+
+    return map[category.toLowerCase()] || category.toLowerCase();
+
+}
 function mapToResponse(item) {
     return {
         Title: item.title,
@@ -93,7 +123,7 @@ app.get("/api/series", (req, res) => {
     let results = getPremiumSeries();
 
     if (category) {
-        const cat = mapCategory(category);
+        const cat = mapSeriesCategory(category);
         results = getSeries().filter(s =>
             (s.genres || []).some(g => g.toLowerCase().includes(cat))
         );
@@ -118,7 +148,7 @@ app.get("/api/movies", (req, res) => {
 
         } else {
 
-            const cat = mapCategory(category);
+            const cat = mapMovieCategory(category);
 
             results = getMovies().filter(movie =>
                 (movie.genres || []).some(g =>
@@ -202,7 +232,8 @@ app.get("/api/stats", (req, res) => {
     };
 
     genres.forEach(g => {
-        const mapped = mapCategory(g);
+        const movieMapped = mapMovieCategory(g);
+        const seriesMapped = mapSeriesCategory(g);
         stats.movieGenres[g] = getMovies().filter(m =>
             (m.genres || []).some(genre => genre.toLowerCase().includes(mapped))
         ).length;
