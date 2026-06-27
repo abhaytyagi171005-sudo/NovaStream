@@ -35,25 +35,26 @@ function shuffle(arr) {
 
 function mapCategory(category) {
     const map = {
-        "scifi": "science fiction",
+        "scifi": "sci-fi",
+        "thriller": "crime",
         "sitcom": "comedy",
         "korean": "drama",
         "japanese": "animation",
         "indian": "drama",
-        "historical": "history",
+        "historical": "war & politics",
         "anime": "animation",
-        "superhero": "action",
+        "superhero": "action & adventure",
         "bollywood": "drama",
         "hindi": "drama",
         "tamil": "drama",
         "hollywood": "drama",
         "standup": "comedy",
         "sports": "documentary",
-        "fantasy": "science fiction"
+        "fantasy": "sci-fi",
+        "action": "action & adventure"
     };
     return map[category.toLowerCase()] || category.toLowerCase();
 }
-
 function mapToResponse(item) {
     return {
         Title: item.title,
