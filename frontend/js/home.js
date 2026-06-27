@@ -87,16 +87,24 @@ function shuffle(arr) {
 }
 
 function createCard(movie) {
+
     return `
         <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
-            <img src="${movie.Poster}" 
-                 alt="${movie.Title}"
-                 onerror="this.parentElement.style.display='none'"
+
+            <img
+                src="${movie.Poster}"
+                alt="${movie.Title}"
+                loading="lazy"
+                onerror="this.parentElement.style.display='none';"
+            >
+
             <div class="movie-info">
                 <h3>${movie.Title}</h3>
             </div>
+
         </div>
     `;
+
 }
 async function loadRow(endpoint, containerId, sectionId) {
     const container = document.getElementById(containerId);
