@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search – NovaStream</title>
+    <link rel="stylesheet" href="css/movies.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .search-page {
+            padding: 120px 80px 80px;
+            min-height: 100vh;
+        }
+
+        .search-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .search-bar-container input {
+            width: 100%;
+            padding: 18px 25px;
+            border: none;
+            outline: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .1);
+            color: white;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+            border: 1px solid rgba(255, 255, 255, .15);
+        }
+
+        .search-bar-container input:focus {
+            border-color: #e50914;
+            background: rgba(255, 255, 255, .15);
+        }
+
+        .search-bar-container input::placeholder {
+            color: #888;
+        }
+
+        .search-type-btns {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .type-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, .1);
+            color: white;
+            transition: .2s;
+        }
+
+        .type-btn.active {
+            background: #e50914;
+        }
+
+        .search-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .search-card {
+            position: relative;
+            height: 270px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: .3s;
+            background: #111;
+        }
+
+        .search-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .search-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .search-card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, .95));
+        }
+
+        .search-card-info h3 {
+            font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-card-info span {
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+
+        .search-status {
+            text-align: center;
+            padding: 60px;
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .search-status h2 {
+            color: white;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">▶</span>
+            <h1>Nova<span>Stream</span></h1>
+        </div>
+        <ul>
+            <li onclick="window.location.href='home.html'">Home</li>
+            <li onclick="window.location.href='movies.html'">Movies</li>
+            <li onclick="window.location.href='series.html'">Series</li>
+            <li onclick="window.location.href='mylist.html'">My List</li>
+        </ul>
+    </nav>
+
+    <div class="search-page">
+        <div class="search-bar-container">
+            <input type="text" id="searchInput" placeholder="Search movies, series, actors..." autofocus>
+        </div>
+
+        <div class="search-type-btns">
+            <button class="type-btn active" onclick="setType('all', this)">All</button>
+            <button class="type-btn" onclick="setType('movie', this)">Movies</button>
+            <button class="type-btn" onclick="setType('series', this)">Series</button>
+        </div>
+
+        <div id="searchStatus" class="search-status">
+            <h2>🔍 What are you looking for?</h2>
+            <p>Start typing to search 5000+ movies and series</p>
+        </div>
+
+        <div class="search-results-grid" id="searchResults"></div>
+    </div>
+
+    <script src="js/search-page.js"></script>
+</body>
+
+</html>
