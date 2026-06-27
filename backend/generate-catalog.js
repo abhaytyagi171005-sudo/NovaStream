@@ -162,10 +162,9 @@ async function collectTrending() {
             const details = await fetchMovieDetails(id);
             if (!details) return;
             if (!details.poster_path) return;
-            catalog.push(
-                normalize(details, "movie", flags)
-            );
-
+            if (details.vote_count < 100) return;  // ← min 100 votes
+            if (details.vote_average < 5.0) return; // ← min 5.0 rating
+            catalog.push(normalize(details, "movie", flags));
         }
 
     );
@@ -185,10 +184,12 @@ async function collectTrending() {
         CONCURRENT_REQUESTS,
 
         async ([id, flags]) => {
-            const details = await fetchTVDetails(id);  // ← correct
+            const details = await fetchTVDetails(id);
             if (!details) return;
             if (!details.poster_path) return;
-            catalog.push(normalize(details, "series", flags));  // ← correct
+            if (details.vote_count < 50) return;   // ← min 50 votes
+            if (details.vote_average < 5.0) return; // ← min 5.0 rating
+            catalog.push(normalize(details, "series", flags));
         }
 
     );
