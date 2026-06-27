@@ -34,26 +34,38 @@ function shuffle(arr) {
 }
 
 function mapCategory(category) {
+
     const map = {
-        "scifi": "sci-fi",
-        "thriller": "crime",
-        "sitcom": "comedy",
-        "korean": "drama",
-        "japanese": "animation",
-        "indian": "drama",
-        "historical": "war & politics",
-        "anime": "animation",
-        "superhero": "action & adventure",
-        "bollywood": "drama",
-        "hindi": "drama",
-        "tamil": "drama",
-        "hollywood": "drama",
-        "standup": "comedy",
-        "sports": "documentary",
-        "fantasy": "sci-fi",
-        "action": "action & adventure"
+        trending: "trending",
+
+        action: "action",
+        adventure: "adventure",
+        comedy: "comedy",
+        crime: "crime",
+        drama: "drama",
+        horror: "horror",
+        thriller: "thriller",
+        mystery: "mystery",
+        romance: "romance",
+        fantasy: "fantasy",
+        animation: "animation",
+        documentary: "documentary",
+        family: "family",
+
+        scifi: "science fiction",
+        superhero: "superhero",
+
+        anime: "animation",
+
+        bollywood: "hindi",
+        hindi: "hindi",
+        tamil: "tamil",
+
+        sports: "sport"
     };
+
     return map[category.toLowerCase()] || category.toLowerCase();
+
 }
 function mapToResponse(item) {
     return {
@@ -99,10 +111,41 @@ app.get("/api/movies", (req, res) => {
     let results = getPremiumMovies();
 
     if (category) {
-        const cat = mapCategory(category);
-        results = getMovies().filter(movie =>
-            (movie.genres || []).some(g => g.toLowerCase().includes(cat))
-        );
+
+        if (category === "trending") {
+
+            results = getMovies().filter(movie => movie.trending);
+
+        } else {
+
+            const cat = mapCategory(category);
+
+            results = getMovies().filter(movie =>
+                (movie.genres || []).some(g =>
+                    g.toLowerCase() === cat
+                )
+            );
+
+        }
+
+    } if (category) {
+
+        if (category === "trending") {
+
+            results = getMovies().filter(movie => movie.trending);
+
+        } else {
+
+            const cat = mapCategory(category);
+
+            results = getMovies().filter(movie =>
+                (movie.genres || []).some(g =>
+                    g.toLowerCase() === cat
+                )
+            );
+
+        }
+
     }
 
     if (results.length === 0) return res.json([]);

@@ -115,54 +115,35 @@ document.getElementById("hero-video").addEventListener("ended", () => {
 
 
 /* ── SEARCH & SECTIONS ─────────────────────────────────────── */
-async function loadSection(movieList, containerId) {
-
+async function loadSection(category, containerId) {
     const container = document.getElementById(containerId);
-
     if (!container) return;
-
     container.innerHTML = "";
 
-    for (const movieName of movieList) {
+    try {
+        const response = await fetch(
+            `https://novastream-o3ri.onrender.com/api/movies?category=${category}&limit=10`
+        );
+        const data = await response.json();
+        if (!data.length) return;
 
-        try {
-
-            const response =
-                await fetch(
-                    `https://novastream-o3ri.onrender.com/api/search?movie=${encodeURIComponent(movieName)}`
-                );
-
-            const data = await response.json();
-
-            if (!data.Search) continue;
-
-            data.Search.slice(0, 1).forEach(movie => {
-
-                if (movie.Poster === "N/A") return;
-
-                container.innerHTML += `
-                    <div class="card"
-                         onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
-
-                        <img
-                            src="${movie.Poster}"
-                            alt="${movie.Title}">
-
-                        <div class="movie-info">
-                            <h3>${movie.Title}</h3>
-                        </div>
-
-                    </div>
-                `;
-            });
-
-        } catch (error) {
-
-            console.error(error);
-
-        }
+        data.forEach(movie => {
+            const poster = movie.Poster && movie.Poster !== "N/A"
+                ? movie.Poster
+                : "images/placeholder.jpg";
+            container.innerHTML += `
+                <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
+                    <img src="${poster}" alt="${movie.Title}">
+                    <div class="movie-info"><h3>${movie.Title}</h3></div>
+                </div>
+            `;
+        });
+    } catch (error) {
+        console.error(error);
     }
 }
+
+
 
 
 const continueWatchingList = ["inception", "interstellar", "oppenheimer", "tenet", "1917", "top gun maverick", "barbie", "the menu", "knives out", "bullet train", "nope", "glass onion", "dunkirk", "whiplash", "prestige"];
@@ -223,14 +204,13 @@ const horrorList = [
 
 /* Netflix-style rows */
 
-loadSection(trendingList, "trendingMovies");
-loadSection(topRatedList, "topRated");
-loadSection(sciFiList, "sciFiMovies");
-loadSection(superheroList, "superheroMovies");
-
-loadSection(actionList, "actionMovies");
-loadSection(comedyList, "comedyMovies");
-loadSection(horrorList, "horrorMovies");
+loadSection("trending", "trendingMovies");
+loadSection("drama", "topRated");
+loadSection("scifi", "sciFiMovies");
+loadSection("thriller", "superheroMovies");
+loadSection("action", "actionMovies");
+loadSection("comedy", "comedyMovies");
+loadSection("horror", "horrorMovies");
 
 
 
