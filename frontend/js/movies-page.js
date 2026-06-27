@@ -474,10 +474,14 @@ function filterGenre(genre) {
    LOAD EVERYTHING
 ========================================== */
 
-loadSection(trendingList, "trendingMovies");
-loadSection(actionList, "actionMovies");
-loadSection(sciFiList, "sciFiMovies");
-loadSection(superheroList, "superheroMovies");
-loadSection(topRatedList, "topRated");
-loadSection(comedyList, "comedyMovies");
-loadSection(horrorList, "horrorMovies");
+/* ==========================================
+   LOAD EVERYTHING
+========================================== */
+
+loadSection("trending", "trendingMovies");
+loadSection("action", "actionMovies");
+loadSection("scifi", "sciFiMovies");
+loadSection("action", "superheroMovies");
+loadSection("drama", "topRated");
+loadSection("comedy", "comedyMovies");
+loadSection("horror", "horrorMovies");
