@@ -42,28 +42,24 @@
 
         <div class="nav-right">
 
-            <div class="search-container">
 
-                <input type="text" id="searchInput" placeholder="Search movies..." onkeydown="handleSearch(event)">
 
-                <div id="searchResults"></div>
+        </div>
 
-            </div>
+        <div class="profile">
 
-            <div class="profile">
+            <span>A</span>
 
-                <span>A</span>
+            <div class="dropdown">
 
-                <div class="dropdown">
-
-                    <p>Profile</p>
-                    <p>My List</p>
-                    <p>Settings</p>
-                    <p>Logout</p>
-
-                </div>
+                <p>Profile</p>
+                <p>My List</p>
+                <p>Settings</p>
+                <p>Logout</p>
 
             </div>
+
+        </div>
 
         </div>
 
@@ -183,15 +179,6 @@
     <script src="js/home.js"></script>
     <script>
 
-        // Search handler - navigates to search.html with clean URL
-        function handleSearch(event) {
-            if (event.key === "Enter") {
-                const query = document.getElementById("searchInput").value.trim();
-                if (query) {
-                    window.location.href = "search.html?movie=" + encodeURIComponent(query);
-                }
-            }
-        }
 
         fetch("https://novastream-o3ri.onrender.com/api/test")
             .then(response => response.json())
