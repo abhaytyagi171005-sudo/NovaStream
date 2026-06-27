@@ -48,7 +48,7 @@ async function collectMovieIds() {
 
         console.log(`   → ${list.name}`);
 
-        for (let page = 1; page <= 20; page++) {
+        for (let page = 1; page <= 50; page++) {
 
             const movies = await fetchMovieList(list.name, page);
 
@@ -86,7 +86,7 @@ async function collectTVIds() {
 
         console.log(`   → ${list.name}`);
 
-        for (let page = 1; page <= 20; page++) {
+        for (let page = 1; page <= 50; page++) {
 
             const shows = await fetchTVList(list.name, page);
 

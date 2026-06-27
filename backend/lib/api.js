@@ -10,38 +10,29 @@ const client = axios.create({
 });
 
 async function request(endpoint, retries = 3) {
-
     try {
-
         const separator = endpoint.includes("?") ? "&" : "?";
-
         const { data } = await client.get(
             `${endpoint}${separator}api_key=${API_KEY}`
         );
-
+        // Small delay to avoid rate limiting
+        await new Promise(r => setTimeout(r, 100));
         return data;
-
     } catch (err) {
-
         const status = err.response?.status;
-
-        // Don't retry on 404 - item doesn't exist on TMDB
         if (status === 404) return null;
 
-        console.error(
-            `[ERROR] ${endpoint}`,
-            err.code || status,
-            err.message
-        );
+        // Longer wait on 429
+        if (status === 429) {
+            await new Promise(r => setTimeout(r, 2000));
+        }
+
+        console.error(`[ERROR] ${endpoint}`, err.code || status, err.message);
 
         if (retries > 0) {
-
             console.log(`Retrying ${endpoint}...`);
-
             await new Promise(r => setTimeout(r, 1000));
-
             return request(endpoint, retries - 1);
-
         }
 
         return null;
