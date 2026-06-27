@@ -237,7 +237,7 @@ async function loadSection(category, containerId) {
                 : "images/placeholder.jpg";
             container.innerHTML += `
                 <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
-                    <img src="${poster}" alt="${movie.Title}">
+                    <img src="${poster}" alt="${movie.Title}" onerror="this.parentElement.style.display='none'">
                     <div class="movie-info"><h3>${movie.Title}</h3></div>
                 </div>
             `;
@@ -467,7 +467,7 @@ function filterGenre(genre) {
                 if (!row || !data.length) return;
                 row.innerHTML = data.map(movie => `
                 <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
-                    <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'images/placeholder.jpg'}" alt="${movie.Title}">
+                   <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'images/placeholder.jpg'}" alt="${movie.Title}" onerror="this.parentElement.style.display='none'">
                     <div class="movie-info"><h3>${movie.Title}</h3></div>
                 </div>
             `).join("");
