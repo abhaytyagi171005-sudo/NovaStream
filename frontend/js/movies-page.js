@@ -247,13 +247,10 @@ async function loadSection(category, containerId) {
     }
 }
 
-/* ==========================================
-   LOAD EVERYTHING
-========================================== */
 loadSection("trending", "trendingMovies");
 loadSection("action", "actionMovies");
 loadSection("scifi", "sciFiMovies");
-loadSection("thriller", "superheroMovies");
+loadSection("action", "superheroMovies");
 loadSection("drama", "topRated");
 loadSection("comedy", "comedyMovies");
 loadSection("horror", "horrorMovies");
@@ -452,7 +449,7 @@ function filterGenre(genre) {
     const sections = genreData[genre];
     if (!sections) return;
 
-    sections.forEach(({ title, id, movies }) => {
+    sections.forEach(({ title, id }) => {
         let section = document.getElementById("dynamic_" + id);
         if (!section) {
             section = document.createElement("section");
@@ -462,7 +459,19 @@ function filterGenre(genre) {
             document.getElementById("movieSectionsContainer").appendChild(section);
         }
         section.style.display = "block";
-        loadSection(movies, "row_" + id);
+
+        fetch(`https://novastream-o3ri.onrender.com/api/movies?category=${genre}&limit=10`)
+            .then(r => r.json())
+            .then(data => {
+                const row = document.getElementById("row_" + id);
+                if (!row || !data.length) return;
+                row.innerHTML = data.map(movie => `
+                <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
+                    <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'images/placeholder.jpg'}" alt="${movie.Title}">
+                    <div class="movie-info"><h3>${movie.Title}</h3></div>
+                </div>
+            `).join("");
+            });
     });
 
     setTimeout(() => {

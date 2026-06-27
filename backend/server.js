@@ -2,22 +2,15 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
 require("dotenv").config();
 
 const app = express();
 app.use(cors());
 
-const getPremiumMovies = () =>
-    getMovies().filter(x => x.premium && x.poster && x.poster !== "");
-
-const getPremiumSeries = () =>
-    getSeries().filter(x => x.premium && x.poster && x.poster !== "");
-
 function loadCatalog(filename) {
     const filePath = path.join(__dirname, "catalog", filename);
     if (!fs.existsSync(filePath)) {
-        console.warn(`⚠  ${filename} not found — run: node build-catalog.js`);
+        console.warn(`⚠  ${filename} not found`);
         return [];
     }
     const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -28,75 +21,52 @@ function loadCatalog(filename) {
 let CATALOG = loadCatalog("catalog.json");
 const getMovies = () => CATALOG.filter(item => item.type === "movie");
 const getSeries = () => CATALOG.filter(item => item.type === "series");
+const getPremiumMovies = () => getMovies().filter(x => x.premium && x.poster && x.poster !== "");
+const getPremiumSeries = () => getSeries().filter(x => x.premium && x.poster && x.poster !== "");
 
 function shuffle(arr) {
     return [...arr].sort(() => Math.random() - 0.5);
 }
 
 function mapMovieCategory(category) {
-
     const map = {
-        trending: "trending",
-
-        action: "action",
-        adventure: "adventure",
-        comedy: "comedy",
-        crime: "crime",
-        drama: "drama",
-        horror: "horror",
-        thriller: "thriller",
-        mystery: "mystery",
-        romance: "romance",
-        fantasy: "fantasy",
-        animation: "animation",
-        documentary: "documentary",
-        family: "family",
-
-        scifi: "science fiction",
-        superhero: "superhero",
-
-        anime: "animation",
-
-        bollywood: "hindi",
-        hindi: "hindi",
-        tamil: "tamil",
-
-        sports: "sport"
+        "scifi": "science fiction",
+        "anime": "animation",
+        "superhero": "action",
+        "bollywood": "drama",
+        "hindi": "drama",
+        "tamil": "drama",
+        "hollywood": "drama",
+        "standup": "comedy",
+        "sports": "documentary",
+        "fantasy": "fantasy",
+        "historical": "history"
     };
-
     return map[category.toLowerCase()] || category.toLowerCase();
-
 }
+
 function mapSeriesCategory(category) {
-
     const map = {
-        trending: "trending",
-
-        action: "action & adventure",
-        adventure: "action & adventure",
-
-        scifi: "sci-fi & fantasy",
-        fantasy: "sci-fi & fantasy",
-
-        comedy: "comedy",
-        crime: "crime",
-        drama: "drama",
-        mystery: "mystery",
-        documentary: "documentary",
-        animation: "animation",
-        family: "family",
-
-        anime: "animation",
-        korean: "drama",
-        japanese: "animation",
-        indian: "drama",
-        hindi: "drama",
-        tamil: "drama"
+        "scifi": "sci-fi",
+        "fantasy": "sci-fi",
+        "action": "action & adventure",
+        "superhero": "action & adventure",
+        "anime": "animation",
+        "korean": "drama",
+        "japanese": "animation",
+        "indian": "drama",
+        "hindi": "drama",
+        "tamil": "drama",
+        "bollywood": "drama",
+        "standup": "comedy",
+        "sitcom": "comedy",
+        "historical": "war & politics",
+        "thriller": "crime",
+        "sports": "documentary"
     };
-
     return map[category.toLowerCase()] || category.toLowerCase();
-
 }
+
 function mapToResponse(item) {
     return {
         Title: item.title,
@@ -117,85 +87,52 @@ function mapToResponse(item) {
 app.get("/", (req, res) => res.send("NovaStream Backend Running ✅"));
 app.get("/api/test", (req, res) => res.json({ message: "Backend Connected Successfully" }));
 
-app.get("/api/series", (req, res) => {
+app.get("/api/movies", (req, res) => {
     const { category, limit = 20 } = req.query;
-
-    let results = getPremiumSeries();
+    let results = getPremiumMovies();
 
     if (category) {
-        const cat = mapSeriesCategory(category);
-        results = getSeries().filter(s =>
-            (s.genres || []).some(g => g.toLowerCase().includes(cat))
-        );
+        if (category === "trending") {
+            results = getPremiumMovies().filter(m => m.trending);
+        } else {
+            const cat = mapMovieCategory(category);
+            results = getPremiumMovies().filter(movie =>
+                (movie.genres || []).some(g => g.toLowerCase().includes(cat))
+            );
+        }
     }
 
     if (results.length === 0) return res.json([]);
-
     const selected = shuffle(results).slice(0, parseInt(limit));
     res.json(selected.map(mapToResponse));
 });
 
-app.get("/api/movies", (req, res) => {
+app.get("/api/series", (req, res) => {
     const { category, limit = 20 } = req.query;
-
-    let results = getPremiumMovies();
+    let results = getPremiumSeries();
 
     if (category) {
-
         if (category === "trending") {
-
-            results = getMovies().filter(movie => movie.trending);
-
+            results = getPremiumSeries().filter(s => s.trending);
         } else {
-
-            const cat = mapMovieCategory(category);
-
-            results = getMovies().filter(movie =>
-                (movie.genres || []).some(g =>
-                    g.toLowerCase() === cat
-                )
+            const cat = mapSeriesCategory(category);
+            results = getSeries().filter(s =>
+                (s.genres || []).some(g => g.toLowerCase().includes(cat))
             );
-
         }
-
-    } if (category) {
-
-        if (category === "trending") {
-
-            results = getMovies().filter(movie => movie.trending);
-
-        } else {
-
-            const cat = mapCategory(category);
-
-            results = getMovies().filter(movie =>
-                (movie.genres || []).some(g =>
-                    g.toLowerCase() === cat
-                )
-            );
-
-        }
-
     }
 
     if (results.length === 0) return res.json([]);
-
     const selected = shuffle(results).slice(0, parseInt(limit));
     res.json(selected.map(mapToResponse));
 });
 
 app.get("/api/trending", (req, res) => {
     const { type = "all", limit = 20 } = req.query;
-
     let results = [];
 
-    if (type === "movie" || type === "all") {
-        results.push(...getPremiumMovies().filter(m => m.trending));
-    }
-
-    if (type === "series" || type === "all") {
-        results.push(...getPremiumSeries().filter(s => s.trending));
-    }
+    if (type === "movie" || type === "all") results.push(...getPremiumMovies().filter(m => m.trending));
+    if (type === "series" || type === "all") results.push(...getPremiumSeries().filter(s => s.trending));
 
     const selected = shuffle(results).slice(0, parseInt(limit));
     res.json(selected.map(mapToResponse));
@@ -203,26 +140,22 @@ app.get("/api/trending", (req, res) => {
 
 app.get("/api/search", (req, res) => {
     const { q, type = "all", limit = 30 } = req.query;
-
     if (!q || q.trim() === "") return res.json([]);
 
     const query = q.toLowerCase().trim();
     let pool = [];
-
     if (type === "movie" || type === "all") pool.push(...getMovies());
     if (type === "series" || type === "all") pool.push(...getSeries());
 
     const results = pool
         .filter(item => item.title.toLowerCase().includes(query))
         .slice(0, parseInt(limit));
-
     res.json(results.map(mapToResponse));
 });
 
 app.get("/api/stats", (req, res) => {
-    const genres = ["trending", "action", "crime", "drama", "comedy", "scifi",
-        "thriller", "mystery", "animation", "anime", "family",
-        "sitcom", "korean", "japanese", "indian", "historical", "documentary"];
+    const genres = ["action", "crime", "drama", "comedy", "scifi", "thriller",
+        "mystery", "animation", "anime", "family", "documentary"];
 
     const stats = {
         totalMovies: getMovies().length,
@@ -232,14 +165,13 @@ app.get("/api/stats", (req, res) => {
     };
 
     genres.forEach(g => {
-        const movieMapped = mapMovieCategory(g);
-        const seriesMapped = mapSeriesCategory(g);
-        stats.movieGenres[g] = getMovies().filter(m =>
-            (m.genres || []).some(genre => genre.toLowerCase().includes(mapped))
+        const mcat = mapMovieCategory(g);
+        const scat = mapSeriesCategory(g);
+        stats.movieGenres[g] = getPremiumMovies().filter(m =>
+            (m.genres || []).some(genre => genre.toLowerCase().includes(mcat))
         ).length;
-
-        stats.seriesGenres[g] = getSeries().filter(s =>
-            (s.genres || []).some(genre => genre.toLowerCase().includes(mapped))
+        stats.seriesGenres[g] = getPremiumSeries().filter(s =>
+            (s.genres || []).some(genre => genre.toLowerCase().includes(scat))
         ).length;
     });
 
@@ -253,11 +185,5 @@ app.post("/api/reload", (req, res) => {
 
 app.listen(5000, () => {
     console.log("\n🚀  Server running on http://localhost:5000");
-    console.log(`🎬 Total Titles: ${CATALOG.length}`);
-    console.log(`📽 Movies: ${getMovies().length}`);
-    console.log(`📺 Series: ${getSeries().length}`);
-    if (CATALOG.length === 0) {
-        console.log("\n⚠   Empty catalog! Run this first:");
-        console.log("    node build-catalog.js\n");
-    }
+    console.log(`🎬 Total: ${CATALOG.length} | 📽 Movies: ${getMovies().length} | 📺 Series: ${getSeries().length}`);
 });
