@@ -49,7 +49,7 @@ const featuredSeries = [
 ];
 
 // ===============================
-// GENRE TEMPLATES — ALL 16 CATEGORIES
+// GENRE TEMPLATES
 // ===============================
 const genreTemplates = {
     action: ["🔥 Trending Action", "⚔ Action Classics", "💥 Explosive Action", "🕶 Spy & Military", "🌍 International Action", "⭐ Top Rated Action"],
@@ -70,9 +70,6 @@ const genreTemplates = {
     documentary: ["🎥 Trending Docs", "🌍 Nature & World", "🔬 Science & Tech", "👤 True Crime Docs", "🏆 Award Winning Docs", "⭐ Must Watch Documentaries"]
 };
 
-// ===============================
-// SECTIONS MAPPING
-// ===============================
 const sections = {
     trending: "trending",
     action: "action",
@@ -83,33 +80,59 @@ const sections = {
     top: "toprated"
 };
 
-// Static sections are visible by default on page load — no hiding needed
+// ===============================
+// CREATE CARD
+// ===============================
+function createCard(series) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const poster = series.Poster && series.Poster !== "N/A"
+        ? series.Poster
+        : "images/placeholder.jpg";
+    const genres = (series.genres || []).join(', ');
+
+    card.setAttribute("data-title", series.Title || "");
+    card.setAttribute("data-year", series.Year || "");
+    card.setAttribute("data-rating", series.imdbRating || "");
+    card.setAttribute("data-genres", genres);
+    if (series.trailerKey) {
+        card.setAttribute("data-trailer", series.trailerKey);
+    }
+
+    card.innerHTML = `
+        <img src="${poster}" alt="${series.Title || 'Series'}" onerror="this.parentElement.style.display='none'">
+        <div class="series-info">
+            <h3>${series.Title || "Unknown"}</h3>
+            <p>${series.Year || ""}</p>
+        </div>
+    `;
+
+    card.onclick = () => {
+        window.location.href = `search.html?movie=${encodeURIComponent(series.Title)}`;
+    };
+
+    return card;
+}
 
 // ===============================
-// FIX 2: ALL SERIES — scroll to sections instead of top
+// SHOW HOME SECTIONS
 // ===============================
 function showHomeSections() {
     document.getElementById("dynamicGenreSections").innerHTML = "";
     document.getElementById("dynamicGenreSections").style.display = "none";
-
     document.querySelectorAll(".series-section").forEach(section => {
         section.style.display = "block";
     });
-
-    // Scroll to first section (below hero), not page top
     const firstSection = document.querySelector(".series-section");
-    if (firstSection) {
-        firstSection.scrollIntoView({ behavior: "smooth" });
-    }
+    if (firstSection) firstSection.scrollIntoView({ behavior: "smooth" });
 }
 
 // ===============================
-// FIX 3 & 4: SHOW GENRE — all categories work
+// SHOW GENRE
 // ===============================
 async function showGenre(category) {
     const container = document.getElementById("dynamicGenreSections");
 
-    // Show loading state immediately and scroll
     container.innerHTML = `
         <div style="text-align:center;padding:100px 0;font-size:1.1rem;color:#aaa;">
             Loading <strong style="color:white">${category}</strong> series...
@@ -129,10 +152,7 @@ async function showGenre(category) {
         if (!Array.isArray(data) || data.length === 0) {
             container.innerHTML = `
                 <div style="text-align:center;padding:100px 0;font-size:1.1rem;color:#aaa;">
-                    No series found for <strong style="color:white">${category}</strong>.<br>
-                    <span style="font-size:.85rem;color:#666;margin-top:10px;display:block">
-                        Make sure your series.json entries have <code>"genres": ["${category}"]</code>
-                    </span>
+                    No series found for <strong style="color:white">${category}</strong>.
                 </div>`;
             return;
         }
@@ -148,7 +168,6 @@ async function showGenre(category) {
             container.appendChild(section);
 
             const row = document.getElementById(rowId);
-            // Loop back if fewer than 36 items in catalog for this genre
             const pool = shuffle(data);
             const start = (i * 6) % data.length;
             const items = [];
@@ -158,33 +177,15 @@ async function showGenre(category) {
             items.forEach(series => row.appendChild(createCard(series)));
         }
 
+        attachPreviews();
+
     } catch (err) {
         console.error(err);
         container.innerHTML = `
             <div style="text-align:center;padding:100px 0;color:#e50914;">
-                Could not connect to backend.<br>
-                <span style="font-size:.85rem;color:#888">Make sure the server is running on port 5000.</span>
+                Could not connect to backend.
             </div>`;
     }
-}
-
-// ===============================
-// CREATE CARD
-// ===============================
-function createCard(series) {
-    const card = document.createElement("div");
-    card.className = "card";
-    const poster = series.Poster && series.Poster !== "N/A"
-        ? series.Poster
-        : "images/placeholder.jpg";
-    card.innerHTML = `
-        <img src="${poster}" alt="${series.Title || 'Series'}">
-        <div class="series-info">
-            <h3>${series.Title || "Unknown"}</h3>
-            <p>${series.Year || ""}</p>
-        </div>
-    `;
-    return card;
 }
 
 // ===============================
@@ -242,6 +243,7 @@ async function loadSection(category, rowId) {
             if (series.Response === "False") return;
             row.appendChild(createCard(series));
         });
+        attachPreviews();
     } catch (err) {
         console.error("loadSection error:", err);
     }
