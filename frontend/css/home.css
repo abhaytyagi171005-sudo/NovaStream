@@ -334,21 +334,13 @@ ul li.active {
 }
 
 .card {
-
     min-width: 220px;
-
     height: 320px;
-
     border-radius: 18px;
-
     overflow: hidden;
-
     position: relative;
-
     cursor: pointer;
-
     transition: .3s;
-
     background: #111;
 }
 
@@ -371,25 +363,21 @@ ul li.active {
 }
 
 .movie-info {
-
     position: absolute;
-
     bottom: 0;
-
+    left: 0;
     width: 100%;
-
     padding: 15px;
-
-    background:
-        linear-gradient(transparent,
-            rgba(0, 0, 0, .95));
+    background: linear-gradient(transparent, rgba(0, 0, 0, .95));
+    z-index: 2;
 }
 
 .movie-info h3 {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: 0;
 }
 
 /* SEARCH */
