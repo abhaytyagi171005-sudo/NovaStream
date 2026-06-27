@@ -11,6 +11,11 @@ function image(path, size) {
 
 function normalize(details, type, flags = {}) {
 
+    // Get YouTube trailer key from videos
+    const trailer = (details.videos?.results || []).find(
+        v => v.site === "YouTube" && (v.type === "Trailer" || v.type === "Teaser")
+    );
+
     return {
 
         id: details.id,
@@ -55,6 +60,8 @@ function normalize(details, type, flags = {}) {
 
         backdrop:
             image(details.backdrop_path, BACKDROP_SIZE),
+
+        trailerKey: trailer?.key || null,
 
         popularity:
             details.popularity,

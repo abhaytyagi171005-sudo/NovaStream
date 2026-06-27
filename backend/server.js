@@ -79,11 +79,11 @@ function mapToResponse(item) {
         genres: item.genres,
         trending: item.trending,
         tmdbId: item.id,
+        trailerKey: item.trailerKey || null,
         Response: "True",
         Type: item.type
     };
 }
-
 app.get("/", (req, res) => res.send("NovaStream Backend Running ✅"));
 app.get("/api/test", (req, res) => res.json({ message: "Backend Connected Successfully" }));
 
