@@ -87,24 +87,22 @@ function shuffle(arr) {
 }
 
 function createCard(movie) {
-
+    const genres = (movie.genres || []).join(', ');
+    const trailerAttr = movie.trailerKey ? `data-trailer="${movie.trailerKey}"` : '';
     return `
-        <div class="card" onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')">
-
-            <img
-                src="${movie.Poster}"
-                alt="${movie.Title}"
-                loading="lazy"
-                onerror="this.parentElement.style.display='none';"
-            >
-
+        <div class="card" 
+             onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')"
+             data-title="${movie.Title.replace(/"/g, '&quot;')}"
+             data-year="${movie.Year || ''}"
+             data-rating="${movie.imdbRating || ''}"
+             data-genres="${genres}"
+             ${trailerAttr}>
+            <img src="${movie.Poster}" alt="${movie.Title}" onerror="this.parentElement.style.display='none'">
             <div class="movie-info">
                 <h3>${movie.Title}</h3>
             </div>
-
         </div>
     `;
-
 }
 async function loadRow(endpoint, containerId, sectionId) {
     const container = document.getElementById(containerId);
@@ -139,6 +137,8 @@ async function loadHome() {
     await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
     await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
     await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
+    attachPreviews();
 }
 
 loadHome();
+loadHome().then(() => attachPreviews());
