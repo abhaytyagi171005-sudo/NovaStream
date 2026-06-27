@@ -20,12 +20,18 @@ function createCard(movie) {
     `;
 }
 
-async function loadRow(endpoint, containerId) {
+async function loadRow(endpoint, containerId, sectionId) {
     const container = document.getElementById(containerId);
+    const section = sectionId ? document.getElementById(sectionId) : null;
 
     if (!container) return;
 
     const data = await fetchData(endpoint);
+
+    if (!data || data.length === 0) {
+        if (section) section.style.display = "none";
+        return;
+    }
 
     container.innerHTML =
         shuffle(data)
@@ -38,11 +44,15 @@ function openMovie(title) {
     window.location.href =
         `search.html?movie=${encodeURIComponent(title)}`;
 }
+
 async function loadHome() {
-    await loadRow("/trending", "trendingMovies");
-    await loadRow("/movies", "topRated");
-    await loadRow("/movies?category=scifi", "sciFiMovies");
-    await loadRow("/movies?category=action", "superheroMovies");
+    await loadRow("/trending", "trendingMovies", "sectionTrending");
+    await loadRow("/movies", "topRated", "sectionTopRated");
+    await loadRow("/movies?category=scifi", "sciFiMovies", "sectionSciFi");
+    await loadRow("/movies?category=action", "superheroMovies", "sectionSuperhero");
+    await loadRow("/movies?category=comedy", "comedyMovies", "sectionComedy");
+    await loadRow("/movies?category=drama", "dramaMovies", "sectionDrama");
+    await loadRow("/movies?category=horror", "horrorMovies", "sectionHorror");
 }
 
 loadHome();
