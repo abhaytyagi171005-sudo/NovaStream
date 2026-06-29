@@ -65,3 +65,27 @@ loadMyList();
 
 // Expose toast globally
 window.showToast = showToast;
+// ─── Notification Dropdown ───
+const notifBtn = document.getElementById('notifBtn');
+const notifDropdown = document.getElementById('notifDropdown');
+
+if (notifBtn && notifDropdown) {
+    notifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notifDropdown.classList.toggle('open');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+            notifDropdown.classList.remove('open');
+        }
+    });
+
+    // Optionally, close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            notifDropdown.classList.remove('open');
+        }
+    });
+}

@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NovaStream — My List</title>
-    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,35 +31,69 @@
                 </ul>
             </div>
             <div class="nav-right">
-                <a href="search-page.html" class="icon-btn" aria-label="Search">
+                <a href="search.html" class="icon-btn" aria-label="Search">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
                 </a>
-                <a href="notifications.html" class="icon-btn" aria-label="Notifications">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                    </svg>
-                </a>
+
+                <!-- Notification dropdown -->
+                <div class="notification-wrapper">
+                    <button class="icon-btn notification-btn" aria-label="Notifications" id="notifBtn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <span class="notif-badge" id="notifBadge">3</span>
+                    </button>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <div class="notif-header">Notifications</div>
+                        <div class="notif-list">
+                            <div class="notif-item">
+                                <span class="notif-dot"></span>
+                                <div>
+                                    <strong>New movie added</strong>
+                                    <p>“The Batman” is now available to watch.</p>
+                                    <span class="notif-time">2 min ago</span>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <span class="notif-dot"></span>
+                                <div>
+                                    <strong>Recommendation</strong>
+                                    <p>You might like “Inception” based on your list.</p>
+                                    <span class="notif-time">1 hour ago</span>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <span class="notif-dot"></span>
+                                <div>
+                                    <strong>Series update</strong>
+                                    <p>New episodes of “Stranger Things” are out.</p>
+                                    <span class="notif-time">3 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notif-footer">
+                            <a href="#">Mark all as read</a>
+                        </div>
+                    </div>
+                </div>
+
                 <a href="profile.html" class="avatar" aria-label="Profile">N</a>
             </div>
         </nav>
 
         <!-- ─── MAIN ─── -->
         <main class="main">
-
             <div class="page-header">
                 <h1>My List</h1>
                 <div class="sub mylist-count">No movies saved yet</div>
             </div>
-
-            <!-- ─── MOVIE GRID (dynamic) ─── -->
             <div id="myListMovies" class="mylist-grid"></div>
-
         </main>
 
     </div>
