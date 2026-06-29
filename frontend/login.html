@@ -4,15 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>NovaStream</title>
 
     <link rel="stylesheet" href="css/login.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
+    <style>
+        #transitionOverlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            z-index: 99999;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #transitionOverlay canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
 </head>
 
 <body>
+
+    <div id="transitionOverlay"></div>
 
     <header>
 
@@ -20,9 +42,7 @@
 
             <span class="logo-icon">▶</span>
 
-            <h1>
-                Nova<span>Stream</span>
-            </h1>
+            <h1>Nova<span>Stream</span></h1>
 
         </div>
 
@@ -37,28 +57,36 @@
             <h2>Unlimited Movies & Series</h2>
 
             <p class="subtitle">
+
                 Discover blockbuster movies, exclusive originals and award-winning stories.
+
             </p>
 
-            <form action="home.html">
+            <form id="loginForm">
 
                 <input type="email" placeholder="Email Address" required>
 
                 <input type="password" placeholder="Password" required>
 
                 <button type="submit">
+
                     Continue
+
                 </button>
 
             </form>
 
             <a href="#" class="forgot">
+
                 Forgot Password?
+
             </a>
 
         </div>
 
     </main>
+    <div id="transitionOverlay"></div>
+    <script src="js/matrix-intro.js"></script>
 
 </body>
 

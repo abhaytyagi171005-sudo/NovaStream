@@ -1,4 +1,3 @@
-
 /* ── Toast notification ── */
 function showToast(message = "Added to My List ♥") {
     const toast = document.getElementById("toast");
@@ -13,7 +12,6 @@ function showToast(message = "Added to My List ♥") {
 }
 
 /* ── Dynamic Genre-Pool Map ── */
-// Expanded content banks so recommendations always feel fresh and highly distinct
 const genrePools = {
     action: [
         { title: "The Dark Knight", year: "2008", poster: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg", color: "color-orange" },
@@ -39,56 +37,7 @@ const genrePools = {
     ]
 };
 
-/* ── Load & render saved movies ── */
-function loadMyList() {
-    const myList = JSON.parse(localStorage.getItem("myList")) || [];
-    const container = document.getElementById("myListMovies");
-    if (!container) return;
-    container.innerHTML = "";
-
-    const count = myList.length;
-    const countEl = document.querySelector(".mylist-count");
-    if (countEl) {
-        countEl.innerText = count === 0 ? "No movies saved yet" : `${count} ${count === 1 ? "movie" : "movies"} saved`;
-    }
-
-    if (count === 0) {
-        // FIXED STRUCTURE: This keeps the empty message perfectly centered inside the main card area
-        container.innerHTML = `
-            <div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; width: 100%;">
-                <span class="empty-heart" style="font-size: 2rem; color: rgba(255,255,255,0.3); margin-bottom: 10px; display: block;">♥</span>
-                <h3 style="margin: 0 0 8px 0; font-size: 1.4rem; color: #fff;">Your list is empty.</h3>
-                <p style="margin: 0; color: rgba(255,255,255,0.6); font-size: 0.95rem;">Add movies from the home page!</p>
-            </div>
-        `;
-
-        // Hide recommendations immediately if list becomes empty
-        const recsSection = document.getElementById("recsSection");
-        if (recsSection) recsSection.style.display = "none";
-        return;
-    }
-    myList.forEach(movie => {
-        container.innerHTML += `
-            <div class="mylist-card">
-                <span class="remove-btn" onclick="removeMovie('${movie.title.replace(/'/g, "\\ Baltimore")}')">✕</span>
-                <img src="${movie.poster}" alt="${movie.title}">
-                <div class="overlay"><h3>${movie.title}</h3></div>
-            </div>
-        `;
-    });
-
-    loadRecommendations(myList);
-}
-
-/* ── Remove a movie ── */
-function removeMovie(title) {
-    let myList = JSON.parse(localStorage.getItem("myList")) || [];
-    myList = myList.filter(movie => movie.title !== title);
-    localStorage.setItem("myList", JSON.stringify(myList));
-    loadMyList();
-}
-
-/* ── Background collage background generator ── */
+/* ── Background collage ── */
 const collagePosters = [
     "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg",
     "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
@@ -107,7 +56,72 @@ function buildCollage() {
 }
 buildCollage();
 
-/* ── Dynamic Context-Aware Recommendations ── */
+/* ── Load & render saved movies ── */
+function loadMyList() {
+    const myList = JSON.parse(localStorage.getItem("myList")) || [];
+    const container = document.getElementById("myListMovies");
+    if (!container) return;
+    container.innerHTML = "";
+
+    const count = myList.length;
+    const countEl = document.querySelector(".mylist-count");
+    if (countEl) {
+        countEl.innerText = count === 0 ? "No movies saved yet" : `${count} ${count === 1 ? "movie" : "movies"} saved`;
+    }
+
+    if (count === 0) {
+        // --- NETFLIX-STYLE EMPTY STATE ---
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="14" width="52" height="38" rx="4" stroke="currentColor" stroke-width="1.8" fill="none" />
+                        <path d="M6 24h52" stroke="currentColor" stroke-width="1.8" />
+                        <circle cx="22" cy="38" r="6" stroke="currentColor" stroke-width="1.8" fill="none" />
+                        <path d="M26 38h24" stroke="currentColor" stroke-width="1.8" />
+                        <path d="M44 32v12" stroke="currentColor" stroke-width="1.8" />
+                        <path d="M38 38h12" stroke="currentColor" stroke-width="1.8" />
+                    </svg>
+                </div>
+                <h2 class="empty-title">No movies saved yet</h2>
+                <p class="empty-desc">
+                    Your list is empty. Start adding your favorite movies and series from the
+                    <strong>home page</strong>!
+                </p>
+                <div class="empty-action">
+                    <a href="#" class="btn-primary"><span>+</span> Browse Movies</a>
+                    <a href="#" class="btn-secondary">Explore Series</a>
+                </div>
+            </div>
+        `;
+        const recsSection = document.getElementById("recsSection");
+        if (recsSection) recsSection.style.display = "none";
+        return;
+    }
+
+    // Render saved movies as cards
+    myList.forEach(movie => {
+        container.innerHTML += `
+            <div class="mylist-card">
+                <span class="remove-btn" onclick="removeMovie('${movie.title.replace(/'/g, "\\'")}')">✕</span>
+                <img src="${movie.poster}" alt="${movie.title}">
+                <div class="overlay"><h3>${movie.title}</h3></div>
+            </div>
+        `;
+    });
+
+    loadRecommendations(myList);
+}
+
+/* ── Remove a movie ── */
+function removeMovie(title) {
+    let myList = JSON.parse(localStorage.getItem("myList")) || [];
+    myList = myList.filter(movie => movie.title !== title);
+    localStorage.setItem("myList", JSON.stringify(myList));
+    loadMyList();
+}
+
+/* ── Dynamic Recommendations ── */
 let currentDisplayedRecs = [];
 
 function loadRecommendations(myList = []) {
@@ -125,13 +139,10 @@ function loadRecommendations(myList = []) {
     if (loadingEl) loadingEl.style.display = "block";
     recsList.innerHTML = "";
 
-    // 1. Analyze the last saved title to dynamically find its vibe
     const lastMovie = myList[myList.length - 1];
     const titleLower = lastMovie.title.toLowerCase();
 
     let matchedGenre = "fallback";
-
-    // Dynamic Keyword matching map
     if (titleLower.includes("avengers") || titleLower.includes("batman") || titleLower.includes("knight") || titleLower.includes("man") || titleLower.includes("iron")) {
         matchedGenre = "action";
     } else if (titleLower.includes("wars") || titleLower.includes("interstellar") || titleLower.includes("star") || titleLower.includes("space") || titleLower.includes("insurgence")) {
@@ -139,28 +150,22 @@ function loadRecommendations(myList = []) {
     } else if (titleLower.includes("love") || titleLower.includes("story") || titleLower.includes("life") || titleLower.includes("redemption")) {
         matchedGenre = "drama";
     } else {
-        // Safe fallback rule if it's an unrecognized custom movie from the homepage: 
-        // Randomly choose action or scifi to keep content rolling natively!
         matchedGenre = Math.random() > 0.5 ? "action" : "sciFi";
     }
 
-    // 2. Filter out movies that the user has ALREADY saved to ensure recommendations are always fresh!
     let recommendationsSource = genrePools[matchedGenre];
     let uniqueRecs = recommendationsSource.filter(recMovie =>
         !myList.some(savedMovie => savedMovie.title.toLowerCase() === recMovie.title.toLowerCase())
     );
 
-    // If everything inside that pool is already saved, pull from fallback pool
     if (uniqueRecs.length === 0) {
         uniqueRecs = genrePools["fallback"];
     }
 
-    // 3. Keep exactly 3 recommendations
     currentDisplayedRecs = uniqueRecs.slice(0, 3);
 
     setTimeout(() => {
         if (loadingEl) loadingEl.style.display = "none";
-
         recsList.innerHTML = currentDisplayedRecs.map((movie, index) => `
             <div class="rec-card">
                 <img class="rec-poster" src="${movie.poster}" alt="${movie.title}">
@@ -176,7 +181,7 @@ function loadRecommendations(myList = []) {
     }, 1500);
 }
 
-/* ── Save recommended selection live into database array ── */
+/* ── Save from recommendations ── */
 function saveFromRecs(index) {
     const targetMovie = currentDisplayedRecs[index];
     if (!targetMovie) return;
@@ -192,5 +197,5 @@ function saveFromRecs(index) {
     loadMyList();
 }
 
-// Fire system initialization
+// ─── Initialize ───
 loadMyList();
