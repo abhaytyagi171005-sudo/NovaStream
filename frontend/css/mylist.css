@@ -13,7 +13,7 @@ body {
     overflow-x: hidden;
 }
 
-/* ── Glowing gradient background (Netflix-inspired) ── */
+/* ── Glowing gradient background ── */
 .page-bg {
     position: fixed;
     top: 0;
@@ -28,7 +28,6 @@ body {
     background-color: #141414;
 }
 
-/* subtle animated grain overlay */
 .page-bg::after {
     content: '';
     position: absolute;
@@ -40,7 +39,7 @@ body {
     pointer-events: none;
 }
 
-/* ── Background collage (transparent overlay) ── */
+/* ── Background collage ── */
 .bg-collage {
     position: fixed;
     top: 0;
@@ -194,7 +193,6 @@ body {
     padding: 2.5rem 0 4rem;
 }
 
-/* page header */
 .page-header {
     margin-bottom: 2.5rem;
 }

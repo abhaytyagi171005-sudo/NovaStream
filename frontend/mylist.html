@@ -11,8 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
         rel="stylesheet" />
-    <!-- External CSS -->
-    <link rel="stylesheet" href="mylist.css" />
+    <!-- Correct CSS path -->
+    <link rel="stylesheet" href="frontend/css/mylist.css" />
 </head>
 
 <body>
@@ -48,7 +48,7 @@
                 <div class="sub mylist-count">No movies saved yet</div>
             </div>
 
-            <!-- ─── MOVIE GRID ─── -->
+            <!-- ─── MOVIE GRID (dynamic) ─── -->
             <div id="myListMovies" class="mylist-grid"></div>
 
             <!-- ─── RECOMMENDATIONS ─── -->
@@ -71,7 +71,8 @@
         <span id="toastMsg">Added to My List ♥</span>
     </div>
 
-    <script src="mylist.js"></script>
+    <!-- Correct JS path (adjust if you place it inside a 'js' folder) -->
+    <script src="frontend/js/mylist.js"></script>
 </body>
 
 </html>

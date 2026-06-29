@@ -5,7 +5,7 @@ function showToast(message = "Added to My List ♥") {
     if (!toast) return;
     toastMsg.innerText = message;
     toast.classList.remove("show");
-    void toast.offsetWidth; // force reflow
+    void toast.offsetWidth;
     toast.classList.add("show");
     clearTimeout(toast._timer);
     toast._timer = setTimeout(() => toast.classList.remove("show"), 3000);
