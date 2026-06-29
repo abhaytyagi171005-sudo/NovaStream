@@ -11,32 +11,6 @@ function showToast(message = "Added to My List ♥") {
     toast._timer = setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-/* ── Dynamic Genre-Pool Map ── */
-const genrePools = {
-    action: [
-        { title: "The Dark Knight", year: "2008", poster: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg", color: "color-orange" },
-        { title: "Iron Man 3", year: "2013", poster: "https://m.media-amazon.com/images/M/MV5BMjE5MzcyMjk1M15BMl5BanBnXkFtZTcwMjA4MjcxOQ@@._V1_SX300.jpg", color: "color-orange" },
-        { title: "Captain America: Civil War", year: "2016", poster: "https://m.media-amazon.com/images/M/MV5BMjQ1NjM3MTg1NV5BMl5BanBnXkFtZTgwOTE4NDc5NzE@._V1_SX300.jpg", color: "color-purple" },
-        { title: "Mad Max: Fury Road", year: "2015", poster: "https://m.media-amazon.com/images/M/MV5BN2EwMWRhNTQtNzE4My00NjdlLTjkNDgtOWE1NWJhZDA3MDFlXkEyXkFqcGdeQXVyNDQ2MTMzODA@._V1_SX300.jpg", color: "color-green" }
-    ],
-    sciFi: [
-        { title: "The Martian", year: "2015", poster: "https://m.media-amazon.com/images/M/MV5BMTc2MTQ3MDA1Nl5BMl5BanBnXkFtZTgwODA3OTI4NjE@._V1_SX300.jpg", color: "color-green" },
-        { title: "Arrival", year: "2016", poster: "https://m.media-amazon.com/images/M/MV5BMTM0NTc2NDgwNF5BMl5BanBnXkFtZTgwNDM5MTMyOTE@._V1_SX300.jpg", color: "color-purple" },
-        { title: "Inception", year: "2010", poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg", color: "color-orange" },
-        { title: "Blade Runner 2049", year: "2017", poster: "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_SX300.jpg", color: "color-purple" }
-    ],
-    drama: [
-        { title: "The Shawshank Redemption", year: "1994", poster: "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg", color: "color-green" },
-        { title: "Forrest Gump", year: "1994", poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", color: "color-orange" },
-        { title: "Interstellar", year: "2014", poster: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg", color: "color-purple" }
-    ],
-    fallback: [
-        { title: "Galactic Odyssey", year: "2025", poster: "https://picsum.photos/300/450?random=1", color: "color-green" },
-        { title: "The Last Starfighter", year: "2024", poster: "https://picsum.photos/300/450?random=2", color: "color-purple" },
-        { title: "Distant Echoes", year: "2025", poster: "https://picsum.photos/300/450?random=3", color: "color-orange" }
-    ]
-};
-
 /* ── Background collage ── */
 const collagePosters = [
     "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg",
@@ -70,7 +44,7 @@ function loadMyList() {
     }
 
     if (count === 0) {
-        // --- NETFLIX-STYLE EMPTY STATE ---
+        // Empty state with working buttons
         container.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">
@@ -89,13 +63,11 @@ function loadMyList() {
                     <strong>home page</strong>!
                 </p>
                 <div class="empty-action">
-                    <a href="#" class="btn-primary"><span>+</span> Browse Movies</a>
-                    <a href="#" class="btn-secondary">Explore Series</a>
+                    <a href="movies.html" class="btn-primary"><span>+</span> Browse Movies</a>
+                    <a href="series.html" class="btn-secondary">Explore Series</a>
                 </div>
             </div>
         `;
-        const recsSection = document.getElementById("recsSection");
-        if (recsSection) recsSection.style.display = "none";
         return;
     }
 
@@ -109,8 +81,6 @@ function loadMyList() {
             </div>
         `;
     });
-
-    loadRecommendations(myList);
 }
 
 /* ── Remove a movie ── */
@@ -119,83 +89,11 @@ function removeMovie(title) {
     myList = myList.filter(movie => movie.title !== title);
     localStorage.setItem("myList", JSON.stringify(myList));
     loadMyList();
-}
-
-/* ── Dynamic Recommendations ── */
-let currentDisplayedRecs = [];
-
-function loadRecommendations(myList = []) {
-    const recsSection = document.getElementById("recsSection");
-    const recsList = document.getElementById("recsList");
-    const loadingEl = document.getElementById("recsLoading");
-
-    if (!recsSection || !recsList) return;
-    if (myList.length === 0) {
-        recsSection.style.display = "none";
-        return;
-    }
-
-    recsSection.style.display = "block";
-    if (loadingEl) loadingEl.style.display = "block";
-    recsList.innerHTML = "";
-
-    const lastMovie = myList[myList.length - 1];
-    const titleLower = lastMovie.title.toLowerCase();
-
-    let matchedGenre = "fallback";
-    if (titleLower.includes("avengers") || titleLower.includes("batman") || titleLower.includes("knight") || titleLower.includes("man") || titleLower.includes("iron")) {
-        matchedGenre = "action";
-    } else if (titleLower.includes("wars") || titleLower.includes("interstellar") || titleLower.includes("star") || titleLower.includes("space") || titleLower.includes("insurgence")) {
-        matchedGenre = "sciFi";
-    } else if (titleLower.includes("love") || titleLower.includes("story") || titleLower.includes("life") || titleLower.includes("redemption")) {
-        matchedGenre = "drama";
-    } else {
-        matchedGenre = Math.random() > 0.5 ? "action" : "sciFi";
-    }
-
-    let recommendationsSource = genrePools[matchedGenre];
-    let uniqueRecs = recommendationsSource.filter(recMovie =>
-        !myList.some(savedMovie => savedMovie.title.toLowerCase() === recMovie.title.toLowerCase())
-    );
-
-    if (uniqueRecs.length === 0) {
-        uniqueRecs = genrePools["fallback"];
-    }
-
-    currentDisplayedRecs = uniqueRecs.slice(0, 3);
-
-    setTimeout(() => {
-        if (loadingEl) loadingEl.style.display = "none";
-        recsList.innerHTML = currentDisplayedRecs.map((movie, index) => `
-            <div class="rec-card">
-                <img class="rec-poster" src="${movie.poster}" alt="${movie.title}">
-                <div class="rec-info">
-                    <h4>${movie.title}</h4>
-                    <p>${movie.year}</p>
-                </div>
-                <button class="rec-save-btn ${movie.color}" onclick="saveFromRecs(${index})">
-                    Save
-                </button>
-            </div>
-        `).join("");
-    }, 1500);
-}
-
-/* ── Save from recommendations ── */
-function saveFromRecs(index) {
-    const targetMovie = currentDisplayedRecs[index];
-    if (!targetMovie) return;
-
-    let myList = JSON.parse(localStorage.getItem("myList")) || [];
-    myList.push({
-        title: targetMovie.title,
-        poster: targetMovie.poster
-    });
-
-    localStorage.setItem("myList", JSON.stringify(myList));
-    showToast(`Saved: ${targetMovie.title} ♥`);
-    loadMyList();
+    showToast(`Removed: ${title}`);
 }
 
 // ─── Initialize ───
 loadMyList();
+
+// Make showToast globally available for other pages
+window.showToast = showToast;

@@ -11,7 +11,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
         rel="stylesheet" />
-    <!-- ✅ FIXED: Correct CSS path (relative to frontend folder) -->
     <link rel="stylesheet" href="css/mylist.css" />
 </head>
 
@@ -25,16 +24,16 @@
         <!-- ─── NAVBAR ─── -->
         <nav class="navbar">
             <div class="nav-left">
-                <a href="#" class="brand">NovaStream</a>
+                <a href="home.html" class="brand">NovaStream</a>
                 <ul class="nav-links">
-                    <li>Movies</li>
-                    <li>Series</li>
-                    <li>New &amp; Popular</li>
-                    <li class="active">My List</li>
+                    <li><a href="movies.html">Movies</a></li>
+                    <li><a href="series.html">Series</a></li>
+                    <li><a href="new-popular.html">New &amp; Popular</a></li>
+                    <li class="active"><a href="mylist.html">My List</a></li>
                 </ul>
             </div>
             <div class="nav-right">
-                <button class="icon-btn" aria-label="Search">&#128269;</button>
+                <a href="search.html" class="icon-btn" aria-label="Search">&#128269;</a>
                 <button class="icon-btn" aria-label="Notifications">&#128276;</button>
                 <div class="avatar">N</div>
             </div>
@@ -51,17 +50,6 @@
             <!-- ─── MOVIE GRID (dynamic) ─── -->
             <div id="myListMovies" class="mylist-grid"></div>
 
-            <!-- ─── RECOMMENDATIONS ─── -->
-            <section id="recsSection" style="display: none; margin-top: 3rem;">
-                <h2
-                    style="font-size: 1.6rem; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 1.5rem; background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block;">
-                    Because you watched…
-                </h2>
-                <div id="recsLoading" style="color: #8c8c8c; font-size: 1rem; padding: 1rem 0;">Finding recommendations…
-                </div>
-                <div id="recsList" class="recs-grid"></div>
-            </section>
-
         </main>
 
     </div>
@@ -71,7 +59,6 @@
         <span id="toastMsg">Added to My List ♥</span>
     </div>
 
-    <!-- ✅ FIXED: Correct JS path (relative to frontend folder) -->
     <script src="js/mylist.js"></script>
 </body>
 
