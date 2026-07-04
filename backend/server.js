@@ -187,8 +187,7 @@ app.post("/api/reload", (req, res) => {
     res.json({ message: "Catalog reloaded", total: CATALOG.length });
 });
 
-// ─── HERO BANNER ENDPOINT (with TMDB video fetch) ───
-// ─── HERO BANNER ENDPOINT (TMDB Native Player - NO YouTube Branding) ───
+// ─── HERO BANNER ENDPOINT ───
 app.get("/api/hero", async (req, res) => {
     try {
         // Get all premium movies
@@ -209,17 +208,32 @@ app.get("/api/hero", async (req, res) => {
 
         const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-        // If no TMDB API key, return error
+        // If no TMDB API key, return movies without videos
         if (!TMDB_API_KEY) {
-            console.warn('⚠️ TMDB_API_KEY not set');
-            return res.status(500).json({ error: 'TMDB_API_KEY not configured' });
+            console.warn('⚠️ TMDB_API_KEY not set - returning movies without trailers');
+            const basicMovies = selected.map(movie => ({
+                id: movie.id,
+                title: movie.title,
+                year: movie.year,
+                description: movie.description || "No description available",
+                poster: movie.poster || "N/A",
+                backdrop: movie.backdrop || movie.poster || "N/A",
+                rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
+                genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
+                genres: movie.genres || [],
+                videoUrl: null,
+                videoKey: null,
+                videoType: null,
+                hasVideo: false,
+                language: movie.language || "en"
+            }));
+            return res.json(basicMovies);
         }
 
         // Fetch videos from TMDB for each movie
         const heroMovies = await Promise.all(selected.map(async (movie) => {
             let videoKey = null;
             let videoType = null;
-            let videoName = null;
 
             const tmdbId = movie.tmdbId || movie.id;
 
@@ -247,7 +261,6 @@ app.get("/api/hero", async (req, res) => {
                         }
                     }
 
-                    // If no preferred type, take first YouTube video
                     if (!bestVideo) {
                         bestVideo = videos.find(v => v.site === 'YouTube') || videos[0];
                     }
@@ -255,8 +268,6 @@ app.get("/api/hero", async (req, res) => {
                     if (bestVideo && bestVideo.key) {
                         videoKey = bestVideo.key;
                         videoType = bestVideo.type || 'Trailer';
-                        videoName = bestVideo.name || '';
-
                         console.log(`✅ Found ${videoType} for ${movie.title}: ${videoKey}`);
                     }
                 }
@@ -271,23 +282,11 @@ app.get("/api/hero", async (req, res) => {
                 console.log(`📦 Using catalog trailerKey for ${movie.title}: ${videoKey}`);
             }
 
-            // ─── RETURN TMDB NATIVE VIDEO URL (NO YouTube Branding) ───
-            // TMDB's official video player - clean, no YouTube UI
+            // TMDB native player URL (no YouTube branding)
             let videoUrl = null;
             if (videoKey) {
-                // TMDB native embed player (no YouTube branding)
                 videoUrl = `https://www.themoviedb.org/video/play/${videoKey}`;
             }
-
-            // Get the first genre or use "Movie" as fallback
-            const primaryGenre = movie.genres && movie.genres.length > 0
-                ? movie.genres[0]
-                : "Movie";
-
-            // Format rating
-            const rating = movie.rating && parseFloat(movie.rating) > 0
-                ? parseFloat(movie.rating).toFixed(1)
-                : "N/A";
 
             return {
                 id: movie.id,
@@ -296,10 +295,10 @@ app.get("/api/hero", async (req, res) => {
                 description: movie.description || "No description available",
                 poster: movie.poster || "N/A",
                 backdrop: movie.backdrop || movie.poster || "N/A",
-                rating: rating,
-                genre: primaryGenre,
+                rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
+                genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
                 genres: movie.genres || [],
-                videoUrl: videoUrl,           // ← TMDB native player URL
+                videoUrl: videoUrl,
                 videoKey: videoKey,
                 videoType: videoType || 'Trailer',
                 hasVideo: !!videoUrl,
@@ -313,4 +312,11 @@ app.get("/api/hero", async (req, res) => {
         console.error('❌ Error in /api/hero:', error);
         res.status(500).json({ error: 'Failed to fetch hero movies' });
     }
-}); 
+});
+
+// ─── START SERVER ───
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`\n🚀 Server running on port ${PORT}`);
+    console.log(`🎬 Total: ${CATALOG.length} | 📽 Movies: ${getMovies().length} | 📺 Series: ${getSeries().length}`);
+});
