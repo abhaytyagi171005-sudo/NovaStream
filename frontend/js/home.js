@@ -99,22 +99,20 @@ function useFallbackHero() {
 }
 
 /* ── Build Hero Slides ── */
+/* ── Build Hero Slides ── */
 function buildHero() {
     const slidesContainer = document.getElementById('heroSlides');
     const indicatorsContainer = document.getElementById('heroIndicators');
 
     if (!slidesContainer || !indicatorsContainer) {
-        // If elements don't exist, create them
         const heroBanner = document.getElementById('heroBanner');
         if (heroBanner) {
-            // Create slides container if it doesn't exist
             if (!slidesContainer) {
                 const newSlides = document.createElement('div');
                 newSlides.className = 'hero-slides';
                 newSlides.id = 'heroSlides';
                 heroBanner.prepend(newSlides);
             }
-            // Create indicators container if it doesn't exist
             if (!indicatorsContainer) {
                 const newIndicators = document.createElement('div');
                 newIndicators.className = 'hero-indicators';
@@ -129,24 +127,40 @@ function buildHero() {
 
     if (!slides || !indicators) return;
 
-    // Clear containers
     slides.innerHTML = '';
     indicators.innerHTML = '';
 
-    // Build slides
     heroMovies.forEach((movie, index) => {
-        // Slide
         const slide = document.createElement('div');
         slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
         slide.dataset.index = index;
 
-        // YouTube iframe for trailer
-        const iframe = document.createElement('iframe');
-        iframe.src = movie.trailer || '';
-        iframe.allow = 'autoplay; encrypted-media';
-        iframe.allowFullscreen = true;
-        iframe.loading = 'lazy';
-        slide.appendChild(iframe);
+        // ─── USE TMDB NATIVE PLAYER ───
+        const playerContainer = document.createElement('div');
+        playerContainer.className = 'hero-player-container';
+
+        if (movie.videoUrl) {
+            // TMDB native embed - clean, no YouTube branding
+            playerContainer.innerHTML = `
+                <iframe 
+                    src="${movie.videoUrl}"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen
+                    frameborder="0"
+                    style="width:100%;height:100%;border:none;"
+                ></iframe>
+            `;
+        } else {
+            // Fallback: show poster image
+            playerContainer.innerHTML = `
+                <img src="${movie.backdrop || movie.poster}" 
+                     alt="${movie.title}"
+                     style="width:100%;height:100%;object-fit:cover;"
+                />
+            `;
+        }
+
+        slide.appendChild(playerContainer);
 
         // Content overlay
         const content = document.createElement('div');
@@ -161,7 +175,7 @@ function buildHero() {
             </div>
             <p class="hero-description">${movie.description || 'No description available'}</p>
             <div class="hero-buttons">
-                <button class="hero-btn-play" onclick="playTrailer('${movie.trailer || ''}')">
+                <button class="hero-btn-play" onclick="playTrailer('${movie.videoUrl || ''}')">
                     ▶ Play
                 </button>
                 <button class="hero-btn-mylist" onclick="addToMyList('${movie.title}', '${movie.poster}')">
@@ -181,7 +195,6 @@ function buildHero() {
         indicators.appendChild(dot);
     });
 
-    // Start autoplay
     goToSlide(0);
     startAutoplay();
 }

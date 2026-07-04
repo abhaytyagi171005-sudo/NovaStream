@@ -188,6 +188,7 @@ app.post("/api/reload", (req, res) => {
 });
 
 // ─── HERO BANNER ENDPOINT (with TMDB video fetch) ───
+// ─── HERO BANNER ENDPOINT (TMDB Native Player - NO YouTube Branding) ───
 app.get("/api/hero", async (req, res) => {
     try {
         // Get all premium movies
@@ -208,37 +209,17 @@ app.get("/api/hero", async (req, res) => {
 
         const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-        // If no TMDB API key, fall back to catalog trailerKey
+        // If no TMDB API key, return error
         if (!TMDB_API_KEY) {
-            console.warn('⚠️ TMDB_API_KEY not set, using catalog trailerKey');
-            return res.json(selected.map(movie => {
-                let trailerUrl = null;
-                if (movie.trailerKey) {
-                    trailerUrl = `https://www.youtube.com/embed/${movie.trailerKey}?autoplay=1&mute=1&loop=1&playlist=${movie.trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0`;
-                }
-                return {
-                    id: movie.id,
-                    title: movie.title,
-                    year: movie.year,
-                    description: movie.description || "No description available",
-                    poster: movie.poster || "N/A",
-                    backdrop: movie.backdrop || movie.poster || "N/A",
-                    rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
-                    genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
-                    genres: movie.genres || [],
-                    trailer: trailerUrl,
-                    hasTrailer: !!trailerUrl,
-                    language: movie.language || "en",
-                    tmdbId: movie.tmdbId || movie.id
-                };
-            }));
+            console.warn('⚠️ TMDB_API_KEY not set');
+            return res.status(500).json({ error: 'TMDB_API_KEY not configured' });
         }
 
         // Fetch videos from TMDB for each movie
         const heroMovies = await Promise.all(selected.map(async (movie) => {
-            let trailerUrl = null;
-            let trailerKey = null;
+            let videoKey = null;
             let videoType = null;
+            let videoName = null;
 
             const tmdbId = movie.tmdbId || movie.id;
 
@@ -272,13 +253,11 @@ app.get("/api/hero", async (req, res) => {
                     }
 
                     if (bestVideo && bestVideo.key) {
-                        trailerKey = bestVideo.key;
+                        videoKey = bestVideo.key;
                         videoType = bestVideo.type || 'Trailer';
+                        videoName = bestVideo.name || '';
 
-                        // Build YouTube embed URL with 8-second loop
-                        trailerUrl = `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0`;
-
-                        console.log(`✅ Found ${videoType} for ${movie.title}: ${trailerKey}`);
+                        console.log(`✅ Found ${videoType} for ${movie.title}: ${videoKey}`);
                     }
                 }
             } catch (error) {
@@ -286,12 +265,29 @@ app.get("/api/hero", async (req, res) => {
             }
 
             // Fallback: use catalog trailerKey if TMDB fetch failed
-            if (!trailerUrl && movie.trailerKey) {
-                trailerKey = movie.trailerKey;
-                trailerUrl = `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0`;
+            if (!videoKey && movie.trailerKey) {
+                videoKey = movie.trailerKey;
                 videoType = 'Trailer (catalog)';
-                console.log(`📦 Using catalog trailerKey for ${movie.title}: ${trailerKey}`);
+                console.log(`📦 Using catalog trailerKey for ${movie.title}: ${videoKey}`);
             }
+
+            // ─── RETURN TMDB NATIVE VIDEO URL (NO YouTube Branding) ───
+            // TMDB's official video player - clean, no YouTube UI
+            let videoUrl = null;
+            if (videoKey) {
+                // TMDB native embed player (no YouTube branding)
+                videoUrl = `https://www.themoviedb.org/video/play/${videoKey}`;
+            }
+
+            // Get the first genre or use "Movie" as fallback
+            const primaryGenre = movie.genres && movie.genres.length > 0
+                ? movie.genres[0]
+                : "Movie";
+
+            // Format rating
+            const rating = movie.rating && parseFloat(movie.rating) > 0
+                ? parseFloat(movie.rating).toFixed(1)
+                : "N/A";
 
             return {
                 id: movie.id,
@@ -300,13 +296,13 @@ app.get("/api/hero", async (req, res) => {
                 description: movie.description || "No description available",
                 poster: movie.poster || "N/A",
                 backdrop: movie.backdrop || movie.poster || "N/A",
-                rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
-                genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
+                rating: rating,
+                genre: primaryGenre,
                 genres: movie.genres || [],
-                trailer: trailerUrl,
-                trailerKey: trailerKey,
+                videoUrl: videoUrl,           // ← TMDB native player URL
+                videoKey: videoKey,
                 videoType: videoType || 'Trailer',
-                hasTrailer: !!trailerUrl,
+                hasVideo: !!videoUrl,
                 language: movie.language || "en",
                 tmdbId: tmdbId
             };
@@ -317,10 +313,4 @@ app.get("/api/hero", async (req, res) => {
         console.error('❌ Error in /api/hero:', error);
         res.status(500).json({ error: 'Failed to fetch hero movies' });
     }
-});
-
-// ─── START SERVER ───
-app.listen(5000, () => {
-    console.log("\n🚀  Server running on http://localhost:5000");
-    console.log(`🎬 Total: ${CATALOG.length} | 📽 Movies: ${getMovies().length} | 📺 Series: ${getSeries().length}`);
-});
+}); 

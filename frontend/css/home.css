@@ -1267,3 +1267,38 @@ ul li.active {
 .nav-dropdown-item:hover .nav-dropdown {
     display: block;
 }
+
+/* ── Hero Player Container (for TMDB native player) ── */
+.hero-player-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: #000;
+}
+
+.hero-player-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+}
+
+.hero-slide.active .hero-player-container iframe {
+    pointer-events: none;
+}
+
+/* Dark overlay on top of video (for text readability) */
+.hero-slide .hero-player-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+}
