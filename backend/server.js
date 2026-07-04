@@ -187,3 +187,59 @@ app.listen(5000, () => {
     console.log("\n🚀  Server running on http://localhost:5000");
     console.log(`🎬 Total: ${CATALOG.length} | 📽 Movies: ${getMovies().length} | 📺 Series: ${getSeries().length}`);
 });
+// ─── HERO BANNER ENDPOINT ───
+app.get("/api/hero", (req, res) => {
+    // Get all premium movies
+    let movies = getPremiumMovies();
+
+    // If no premium movies, use all movies
+    if (movies.length === 0) {
+        movies = getMovies();
+    }
+
+    if (movies.length === 0) {
+        return res.json([]);
+    }
+
+    // Shuffle and pick 5 random movies
+    const shuffled = shuffle(movies);
+    const selected = shuffled.slice(0, 5);
+
+    // Map to hero format with YouTube embed
+    const heroMovies = selected.map(movie => {
+        // Build YouTube embed URL with 8-second clip
+        let trailerUrl = null;
+
+        if (movie.trailerKey) {
+            // YouTube embed with 8-second loop (starts at 5s, ends at 13s)
+            trailerUrl = `https://www.youtube.com/embed/${movie.trailerKey}?autoplay=1&mute=1&loop=1&playlist=${movie.trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0`;
+        }
+
+        // Get the first genre or use "Movie" as fallback
+        const primaryGenre = movie.genres && movie.genres.length > 0
+            ? movie.genres[0]
+            : "Movie";
+
+        // Format rating
+        const rating = movie.rating && parseFloat(movie.rating) > 0
+            ? parseFloat(movie.rating).toFixed(1)
+            : "N/A";
+
+        return {
+            id: movie.id,
+            title: movie.title,
+            year: movie.year,
+            description: movie.description || "No description available",
+            poster: movie.poster || "N/A",
+            backdrop: movie.backdrop || movie.poster || "N/A",
+            rating: rating,
+            genre: primaryGenre,
+            genres: movie.genres || [],
+            trailer: trailerUrl,
+            hasTrailer: !!trailerUrl,
+            language: movie.language || "en"
+        };
+    });
+
+    res.json(heroMovies);
+});
