@@ -18,7 +18,6 @@
 <body>
 
     <!-- NAVBAR -->
-
     <nav>
 
         <div class="logo">
@@ -32,7 +31,7 @@
         </div>
 
         <ul>
-            <li>Home</li>
+            <li class="active">Home</li>
             <li onclick="window.location.href='movies.html'">Movies</li>
             <li onclick="window.location.href='series.html'">Series</li>
             <li>New & Popular</li>
@@ -41,8 +40,6 @@
         </ul>
 
         <div class="nav-right">
-
-
 
         </div>
 
@@ -65,61 +62,31 @@
 
     </nav>
 
-    <!-- HERO SECTION -->
-
+    <!-- ─── HERO BANNER ─── -->
     <section class="hero" id="heroBanner">
-
-        <video id="hero-video" autoplay muted playsinline
-            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1s ease;">
-            <source id="hero-video-source" src="" type="video/mp4">
-        </video>
-
-        <div class="hero-overlay"></div>
-
-        <div class="hero-content">
-
-            <span class="featured">
-                FEATURED TODAY
-            </span>
-
-            <h1 id="heroTitle">
-                DUNE
-            </h1>
-
-            <div class="movie-meta">
-
-                <span id="heroYear">2024</span>
-                <span>PG-13</span>
-                <span>2h 46m</span>
-                <span>Sci-Fi</span>
-
-            </div>
-
-            <p id="heroDescription">
-
-                Paul Atreides joins the Fremen and fights
-                for Arrakis.
-
-            </p>
-
-            <div class="hero-buttons">
-
-                <button class="watch-btn">
-                    ▶ Watch Now
-                </button>
-
-                <button class="info-btn">
-                    More Info
-                </button>
-
-            </div>
-
+        <div class="hero-slides" id="heroSlides">
+            <!-- Slides will be injected by JavaScript -->
         </div>
 
+        <!-- Hero controls (arrows) -->
+        <div class="hero-controls">
+            <button class="hero-btn hero-btn-left" id="heroPrev" aria-label="Previous">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6" />
+                </svg>
+            </button>
+            <button class="hero-btn hero-btn-right" id="heroNext" aria-label="Next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Indicators (dots) -->
+        <div class="hero-indicators" id="heroIndicators"></div>
     </section>
 
-
-
+    <!-- ─── MOVIE ROWS ─── -->
     <section class="movies" id="sectionComedy">
         <h2>Comedy Collection</h2>
         <div class="movie-row" id="comedyMovies"></div>
@@ -169,23 +136,20 @@
         <h2>Romance</h2>
         <div class="movie-row" id="romanceMovies"></div>
     </section>
+
     <div id="toast" class="toast">
         <span class="toast-icon">♥</span>
         <span id="toastMsg">Added to My List</span>
     </div>
 
     <!-- JS -->
-
     <script src="js/home.js"></script>
     <script>
-
-
         fetch("https://novastream-o3ri.onrender.com/api/test")
             .then(response => response.json())
             .then(data => {
                 console.log(data);
             });
-
     </script>
     <script src="js/preview.js"></script>
 </body>

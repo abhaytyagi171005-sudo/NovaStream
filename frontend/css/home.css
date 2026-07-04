@@ -1,3 +1,316 @@
+/* ── HERO BANNER ── */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    min-height: 400px;
+    max-height: 700px;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    background: #000;
+    margin-top: 1rem;
+}
+
+.hero-slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+}
+
+/* YouTube iframe styling */
+.hero-slide iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+    object-fit: cover;
+}
+
+/* Dark overlay for better text readability */
+.hero-slide::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Hero content overlay */
+.hero-slide .hero-content {
+    position: absolute;
+    bottom: 15%;
+    left: 4%;
+    max-width: 500px;
+    z-index: 4;
+    pointer-events: auto;
+}
+
+.hero-slide .hero-content .hero-title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.hero-slide .hero-content .hero-meta {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.hero-slide .hero-content .hero-meta span {
+    color: #ccc;
+    font-size: 0.95rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.hero-slide .hero-content .hero-meta .hero-rating {
+    color: #46d369;
+    font-weight: 600;
+}
+
+.hero-slide .hero-content .hero-meta .hero-genre {
+    color: #b3b3b3;
+}
+
+.hero-slide .hero-content .hero-description {
+    font-size: 1.05rem;
+    color: #d4d4d4;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    max-width: 450px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hero-slide .hero-content .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hero-slide .hero-content .hero-btn-play {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 0.7rem 2.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+}
+
+.hero-slide .hero-content .hero-btn-play:hover {
+    background: #e6e6e6;
+    transform: scale(1.02);
+}
+
+.hero-slide .hero-content .hero-btn-mylist {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.7rem 2.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    backdrop-filter: blur(4px);
+}
+
+.hero-slide .hero-content .hero-btn-mylist:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.02);
+}
+
+/* Hero controls (arrows) */
+.hero-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hero-btn {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+
+.hero-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Indicators (dots) */
+.hero-indicators {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
+    z-index: 10;
+}
+
+.hero-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: none;
+    padding: 0;
+}
+
+.hero-dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.hero-dot.active {
+    background: #e50914;
+    transform: scale(1.2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .hero {
+        height: 50vh;
+        min-height: 320px;
+    }
+
+    .hero-slide .hero-content .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-slide .hero-content .hero-description {
+        font-size: 0.9rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .hero-slide .hero-content {
+        bottom: 12%;
+        max-width: 80%;
+    }
+
+    .hero-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .hero-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .hero-controls {
+        padding: 0 0.8rem;
+    }
+
+    .hero-slide .hero-content .hero-meta span {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        height: 40vh;
+        min-height: 250px;
+    }
+
+    .hero-slide .hero-content .hero-title {
+        font-size: 1.4rem;
+    }
+
+    .hero-slide .hero-content .hero-description {
+        display: none;
+    }
+
+    .hero-slide .hero-content .hero-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero-slide .hero-content .hero-btn-play,
+    .hero-slide .hero-content .hero-btn-mylist {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .hero-slide .hero-content {
+        bottom: 10%;
+        max-width: 90%;
+    }
+
+    .hero-slide .hero-content .hero-meta {
+        gap: 0.6rem;
+    }
+
+    .hero-slide .hero-content .hero-meta span {
+        font-size: 0.7rem;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;

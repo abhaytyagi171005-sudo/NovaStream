@@ -1,80 +1,298 @@
 const API = "https://novastream-o3ri.onrender.com/api";
 
 // ── HERO SYSTEM ──────────────────────────────────────────────
-const heroMovies = [
-    {
-        title: "DUNE",
-        year: "2024",
-        description: "Paul Atreides joins the Fremen and fights for Arrakis.",
-        image: "images/banners/dune-banner.jpg",
-        video: "images/dune-preview.mp4"
-    },
-    {
-        title: "OPPENHEIMER",
-        year: "2023",
-        description: "The story of J. Robert Oppenheimer and the atomic bomb.",
-        image: "images/banners/oppenheimer-banner.jpg",
-        video: "images/oppenheimer-preview.mp4"
-    },
-    {
-        title: "TOP GUN MAVERICK",
-        year: "2022",
-        description: "Maverick trains the next generation.",
-        image: "images/banners/topgun-banner.jpg",
-        video: "images/topgun-preview.mp4"
-    },
-    {
-        title: "Kingsman: The Secret Service",
-        year: "2014",
-        description: "A spy organisation recruits a promising street kid.",
-        image: "images/banners/kingsman-banner.jpg",
-        video: "images/kingsman-preview.mp4"
+let currentSlide = 0;
+let slideInterval = null;
+let heroMovies = [];
+const HERO_INTERVAL = 7000; // 7 seconds
+
+/* ── Fetch Hero Movies from Backend ── */
+async function fetchHeroMovies() {
+    try {
+        const response = await fetch('https://novastream-o3ri.onrender.com/api/hero');
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+            console.warn('No hero movies found, using fallback');
+            useFallbackHero();
+            return;
+        }
+
+        heroMovies = data;
+        buildHero();
+    } catch (error) {
+        console.error('Error fetching hero movies:', error);
+        useFallbackHero();
     }
-];
-
-let currentHero = 0;
-let heroInterval = null;
-let videoTimeout = null;
-
-function changeHero(index) {
-    const movie = heroMovies[index];
-    const banner = document.getElementById("heroBanner");
-    const heroVideo = document.getElementById("hero-video");
-    const heroSource = document.getElementById("hero-video-source");
-
-    clearTimeout(videoTimeout);
-
-    document.getElementById("heroTitle").innerText = movie.title;
-    document.getElementById("heroYear").innerText = movie.year;
-    document.getElementById("heroDescription").innerText = movie.description;
-
-    banner.style.backgroundImage = `
-        linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,.3)),
-        url('${movie.image}')
-    `;
-
-    heroVideo.style.opacity = "0";
-    heroVideo.pause();
-
-    videoTimeout = setTimeout(() => {
-        heroSource.src = movie.video;
-        heroVideo.load();
-        heroVideo.play().then(() => {
-            heroVideo.style.opacity = "1";
-        }).catch(() => { });
-    }, 2000);
 }
 
-changeHero(0);
-heroInterval = setInterval(() => {
-    currentHero = (currentHero + 1) % heroMovies.length;
-    changeHero(currentHero);
-}, 9000);
+/* ── Fallback Hero Data (in case API fails) ── */
+function useFallbackHero() {
+    heroMovies = [
+        {
+            title: "Dune: Part Two",
+            year: "2024",
+            description: "Paul Atreides joins the Fremen and fights for Arrakis.",
+            poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
+            backdrop: "https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
+            rating: "8.5",
+            genre: "Sci-Fi",
+            trailer: "https://www.youtube.com/embed/8Bk2Tt-EXeE?autoplay=1&mute=1&loop=1&playlist=8Bk2Tt-EXeE&start=5&end=13&controls=0",
+            hasTrailer: true,
+            language: "en"
+        },
+        {
+            title: "The Dark Knight",
+            year: "2008",
+            description: "When the menace known as the Joker wreaks havoc on Gotham, Batman must accept one of the greatest psychological tests.",
+            poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+            backdrop: "https://image.tmdb.org/t/p/original/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg",
+            rating: "9.0",
+            genre: "Action",
+            trailer: "https://www.youtube.com/embed/EXeTwQWrcwY?autoplay=1&mute=1&loop=1&playlist=EXeTwQWrcwY&start=5&end=13&controls=0",
+            hasTrailer: true,
+            language: "en"
+        },
+        {
+            title: "Inception",
+            year: "2010",
+            description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.",
+            poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+            backdrop: "https://image.tmdb.org/t/p/original/s3TBrgb1vv2QPEdn9c7H3uU3cYr.jpg",
+            rating: "8.8",
+            genre: "Sci-Fi",
+            trailer: "https://www.youtube.com/embed/YoHD9XEInc0?autoplay=1&mute=1&loop=1&playlist=YoHD9XEInc0&start=5&end=13&controls=0",
+            hasTrailer: true,
+            language: "en"
+        },
+        {
+            title: "Interstellar",
+            year: "2014",
+            description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+            poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+            backdrop: "https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg",
+            rating: "8.6",
+            genre: "Sci-Fi",
+            trailer: "https://www.youtube.com/embed/zSWdZVtXT7E?autoplay=1&mute=1&loop=1&playlist=zSWdZVtXT7E&start=5&end=13&controls=0",
+            hasTrailer: true,
+            language: "en"
+        },
+        {
+            title: "The Matrix",
+            year: "1999",
+            description: "A computer hacker learns about the true nature of his reality and his role in the war against its controllers.",
+            poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+            backdrop: "https://image.tmdb.org/t/p/original/fNG7i7R8MlLwVkzJjW5R3VdJd6T.jpg",
+            rating: "8.7",
+            genre: "Action",
+            trailer: "https://www.youtube.com/embed/vKQi3bBA1y8?autoplay=1&mute=1&loop=1&playlist=vKQi3bBA1y8&start=5&end=13&controls=0",
+            hasTrailer: true,
+            language: "en"
+        }
+    ];
+    buildHero();
+}
 
-document.getElementById("hero-video").addEventListener("ended", () => {
-    currentHero = (currentHero + 1) % heroMovies.length;
-    changeHero(currentHero);
-});
+/* ── Build Hero Slides ── */
+function buildHero() {
+    const slidesContainer = document.getElementById('heroSlides');
+    const indicatorsContainer = document.getElementById('heroIndicators');
+
+    if (!slidesContainer || !indicatorsContainer) {
+        // If elements don't exist, create them
+        const heroBanner = document.getElementById('heroBanner');
+        if (heroBanner) {
+            // Create slides container if it doesn't exist
+            if (!slidesContainer) {
+                const newSlides = document.createElement('div');
+                newSlides.className = 'hero-slides';
+                newSlides.id = 'heroSlides';
+                heroBanner.prepend(newSlides);
+            }
+            // Create indicators container if it doesn't exist
+            if (!indicatorsContainer) {
+                const newIndicators = document.createElement('div');
+                newIndicators.className = 'hero-indicators';
+                newIndicators.id = 'heroIndicators';
+                heroBanner.appendChild(newIndicators);
+            }
+        }
+    }
+
+    const slides = document.getElementById('heroSlides');
+    const indicators = document.getElementById('heroIndicators');
+
+    if (!slides || !indicators) return;
+
+    // Clear containers
+    slides.innerHTML = '';
+    indicators.innerHTML = '';
+
+    // Build slides
+    heroMovies.forEach((movie, index) => {
+        // Slide
+        const slide = document.createElement('div');
+        slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
+        slide.dataset.index = index;
+
+        // YouTube iframe for trailer
+        const iframe = document.createElement('iframe');
+        iframe.src = movie.trailer || '';
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.allowFullscreen = true;
+        iframe.loading = 'lazy';
+        slide.appendChild(iframe);
+
+        // Content overlay
+        const content = document.createElement('div');
+        content.className = 'hero-content';
+        content.innerHTML = `
+            <h2 class="hero-title">${movie.title || 'Untitled'}</h2>
+            <div class="hero-meta">
+                <span class="hero-year">${movie.year || 'N/A'}</span>
+                ${movie.rating && movie.rating !== 'N/A' ? `<span class="hero-rating">⭐ ${movie.rating}</span>` : ''}
+                <span class="hero-genre">${movie.genre || 'Movie'}</span>
+                ${movie.language ? `<span class="hero-language">${movie.language.toUpperCase()}</span>` : ''}
+            </div>
+            <p class="hero-description">${movie.description || 'No description available'}</p>
+            <div class="hero-buttons">
+                <button class="hero-btn-play" onclick="playTrailer('${movie.trailer || ''}')">
+                    ▶ Play
+                </button>
+                <button class="hero-btn-mylist" onclick="addToMyList('${movie.title}', '${movie.poster}')">
+                    + My List
+                </button>
+            </div>
+        `;
+
+        slide.appendChild(content);
+        slides.appendChild(slide);
+
+        // Indicator dot
+        const dot = document.createElement('button');
+        dot.className = `hero-dot${index === 0 ? ' active' : ''}`;
+        dot.dataset.index = index;
+        dot.addEventListener('click', () => goToSlide(index));
+        indicators.appendChild(dot);
+    });
+
+    // Start autoplay
+    goToSlide(0);
+    startAutoplay();
+}
+
+/* ── Navigation ── */
+function goToSlide(index) {
+    if (heroMovies.length === 0) return;
+
+    if (index < 0) index = heroMovies.length - 1;
+    if (index >= heroMovies.length) index = 0;
+
+    currentSlide = index;
+
+    // Update slides
+    document.querySelectorAll('.hero-slide').forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+    });
+
+    // Update dots
+    document.querySelectorAll('.hero-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
+function nextSlide() {
+    goToSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+    goToSlide(currentSlide - 1);
+}
+
+/* ── Autoplay ── */
+function startAutoplay() {
+    if (slideInterval) clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, HERO_INTERVAL);
+}
+
+function resetAutoplay() {
+    if (slideInterval) {
+        clearInterval(slideInterval);
+        startAutoplay();
+    }
+}
+
+/* ── Event Listeners ── */
+document.addEventListener('DOMContentLoaded', fetchHeroMovies);
+
+// Wait for DOM to load before adding event listeners
+setTimeout(() => {
+    const prevBtn = document.getElementById('heroPrev');
+    const nextBtn = document.getElementById('heroNext');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetAutoplay();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetAutoplay();
+        });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+            resetAutoplay();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+            resetAutoplay();
+        }
+    });
+}, 500);
+
+/* ── Utility Functions ── */
+function playTrailer(trailerUrl) {
+    if (!trailerUrl) {
+        showToast('Trailer not available');
+        return;
+    }
+    // Open trailer in a new tab with controls
+    window.open(trailerUrl.replace('autoplay=1', 'autoplay=1&controls=1'), '_blank');
+}
+
+function addToMyList(title, poster) {
+    let myList = JSON.parse(localStorage.getItem('myList')) || [];
+    if (!myList.some(item => item.title === title)) {
+        myList.push({ title, poster });
+        localStorage.setItem('myList', JSON.stringify(myList));
+        showToast(`Added: ${title} ♥`);
+    } else {
+        showToast(`Already in your list`);
+    }
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    if (!toast) return;
+    toastMsg.innerText = message;
+    toast.classList.remove('show');
+    void toast.offsetWidth;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
 
 // ── CATALOG ROWS ─────────────────────────────────────────────
 async function fetchData(endpoint) {
@@ -104,6 +322,7 @@ function createCard(movie) {
         </div>
     `;
 }
+
 async function loadRow(endpoint, containerId, sectionId) {
     const container = document.getElementById(containerId);
     const section = sectionId ? document.getElementById(sectionId) : null;
@@ -137,8 +356,7 @@ async function loadHome() {
     await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
     await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
     await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
-    attachPreviews();
 }
 
+// ── Initialize ──
 loadHome();
-loadHome().then(() => attachPreviews());
