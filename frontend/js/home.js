@@ -6,73 +6,61 @@ let slideInterval = null;
 let heroMovies = [];
 const HERO_INTERVAL = 8000;
 
-/* ── Fetch Hero Movies from Backend ── */
+/* ── Fetch Hero Movies from Local JSON ── */
 async function fetchHeroMovies() {
     try {
-        const response = await fetch('https://novastream-o3ri.onrender.com/api/hero');
+        // Load from locally generated JSON file
+        const response = await fetch('/data/heroMovies.json');
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data && data.length > 0) {
+                heroMovies = data;
+                buildHero();
+                console.log('✅ Loaded hero movies from local JSON');
+                return;
+            }
         }
 
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-            heroMovies = data.map(m => ({
-                title: m.title,
-                year: m.year,
-                description: m.description || m.Plot || "No description available",
-                poster: m.poster || m.Poster || "N/A",
-                backdrop: m.backdrop || m.Backdrop || m.poster || m.Poster || "N/A",
-                rating: m.rating || m.imdbRating || "N/A",
-                genres: m.genre || (m.genres || []).join(' • ') || 'Movie',
-                trailerKey: m.trailerKey || m.videoKey || null,
-                language: m.language || "en"
-            }));
-            buildHero();
-            return;
-        }
-
-        console.log('No hero data, fetching from trending...');
+        // Fallback: fetch from trending API
+        console.log('⚠️ Local JSON not found, falling back to API...');
         await fetchHeroFromTrending();
-
     } catch (error) {
         console.error('Hero fetch failed:', error);
         await fetchHeroFromTrending();
     }
 }
 
-/* ── Fallback: Fetch from Trending ── */
+/* ── Fallback: Fetch from Trending API ── */
 async function fetchHeroFromTrending() {
     try {
         const res = await fetch(`${API}/trending?type=movie&limit=50`);
         const data = await res.json();
 
-        const withBackdrop = data.filter(m =>
-            m.Backdrop && m.Backdrop !== 'N/A' && m.Backdrop !== '' &&
-            m.Poster && m.Poster !== 'N/A'
+        const withPoster = data.filter(m =>
+            m.Poster && m.Poster !== 'N/A' && m.Poster !== ''
         );
 
-        if (withBackdrop.length === 0) {
+        if (withPoster.length === 0) {
             useFallbackHero();
             return;
         }
 
-        const shuffled = [...withBackdrop].sort(() => Math.random() - 0.5);
+        const shuffled = [...withPoster].sort(() => Math.random() - 0.5);
         heroMovies = shuffled.slice(0, 5).map(m => ({
             title: m.Title,
             year: m.Year,
             description: m.Plot || "No description available",
             poster: m.Poster,
-            backdrop: m.Backdrop,
+            backdrop: m.Backdrop || m.Poster,
             rating: m.imdbRating || "N/A",
             genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
-            trailerKey: m.trailerKey || null,
-            language: m.Language || "en"
+            language: m.Language || "en",
+            preview: null,
+            hasPreview: false
         }));
 
         buildHero();
-
     } catch (err) {
         console.error('Trending fetch failed:', err);
         useFallbackHero();
@@ -90,8 +78,9 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
             rating: "8.2",
             genres: "Sci-Fi • Adventure",
-            trailerKey: null,
-            language: "en"
+            language: "en",
+            preview: null,
+            hasPreview: false
         },
         {
             title: "The Dark Knight",
@@ -101,8 +90,9 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
             rating: "9.0",
             genres: "Action • Crime",
-            trailerKey: null,
-            language: "en"
+            language: "en",
+            preview: null,
+            hasPreview: false
         },
         {
             title: "Inception",
@@ -112,8 +102,9 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
             rating: "8.8",
             genres: "Sci-Fi • Thriller",
-            trailerKey: null,
-            language: "en"
+            language: "en",
+            preview: null,
+            hasPreview: false
         },
         {
             title: "Interstellar",
@@ -123,8 +114,9 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
             rating: "8.6",
             genres: "Sci-Fi • Drama",
-            trailerKey: null,
-            language: "en"
+            language: "en",
+            preview: null,
+            hasPreview: false
         },
         {
             title: "Oppenheimer",
@@ -134,8 +126,9 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
             rating: "8.3",
             genres: "Drama • History",
-            trailerKey: null,
-            language: "en"
+            language: "en",
+            preview: null,
+            hasPreview: false
         }
     ];
     buildHero();
@@ -154,7 +147,7 @@ function buildHero() {
         const slide = document.createElement('div');
         slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
 
-        // ── BACKGROUND (Image only) ──
+        // ─── BACKGROUND CONTAINER ───
         const bgContainer = document.createElement('div');
         bgContainer.className = 'hero-bg-container';
         bgContainer.style.cssText = `
@@ -168,22 +161,38 @@ function buildHero() {
             background: #0a0a0a;
         `;
 
-        const posterUrl = movie.backdrop || movie.poster || '';
-
-        if (posterUrl) {
-            const img = document.createElement('img');
-            img.src = posterUrl;
-            img.alt = movie.title;
-            img.style.cssText = `
+        // ─── USE PREVIEW VIDEO IF AVAILABLE ───
+        if (movie.hasPreview && movie.preview) {
+            const video = document.createElement('video');
+            video.src = movie.preview;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.autoplay = true;
+            video.style.cssText = `
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                display: block;
             `;
-            bgContainer.appendChild(img);
+            bgContainer.appendChild(video);
+        } else {
+            // Use poster image
+            const posterUrl = movie.backdrop || movie.poster || '';
+            if (posterUrl) {
+                const img = document.createElement('img');
+                img.src = posterUrl;
+                img.alt = movie.title;
+                img.style.cssText = `
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                `;
+                bgContainer.appendChild(img);
+            }
         }
 
-        // ── GRADIENT OVERLAYS ──
+        // ─── GRADIENT OVERLAYS ───
         const gradLeft = document.createElement('div');
         gradLeft.style.cssText = `
             position: absolute;
@@ -217,7 +226,7 @@ function buildHero() {
             );
         `;
 
-        // ── CONTENT ──
+        // ─── CONTENT ───
         const content = document.createElement('div');
         content.className = 'hero-content';
         content.style.cssText = `
@@ -259,7 +268,6 @@ function buildHero() {
                 <span style="color:#d4af37;font-weight:600;">${movie.year || ''}</span>
                 ${rating ? `<span style="color:#46d369;font-weight:600;">⭐ ${rating}</span>` : ''}
                 ${genresStr ? `<span style="color:#aaa;font-size:0.9rem;">${genresStr}</span>` : ''}
-                ${movie.language && movie.language !== 'en' ? `<span style="color:#aaa;font-size:0.9rem;">${movie.language.toUpperCase()}</span>` : ''}
             </div>
             <p class="hero-description" style="
                 font-size: 1rem;
@@ -314,14 +322,14 @@ function buildHero() {
         slide.appendChild(content);
         slides.appendChild(slide);
 
-        // ── DOT INDICATOR ──
+        // ─── DOT INDICATOR ───
         const dot = document.createElement('button');
         dot.className = `hero-dot${index === 0 ? ' active' : ''}`;
         dot.addEventListener('click', () => { goToSlide(index); resetAutoplay(); });
         indicators.appendChild(dot);
     });
 
-    // ── PROGRESS BAR ──
+    // ─── PROGRESS BAR ───
     const existingBar = document.getElementById('heroProgress');
     if (existingBar) existingBar.remove();
 
@@ -342,6 +350,7 @@ function buildHero() {
     goToSlide(0);
     startAutoplay();
 }
+
 /* ── Navigation ── */
 function goToSlide(index) {
     if (!heroMovies.length) return;
@@ -438,15 +447,13 @@ function shuffle(arr) {
 
 function createCard(movie) {
     const genres = (movie.genres || []).join(', ');
-    const trailerAttr = movie.trailerKey ? `data-trailer="${movie.trailerKey}"` : '';
     return `
         <div class="card"
              onclick="openMovie('${movie.Title.replace(/'/g, "\\'")}')"
              data-title="${movie.Title.replace(/"/g, '&quot;')}"
              data-year="${movie.Year || ''}"
              data-rating="${movie.imdbRating || ''}"
-             data-genres="${genres}"
-             ${trailerAttr}>
+             data-genres="${genres}">
             <img src="${movie.Poster}" alt="${movie.Title}" onerror="this.parentElement.style.display='none'">
             <div class="movie-info">
                 <h3>${movie.Title}</h3>
@@ -465,9 +472,6 @@ async function loadRow(endpoint, containerId, sectionId) {
         return;
     }
     container.innerHTML = shuffle(data).slice(0, 20).map(createCard).join("");
-    if (typeof attachPreviews === 'function') {
-        attachPreviews();
-    }
 }
 
 function openMovie(title) {
@@ -489,9 +493,6 @@ async function loadHome() {
     await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
     await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
     await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
-    if (typeof attachPreviews === 'function') {
-        attachPreviews();
-    }
 }
 
 // ── Initialize ──
