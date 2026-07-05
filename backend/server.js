@@ -439,6 +439,7 @@ app.get("/api/hero-hd", async (req, res) => {
 });
 
 // ─── LIVE HERO: FETCH 2025-2026 TRENDING FROM TMDB ───
+// ─── LIVE HERO: FETCH 2025-2026 TRENDING FROM TMDB ───
 app.get("/api/hero-live", async (req, res) => {
     try {
         const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -460,7 +461,7 @@ app.get("/api/hero-live", async (req, res) => {
         const data = await response.json();
         const movies = data.results || [];
 
-        // ─── FILTER: 2025-2026 + HD POSTER + TRAILER ───
+        // ─── FILTER: 2025-2026 + HAS POSTER OR BACKDROP + TRAILER ───
         const hdMovies = [];
 
         for (const movie of movies) {
@@ -468,14 +469,11 @@ app.get("/api/hero-live", async (req, res) => {
             const year = parseInt(movie.release_date?.slice(0, 4));
             if (isNaN(year) || year < 2025 || year > 2026) continue;
 
-            // Must have poster
-            if (!movie.poster_path) continue;
-
-            // Must have backdrop
-            if (!movie.backdrop_path) continue;
+            // Must have poster OR backdrop (at least one)
+            if (!movie.poster_path && !movie.backdrop_path) continue;
 
             // Must have vote count (popularity check)
-            if (!movie.vote_count || movie.vote_count < 100) continue;
+            if (!movie.vote_count || movie.vote_count < 50) continue;
 
             // Fetch trailer
             let trailerKey = null;
@@ -508,7 +506,7 @@ app.get("/api/hero-live", async (req, res) => {
             return res.json([]);
         }
 
-        console.log(`✅ Found ${hdMovies.length} trending 2025-2026 movies with HD posters`);
+        console.log(`✅ Found ${hdMovies.length} trending 2025-2026 movies`);
 
         // Shuffle and pick 5
         const shuffled = shuffle(hdMovies);
@@ -520,21 +518,34 @@ app.get("/api/hero-live", async (req, res) => {
             return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&loop=1&playlist=${key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
         }
 
-        const heroMovies = selected.map(movie => ({
-            id: movie.id,
-            title: movie.title,
-            year: movie.release_date?.slice(0, 4) || "N/A",
-            description: movie.overview || "No description available",
-            poster: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-            backdrop: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
-            rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
-            genre: movie.genre_ids && movie.genre_ids.length > 0 ? "Movie" : "Movie",
-            genres: movie.genre_ids || [],
-            trailerKey: movie.trailerKey,
-            videoUrl: buildYouTubeEmbedUrl(movie.trailerKey),
-            hasVideo: !!movie.trailerKey,
-            language: movie.original_language || "en"
-        }));
+        const heroMovies = selected.map(movie => {
+            // Use poster if available, otherwise use backdrop
+            const posterUrl = movie.poster_path
+                ? `https://image.tmdb.org/t/p/original${movie.poster_path}`
+                : movie.backdrop_path
+                    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                    : null;
+
+            const backdropUrl = movie.backdrop_path
+                ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                : posterUrl;
+
+            return {
+                id: movie.id,
+                title: movie.title,
+                year: movie.release_date?.slice(0, 4) || "N/A",
+                description: movie.overview || "No description available",
+                poster: posterUrl,
+                backdrop: backdropUrl,
+                rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
+                genre: movie.genre_ids && movie.genre_ids.length > 0 ? "Movie" : "Movie",
+                genres: movie.genre_ids || [],
+                trailerKey: movie.trailerKey,
+                videoUrl: buildYouTubeEmbedUrl(movie.trailerKey),
+                hasVideo: !!movie.trailerKey,
+                language: movie.original_language || "en"
+            };
+        });
 
         console.log(`✅ Hero-Live: ${heroMovies.length} trending 2025-2026 movies sent`);
         res.json(heroMovies);
