@@ -9,36 +9,43 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies from Backend ── */
 async function fetchHeroMovies() {
     try {
-        const response = await fetch('https://novastream-o3ri.onrender.com/api/hero');
+        // Fetch from trending with high quality posters
+        const res = await fetch(`${API}/trending?type=movie&limit=50`);
+        const data = await res.json();
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
+        // Filter movies with best quality posters and backdrops
+        const withQuality = data.filter(m =>
+            m.Poster && m.Poster !== 'N/A' && m.Poster !== '' &&
+            m.Backdrop && m.Backdrop !== 'N/A' && m.Backdrop !== '' &&
+            m.imdbRating && parseFloat(m.imdbRating) > 6.0
+        );
 
-        const data = await response.json();
+        // Sort by rating (highest first)
+        const sorted = [...withQuality].sort((a, b) =>
+            parseFloat(b.imdbRating || 0) - parseFloat(a.imdbRating || 0)
+        );
 
-        if (data && data.length > 0) {
-            heroMovies = data.map(m => ({
-                title: m.title,
-                year: m.year,
-                description: m.description || m.Plot || "No description available",
-                poster: m.poster || m.Poster || "N/A",
-                backdrop: m.backdrop || m.Backdrop || m.poster || m.Poster || "N/A",
-                rating: m.rating || m.imdbRating || "N/A",
-                genres: m.genre || (m.genres || []).join(' • ') || 'Movie',
-                trailerKey: m.trailerKey || m.videoKey || null,  // ← USE TRAILERKEY
-                language: m.language || "en"
-            }));
-            buildHero();
-            return;
-        }
+        // Shuffle and pick 5 random from top 20
+        const shuffled = shuffle(sorted.slice(0, 20));
+        const selected = shuffled.slice(0, 5);
 
-        console.log('No hero data, fetching from trending...');
-        await fetchHeroFromTrending();
+        heroMovies = selected.map(m => ({
+            title: m.Title,
+            year: m.Year,
+            description: m.Plot || "No description available",
+            poster: m.Poster,
+            backdrop: m.Backdrop,
+            rating: m.imdbRating || "N/A",
+            genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
+            language: m.Language || "en",
+            tmdbId: m.tmdbId
+        }));
+
+        buildHero();
 
     } catch (error) {
         console.error('Hero fetch failed:', error);
-        await fetchHeroFromTrending();
+        useFallbackHero();
     }
 }
 
@@ -90,7 +97,6 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
             rating: "8.2",
             genres: "Sci-Fi • Adventure",
-            trailerKey: "8Bk2Tt-EXeE",
             language: "en"
         },
         {
@@ -101,7 +107,6 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
             rating: "9.0",
             genres: "Action • Crime",
-            trailerKey: "EXeTwQWrcwY",
             language: "en"
         },
         {
@@ -112,7 +117,6 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
             rating: "8.8",
             genres: "Sci-Fi • Thriller",
-            trailerKey: "YoHD9XEInc0",
             language: "en"
         },
         {
@@ -123,7 +127,6 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
             rating: "8.6",
             genres: "Sci-Fi • Drama",
-            trailerKey: "zSWdZVtXT7E",
             language: "en"
         },
         {
@@ -134,7 +137,6 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
             rating: "8.3",
             genres: "Drama • History",
-            trailerKey: "uYPbbksJxIg",
             language: "en"
         }
     ];
@@ -154,7 +156,7 @@ function buildHero() {
         const slide = document.createElement('div');
         slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
 
-        // ── BACKGROUND (Video or Image) ──
+        // ── BACKGROUND ──
         const bgContainer = document.createElement('div');
         bgContainer.className = 'hero-bg-container';
         bgContainer.style.cssText = `
@@ -162,28 +164,12 @@ function buildHero() {
             inset: 0;
             z-index: 1;
             overflow: hidden;
+            background: #0a0a0a;
         `;
 
-        // ─── USE TRAILERKEY FOR VIDEO ───
-        const trailerKey = movie.trailerKey || null;
+        // Use poster as background image
         const posterUrl = movie.backdrop || movie.poster || '';
-
-        if (trailerKey) {
-            // Clean YouTube embed with 8-second preview (5s to 13s)
-            // No YouTube branding, no controls
-            const iframe = document.createElement('iframe');
-            iframe.src = `https://www.youtube-nocookie.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
-            iframe.allow = 'autoplay; encrypted-media; fullscreen';
-            iframe.allowFullscreen = true;
-            iframe.style.cssText = `
-                width: 100%;
-                height: 100%;
-                border: none;
-                pointer-events: none;
-            `;
-            bgContainer.appendChild(iframe);
-        } else if (posterUrl) {
-            // Use backdrop image
+        if (posterUrl) {
             const img = document.createElement('img');
             img.src = posterUrl;
             img.alt = movie.title;
@@ -193,8 +179,6 @@ function buildHero() {
                 object-fit: cover;
             `;
             bgContainer.appendChild(img);
-        } else {
-            bgContainer.style.background = '#1a1a1a';
         }
 
         // ── GRADIENT OVERLAYS ──
@@ -273,6 +257,7 @@ function buildHero() {
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.8);
             ">${movie.description || 'No description available'}</p>
             <div class="hero-buttons" style="display:flex;gap:12px;flex-wrap:wrap;">
                 <button onclick="openMovie('${movie.title.replace(/'/g, "\\'")}')" style="
@@ -343,7 +328,6 @@ function buildHero() {
     goToSlide(0);
     startAutoplay();
 }
-
 /* ── Navigation ── */
 function goToSlide(index) {
     if (!heroMovies.length) return;
