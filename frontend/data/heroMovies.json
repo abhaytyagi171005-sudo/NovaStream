@@ -7,8 +7,8 @@
     "rating": "8.2",
     "poster": "/images/hero-posters/obsession.jpg",
     "backdrop": "/images/hero-posters/obsession-backdrop.jpg",
-    "preview": null,
-    "hasPreview": false,
+    "preview": "https://www.youtube-nocookie.com/embed/aGZ_uALWvk8?autoplay=1&mute=1&loop=1&playlist=aGZ_uALWvk8&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1",
+    "hasPreview": true,
     "genres": "27 • 53",
     "trailerKey": "aGZ_uALWvk8"
   },
@@ -20,8 +20,8 @@
     "rating": "7.1",
     "poster": "/images/hero-posters/enola-holmes-3.jpg",
     "backdrop": "/images/hero-posters/enola-holmes-3-backdrop.jpg",
-    "preview": null,
-    "hasPreview": false,
+    "preview": "https://www.youtube-nocookie.com/embed/n_pEJjq-9xQ?autoplay=1&mute=1&loop=1&playlist=n_pEJjq-9xQ&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1",
+    "hasPreview": true,
     "genres": "12 • 80 • 9648",
     "trailerKey": "n_pEJjq-9xQ"
   },
@@ -33,8 +33,8 @@
     "rating": "7.0",
     "poster": "/images/hero-posters/the-devil-wears-prada-2.jpg",
     "backdrop": "/images/hero-posters/the-devil-wears-prada-2-backdrop.jpg",
-    "preview": null,
-    "hasPreview": false,
+    "preview": "https://www.youtube-nocookie.com/embed/iqShRFQ9ZYI?autoplay=1&mute=1&loop=1&playlist=iqShRFQ9ZYI&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1",
+    "hasPreview": true,
     "genres": "35 • 18",
     "trailerKey": "iqShRFQ9ZYI"
   },
@@ -46,8 +46,8 @@
     "rating": "6.5",
     "poster": "/images/hero-posters/minions-monsters.jpg",
     "backdrop": "/images/hero-posters/minions-monsters-backdrop.jpg",
-    "preview": null,
-    "hasPreview": false,
+    "preview": "https://www.youtube-nocookie.com/embed/a_G7XFjggI8?autoplay=1&mute=1&loop=1&playlist=a_G7XFjggI8&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1",
+    "hasPreview": true,
     "genres": "12 • 16 • 35",
     "trailerKey": "a_G7XFjggI8"
   },
@@ -59,8 +59,8 @@
     "rating": "6.8",
     "poster": "/images/hero-posters/backrooms.jpg",
     "backdrop": "/images/hero-posters/backrooms-backdrop.jpg",
-    "preview": null,
-    "hasPreview": false,
+    "preview": "https://www.youtube-nocookie.com/embed/5C-zBIuvGnU?autoplay=1&mute=1&loop=1&playlist=5C-zBIuvGnU&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1",
+    "hasPreview": true,
     "genres": "27 • 9648 • 878",
     "trailerKey": "5C-zBIuvGnU"
   }
