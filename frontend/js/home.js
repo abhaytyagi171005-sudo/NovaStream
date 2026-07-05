@@ -13,10 +13,11 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies ── */
 /* ── Fetch Hero Movies (HD only) ── */
 /* ── Fetch Hero Movies (HD only, 2025-2026 trending) ── */
+/* ── Fetch Hero Movies (Live from TMDB, 2025-2026 only) ── */
 async function fetchHeroMovies() {
     try {
-        // Use the HD endpoint with 2025-2026 filter
-        const response = await fetch(`${API}/hero-hd`);
+        // Use the live TMDB endpoint
+        const response = await fetch(`${API}/hero-live`);
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -27,74 +28,29 @@ async function fetchHeroMovies() {
         if (data && data.length > 0) {
             heroMovies = data;
             buildHero();
-            console.log(`✅ Loaded ${heroMovies.length} trending 2025-2026 HD movies`);
+            console.log(`✅ Loaded ${heroMovies.length} trending 2025-2026 movies from TMDB`);
             return;
         }
 
-        // Fallback: fetch from trending with HD filter
-        console.log('⚠️ No HD movies from endpoint, fetching from trending...');
-        await fetchHeroFromTrending();
+        // Fallback: use hero-hd
+        console.log('⚠️ No live movies, falling back to hero-hd...');
+        const fallbackResponse = await fetch(`${API}/hero-hd`);
+        if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            if (fallbackData && fallbackData.length > 0) {
+                heroMovies = fallbackData;
+                buildHero();
+                console.log(`✅ Loaded ${heroMovies.length} HD movies from catalog`);
+                return;
+            }
+        }
+
+        // Ultimate fallback
+        console.log('⚠️ No movies found, using hardcoded fallback');
+        useFallbackHero();
 
     } catch (error) {
         console.error('Hero fetch failed:', error);
-        await fetchHeroFromTrending();
-    }
-}
-
-/* ── Fallback: Fetch from Trending with HD filter ── */
-async function fetchHeroFromTrending() {
-    try {
-        const res = await fetch(`${API}/trending?type=movie&limit=100`);
-        const data = await res.json();
-
-        // ─── HD FILTER ───
-        const hdMovies = data.filter(m =>
-            m.Poster &&
-            m.Poster !== 'N/A' &&
-            m.Poster !== '' &&
-            m.Poster.includes('image.tmdb.org') &&
-            m.Backdrop &&
-            m.Backdrop !== 'N/A' &&
-            m.Backdrop !== '' &&
-            m.Backdrop.includes('image.tmdb.org') &&
-            m.Year &&
-            parseInt(m.Year) >= 2015 &&
-            m.imdbRating &&
-            parseFloat(m.imdbRating) > 5.0
-        );
-
-        if (hdMovies.length === 0) {
-            console.warn('No HD movies found, using fallback');
-            useFallbackHero();
-            return;
-        }
-
-        // Shuffle and pick 5
-        const shuffled = [...hdMovies];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-
-        const selected = shuffled.slice(0, 5);
-
-        heroMovies = selected.map(m => ({
-            title: m.Title,
-            year: m.Year,
-            description: m.Plot || "No description available",
-            poster: m.Poster,
-            backdrop: m.Backdrop || m.Poster,
-            rating: m.imdbRating || "N/A",
-            genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
-            language: m.Language || "en",
-            trailerKey: m.trailerKey || null
-        }));
-
-        buildHero();
-        console.log(`✅ Loaded ${heroMovies.length} HD movies from trending`);
-
-    } catch (err) {
-        console.error('Trending fetch failed:', err);
         useFallbackHero();
     }
 }

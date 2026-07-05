@@ -287,8 +287,7 @@ app.get("/api/hero", async (req, res) => {
     }
 });
 
-// ─── NEW: HD-ONLY HERO ENDPOINT ───
-// ─── NEW: HD-ONLY HERO ENDPOINT (2025-2026 Trending) ───
+// ─── HD-ONLY HERO ENDPOINT (2025-2026 Trending) ───
 app.get("/api/hero-hd", async (req, res) => {
     try {
         let movies = getPremiumMovies();
@@ -297,34 +296,19 @@ app.get("/api/hero-hd", async (req, res) => {
 
         // ─── HD FILTER + 2025-2026 ONLY ───
         const hdMovies = movies.filter(movie => {
-            // Must have poster
             if (!movie.poster || movie.poster === "N/A" || movie.poster === "") return false;
-
-            // Must have backdrop
             if (!movie.backdrop || movie.backdrop === "N/A" || movie.backdrop === "") return false;
-
-            // Poster must be from TMDB (HD quality)
             if (!movie.poster.includes('image.tmdb.org')) return false;
-
-            // Backdrop must be from TMDB
             if (!movie.backdrop.includes('image.tmdb.org')) return false;
-
-            // Must have a rating (popularity check)
             if (!movie.rating || parseFloat(movie.rating) < 6.0) return false;
-
-            // ─── ONLY 2025-2026 MOVIES ───
             const year = parseInt(movie.year);
             if (isNaN(year) || year < 2025 || year > 2026) return false;
-
-            // Must be trending or popular
             if (!movie.trending && !movie.popular) return false;
-
             return true;
         });
 
         if (hdMovies.length === 0) {
             console.warn('⚠️ No 2025-2026 HD movies found, falling back to 2024+');
-            // Fallback: try 2024+
             const fallbackMovies = movies.filter(movie => {
                 if (!movie.poster || movie.poster === "N/A" || movie.poster === "") return false;
                 if (!movie.backdrop || movie.backdrop === "N/A" || movie.backdrop === "") return false;
@@ -344,7 +328,6 @@ app.get("/api/hero-hd", async (req, res) => {
             const shuffled = shuffle(fallbackMovies);
             const selected = shuffled.slice(0, 5);
 
-            // Return fallback movies with YouTube embeds
             const TMDB_API_KEY = process.env.TMDB_API_KEY;
             function buildYouTubeEmbedUrl(key) {
                 if (!key) return null;
@@ -381,7 +364,6 @@ app.get("/api/hero-hd", async (req, res) => {
 
         console.log(`✅ Found ${hdMovies.length} trending 2025-2026 HD movies`);
 
-        // Shuffle and pick 5 random
         const shuffled = shuffle(hdMovies);
         const selected = shuffled.slice(0, 5);
 
@@ -453,6 +435,113 @@ app.get("/api/hero-hd", async (req, res) => {
     } catch (error) {
         console.error('❌ Error in /api/hero-hd:', error);
         res.status(500).json({ error: 'Failed to fetch HD hero movies' });
+    }
+});
+
+// ─── LIVE HERO: FETCH 2025-2026 TRENDING FROM TMDB ───
+app.get("/api/hero-live", async (req, res) => {
+    try {
+        const TMDB_API_KEY = process.env.TMDB_API_KEY;
+
+        if (!TMDB_API_KEY) {
+            console.warn('⚠️ TMDB_API_KEY not set');
+            return res.json([]);
+        }
+
+        // ─── FETCH TRENDING MOVIES ───
+        const response = await fetch(
+            `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}&language=en-US`
+        );
+
+        if (!response.ok) {
+            throw new Error(`TMDB API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const movies = data.results || [];
+
+        // ─── FILTER: 2025-2026 + HD POSTER + TRAILER ───
+        const hdMovies = [];
+
+        for (const movie of movies) {
+            // Check year
+            const year = parseInt(movie.release_date?.slice(0, 4));
+            if (isNaN(year) || year < 2025 || year > 2026) continue;
+
+            // Must have poster
+            if (!movie.poster_path) continue;
+
+            // Must have backdrop
+            if (!movie.backdrop_path) continue;
+
+            // Must have vote count (popularity check)
+            if (!movie.vote_count || movie.vote_count < 100) continue;
+
+            // Fetch trailer
+            let trailerKey = null;
+            try {
+                const videoResponse = await fetch(
+                    `https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${TMDB_API_KEY}&language=en-US`
+                );
+                if (videoResponse.ok) {
+                    const videoData = await videoResponse.json();
+                    const trailer = videoData.results?.find(v =>
+                        v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser')
+                    );
+                    if (trailer) trailerKey = trailer.key;
+                }
+            } catch (e) {
+                console.warn(`⚠️ No trailer for ${movie.title}`);
+            }
+
+            // Only include if has trailer
+            if (!trailerKey) continue;
+
+            hdMovies.push({
+                ...movie,
+                trailerKey: trailerKey
+            });
+        }
+
+        if (hdMovies.length === 0) {
+            console.warn('⚠️ No 2025-2026 movies found in TMDB trending');
+            return res.json([]);
+        }
+
+        console.log(`✅ Found ${hdMovies.length} trending 2025-2026 movies with HD posters`);
+
+        // Shuffle and pick 5
+        const shuffled = shuffle(hdMovies);
+        const selected = shuffled.slice(0, 5);
+
+        // ─── BUILD RESPONSE ───
+        function buildYouTubeEmbedUrl(key) {
+            if (!key) return null;
+            return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&loop=1&playlist=${key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
+        }
+
+        const heroMovies = selected.map(movie => ({
+            id: movie.id,
+            title: movie.title,
+            year: movie.release_date?.slice(0, 4) || "N/A",
+            description: movie.overview || "No description available",
+            poster: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+            backdrop: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
+            rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
+            genre: movie.genre_ids && movie.genre_ids.length > 0 ? "Movie" : "Movie",
+            genres: movie.genre_ids || [],
+            trailerKey: movie.trailerKey,
+            videoUrl: buildYouTubeEmbedUrl(movie.trailerKey),
+            hasVideo: !!movie.trailerKey,
+            language: movie.original_language || "en"
+        }));
+
+        console.log(`✅ Hero-Live: ${heroMovies.length} trending 2025-2026 movies sent`);
+        res.json(heroMovies);
+
+    } catch (error) {
+        console.error('❌ Error in /api/hero-live:', error);
+        res.status(500).json({ error: 'Failed to fetch live hero movies' });
     }
 });
 
