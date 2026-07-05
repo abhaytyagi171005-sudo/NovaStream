@@ -6,10 +6,11 @@
     "description": "After breaking the mysterious \"One Wish Willow\" to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
     "rating": "8.2",
     "poster": "/images/hero-posters/obsession.jpg",
+    "backdrop": "/images/hero-posters/obsession-backdrop.jpg",
     "preview": null,
     "hasPreview": false,
-    "backdrop": "https://image.tmdb.org/t/p/original/diOZbaDnB2CIilwd0527AB1qMvW.jpg",
-    "genres": "27 • 53"
+    "genres": "27 • 53",
+    "trailerKey": "aGZ_uALWvk8"
   },
   {
     "id": 1202033,
@@ -18,34 +19,11 @@
     "description": "Adventure follows detective Enola Holmes to Malta, where her plans to tie the knot unravel when Sherlock's disappearance plunges her into a perilous case.",
     "rating": "7.1",
     "poster": "/images/hero-posters/enola-holmes-3.jpg",
+    "backdrop": "/images/hero-posters/enola-holmes-3-backdrop.jpg",
     "preview": null,
     "hasPreview": false,
-    "backdrop": "https://image.tmdb.org/t/p/original/jLuGZc84MvPYCQomQg9DI72mstt.jpg",
-    "genres": "12 • 80 • 9648"
-  },
-  {
-    "id": 1081003,
-    "title": "Supergirl",
-    "year": "2026",
-    "description": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
-    "rating": "6.3",
-    "poster": "/images/hero-posters/supergirl.jpg",
-    "preview": null,
-    "hasPreview": false,
-    "backdrop": "https://image.tmdb.org/t/p/original/54KIfdTEzOliHDKx0OkzYGqAICx.jpg",
-    "genres": "28 • 12 • 878"
-  },
-  {
-    "id": 1083381,
-    "title": "Backrooms",
-    "year": "2026",
-    "description": "A strange doorway appears in the basement of a furniture showroom.",
-    "rating": "6.8",
-    "poster": "/images/hero-posters/backrooms.jpg",
-    "preview": null,
-    "hasPreview": false,
-    "backdrop": "https://image.tmdb.org/t/p/original/mCpwRayjXMFzKHbjbzc5JRKfq1O.jpg",
-    "genres": "27 • 9648 • 878"
+    "genres": "12 • 80 • 9648",
+    "trailerKey": "n_pEJjq-9xQ"
   },
   {
     "id": 1084244,
@@ -54,9 +32,36 @@
     "description": "When Bonnie receives a Lilypad tablet as a gift and becomes obsessed, Buzz, Woody, Jessie and the rest of the gang's jobs become exponentially harder when they have to go head to head with the all-new threat to playtime.",
     "rating": "7.4",
     "poster": "/images/hero-posters/toy-story-5.jpg",
+    "backdrop": "/images/hero-posters/toy-story-5-backdrop.jpg",
     "preview": null,
     "hasPreview": false,
-    "backdrop": "https://image.tmdb.org/t/p/original/4D1pdB27uph7J8HQzNf8QvvH9bn.jpg",
-    "genres": "16 • 10751 • 35"
+    "genres": "16 • 10751 • 35",
+    "trailerKey": "lSr5PDyURs8"
+  },
+  {
+    "id": 1314481,
+    "title": "The Devil Wears Prada 2",
+    "year": "2026",
+    "description": "Andy Sachs returns to Runway as Miranda Priestly navigates a new media landscape and Runway's position within. The duo reconnect with former assistant Emily Charlton, now the head of a luxury brand that possesses funding which could ensure Runway's survival.",
+    "rating": "7.0",
+    "poster": "/images/hero-posters/the-devil-wears-prada-2.jpg",
+    "backdrop": "/images/hero-posters/the-devil-wears-prada-2-backdrop.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "genres": "35 • 18",
+    "trailerKey": "iqShRFQ9ZYI"
+  },
+  {
+    "id": 1081003,
+    "title": "Supergirl",
+    "year": "2026",
+    "description": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
+    "rating": "6.3",
+    "poster": "/images/hero-posters/supergirl.jpg",
+    "backdrop": "/images/hero-posters/supergirl-backdrop.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "genres": "28 • 12 • 878",
+    "trailerKey": "0tnDB-qe7KY"
   }
 ]
