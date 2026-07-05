@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 const axios = require('axios');
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -20,18 +19,6 @@ async function fetchTrendingMovies() {
     } catch (error) {
         console.error('Error fetching trending:', error.message);
         return [];
-    }
-}
-
-// ─── FETCH MOVIE DETAILS ───
-async function fetchMovieDetails(movieId) {
-    try {
-        const response = await axios.get(
-            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}&language=en-US`
-        );
-        return response.data;
-    } catch (error) {
-        return null;
     }
 }
 
@@ -72,78 +59,18 @@ async function downloadFile(url, outputPath) {
     }
 }
 
-// ─── CREATE 8-SECOND PREVIEW ───
-// ─── CREATE 8-SECOND PREVIEW (IMPROVED) ───
-function createPreview(inputPath, outputPath) {
-    try {
-        // Check if input file exists and is valid
-        if (!fs.existsSync(inputPath) || fs.statSync(inputPath).size < 10000) {
-            console.log('   ⚠️ Input file too small or missing');
-            return false;
-        }
-
-        // Cut from 5s to 13s (8 seconds) with better settings
-        const cmd = `ffmpeg -ss 5 -i "${inputPath}" -t 8 -c:v libx264 -c:a aac -movflags +faststart -crf 28 -preset veryfast "${outputPath}" -y`;
-        execSync(cmd, {
-            stdio: 'pipe',
-            timeout: 60000 // 1 minute timeout
-        });
-
-        if (fs.existsSync(outputPath) && fs.statSync(outputPath).size > 5000) {
-            return true;
-        }
-        return false;
-    } catch (error) {
-        console.error('   ⚠️ FFmpeg error:', error.message);
-        return false;
-    }
-}
-
-// ─── DOWNLOAD YOUTUBE VIDEO ───
-// ─── DOWNLOAD YOUTUBE VIDEO (IMPROVED) ───
-function downloadYouTube(trailerKey, outputPath) {
-    try {
-        // Try multiple formats and fallbacks
-        const commands = [
-            // Try best quality with mp4
-            `yt-dlp -f "best[ext=mp4][height<=480]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
-            // Try with cookies and user-agent
-            `yt-dlp --user-agent "Mozilla/5.0" -f "best[height<=480]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
-            // Try with no check certificate
-            `yt-dlp --no-check-certificate -f "best" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
-            // Try with yt-dlp's default best format
-            `yt-dlp -f "best" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`
-        ];
-
-        for (const cmd of commands) {
-            try {
-                console.log(`      Trying: ${cmd.substring(0, 50)}...`);
-                execSync(cmd, {
-                    stdio: 'pipe',
-                    timeout: 120000 // 2 minutes timeout
-                });
-                if (fs.existsSync(outputPath) && fs.statSync(outputPath).size > 10000) {
-                    console.log(`      ✅ Downloaded: ${(fs.statSync(outputPath).size / 1024 / 1024).toFixed(1)} MB`);
-                    return true;
-                }
-            } catch (e) {
-                console.log(`      ⚠️ Attempt failed: ${e.message.substring(0, 50)}`);
-                continue;
-            }
-        }
-        return false;
-    } catch (error) {
-        console.error('   ⚠️ yt-dlp error:', error.message);
-        return false;
-    }
-}
-
 // ─── CREATE SLUG ───
 function createSlug(title) {
     return title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '');
+}
+
+// ─── BUILD YOUTUBE EMBED URL ───
+function buildYouTubeEmbedUrl(key) {
+    if (!key) return null;
+    return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&loop=1&playlist=${key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
 }
 
 // ─── MAIN ───
@@ -165,38 +92,32 @@ async function main() {
     for (const movie of movies) {
         const year = parseInt(movie.release_date?.slice(0, 4));
 
-        // 1. Must be 2025-2026
         if (isNaN(year) || year < 2025 || year > 2026) {
             console.log(`❌ ${movie.title} - Skipped (Year: ${year || 'N/A'})`);
             continue;
         }
 
-        // 2. Must have poster_path
         if (!movie.poster_path) {
             console.log(`❌ ${movie.title} - Skipped (No poster)`);
             continue;
         }
 
-        // 3. Must have backdrop_path
         if (!movie.backdrop_path) {
             console.log(`❌ ${movie.title} - Skipped (No backdrop)`);
             continue;
         }
 
-        // 4. Must have vote_count > 100 (popularity)
         if (!movie.vote_count || movie.vote_count < 100) {
             console.log(`❌ ${movie.title} - Skipped (Low popularity: ${movie.vote_count || 0} votes)`);
             continue;
         }
 
-        // 5. Must have trailer
         const trailerKey = await fetchTrailer(movie.id);
         if (!trailerKey) {
             console.log(`❌ ${movie.title} - Skipped (No trailer)`);
             continue;
         }
 
-        // ─── PASSED ALL CHECKS ───
         qualifiedMovies.push({
             ...movie,
             trailerKey: trailerKey
@@ -205,30 +126,26 @@ async function main() {
         console.log(`✅ ${movie.title} (${year}) - Poster: Yes, Backdrop: Yes, Trailer: Yes, Votes: ${movie.vote_count}`);
     }
 
-    // Take top 5 qualified movies
     const topMovies = qualifiedMovies.slice(0, 5);
 
     if (topMovies.length === 0) {
         console.log('\n❌ No 2025-2026 movies with HD posters and trailers found!');
-        console.log('💡 Try running the workflow again later when more movies are available.');
         return;
     }
 
     console.log(`\n📥 Processing ${topMovies.length} movies with HD posters...\n`);
 
-    // Create directories
     const postersDir = path.join(__dirname, '../../frontend/images/hero-posters');
     const previewsDir = path.join(__dirname, '../../frontend/images/hero-previews');
-    const tempDir = path.join(__dirname, '../../temp');
 
-    [postersDir, previewsDir, tempDir].forEach(dir => {
+    [postersDir, previewsDir].forEach(dir => {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     });
 
     const heroData = [];
 
     for (const movie of topMovies) {
-        const title = movie.title || movie.name;
+        const title = movie.title;
         const slug = createSlug(title);
 
         console.log(`📽️ ${title} (${movie.release_date?.slice(0, 4)})`);
@@ -257,26 +174,12 @@ async function main() {
             }
         }
 
-        // ─── 3. DOWNLOAD & CUT PREVIEW ───
-        const previewPath = path.join(previewsDir, `${slug}.mp4`);
+        // ─── 3. USE YOUTUBE EMBED AS PREVIEW ───
         const trailerKey = movie.trailerKey;
+        const videoUrl = buildYouTubeEmbedUrl(trailerKey);
 
-        if (trailerKey) {
-            console.log(`   🎬 Trailer: ${trailerKey}`);
-            const tempVideo = path.join(tempDir, `${slug}.mp4`);
-
-            console.log(`   📥 Downloading trailer...`);
-            if (downloadYouTube(trailerKey, tempVideo)) {
-                console.log(`   ✂️ Cutting 8-second preview...`);
-                if (createPreview(tempVideo, previewPath)) {
-                    const sizeMB = (fs.statSync(previewPath).size / 1024 / 1024).toFixed(1);
-                    console.log(`   ✅ Preview: 8 seconds (${sizeMB} MB)`);
-                }
-                if (fs.existsSync(tempVideo)) fs.unlinkSync(tempVideo);
-            } else {
-                console.log(`   ⚠️ Failed to download trailer`);
-            }
-        }
+        console.log(`   🎬 Trailer: ${trailerKey}`);
+        console.log(`   ✅ YouTube embed ready (8-second preview)`);
 
         // ─── 4. SAVE TO DATA ───
         heroData.push({
@@ -287,8 +190,8 @@ async function main() {
             rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
             poster: `/images/hero-posters/${slug}.jpg`,
             backdrop: `/images/hero-posters/${slug}-backdrop.jpg`,
-            preview: fs.existsSync(previewPath) ? `/images/hero-previews/${slug}.mp4` : null,
-            hasPreview: fs.existsSync(previewPath),
+            preview: videoUrl,  // YouTube embed URL
+            hasPreview: true,   // Always true since we have YouTube embed
             genres: (movie.genre_ids || []).slice(0, 3).join(' • '),
             trailerKey: trailerKey
         });
@@ -305,7 +208,6 @@ async function main() {
 
     console.log('✅ Done!');
     console.log(`📁 HD Posters: ${postersDir}`);
-    console.log(`📁 Previews: ${previewsDir}`);
     console.log(`📄 Data: ${dataPath}`);
     console.log(`📊 Movies with previews: ${heroData.filter(m => m.hasPreview).length}/${heroData.length}`);
     console.log(`📅 All movies are from 2025-2026 with HD posters!`);
