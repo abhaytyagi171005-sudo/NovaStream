@@ -8,30 +8,51 @@ const HERO_INTERVAL = 8000;
 
 /* ── Fetch Hero Movies from Local JSON ── */
 /* ── Fetch Hero Movies from Local JSON ── */
+/* ── Fetch Hero Movies ── */
 async function fetchHeroMovies() {
     try {
-        // Load from locally generated JSON file (relative path)
-        const response = await fetch('data/heroMovies.json');
+        // Always fetch from the backend API for fresh movies
+        const response = await fetch(`${API}/trending?type=movie&limit=50`);
 
-        if (response.ok) {
-            const data = await response.json();
-            if (data && data.length > 0) {
-                heroMovies = data;
-                buildHero();
-                console.log('✅ Loaded hero movies from local JSON');
-                return;
-            }
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
         }
 
-        // Fallback: fetch from trending API
-        console.log('⚠️ Local JSON not found, falling back to API...');
-        await fetchHeroFromTrending();
+        const data = await response.json();
+
+        // Filter movies with good posters
+        const withPoster = data.filter(m =>
+            m.Poster && m.Poster !== 'N/A' && m.Poster !== '' &&
+            m.Backdrop && m.Backdrop !== 'N/A' && m.Backdrop !== ''
+        );
+
+        if (withPoster.length === 0) {
+            console.warn('No movies with posters found, using fallback');
+            useFallbackHero();
+            return;
+        }
+
+        // Shuffle and pick 5 random movies (fresh every refresh)
+        const shuffled = [...withPoster].sort(() => Math.random() - 0.5);
+        heroMovies = shuffled.slice(0, 5).map(m => ({
+            title: m.Title,
+            year: m.Year,
+            description: m.Plot || "No description available",
+            poster: m.Poster,
+            backdrop: m.Backdrop || m.Poster,
+            rating: m.imdbRating || "N/A",
+            genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
+            language: m.Language || "en"
+        }));
+
+        buildHero();
+        console.log('✅ Loaded fresh hero movies from API');
+
     } catch (error) {
         console.error('Hero fetch failed:', error);
-        await fetchHeroFromTrending();
+        useFallbackHero();
     }
 }
-
 /* ── Fallback: Fetch from Trending API ── */
 async function fetchHeroFromTrending() {
     try {
