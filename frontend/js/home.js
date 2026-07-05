@@ -7,10 +7,11 @@ let heroMovies = [];
 const HERO_INTERVAL = 8000;
 
 /* ── Fetch Hero Movies from Local JSON ── */
+/* ── Fetch Hero Movies from Local JSON ── */
 async function fetchHeroMovies() {
     try {
-        // Load from locally generated JSON file
-        const response = await fetch('/data/heroMovies.json');
+        // Load from locally generated JSON file (relative path)
+        const response = await fetch('data/heroMovies.json');
 
         if (response.ok) {
             const data = await response.json();

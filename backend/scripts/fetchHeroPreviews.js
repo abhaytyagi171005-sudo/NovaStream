@@ -159,16 +159,17 @@ async function main() {
         }
 
         // ─── 3. SAVE TO DATA ───
+        // ─── 3. SAVE TO DATA ───
         heroData.push({
             id: movie.id,
             title: title,
             year: (movie.release_date || '').slice(0, 4),
             description: movie.overview || "No description available",
             rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
-            poster: `/images/hero-posters/${slug}.jpg`,
-            preview: fs.existsSync(previewPath) ? `/images/hero-previews/${slug}.mp4` : null,
+            poster: `images/hero-posters/${slug}.jpg`,  // ← REMOVE leading slash
+            backdrop: fs.existsSync(backdropPath) ? `images/hero-posters/${slug}-backdrop.jpg` : null,  // ← REMOVE leading slash
+            preview: fs.existsSync(previewPath) ? `images/hero-previews/${slug}.mp4` : null,  // ← REMOVE leading slash
             hasPreview: fs.existsSync(previewPath),
-            backdrop: movie.backdrop_path ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}` : null,
             genres: (movie.genre_ids || []).slice(0, 3).join(' • ')
         });
 
