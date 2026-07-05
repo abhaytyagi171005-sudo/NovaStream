@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const https = require('https');
+const axios = require('axios');
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
@@ -13,11 +13,10 @@ async function fetchTrendingMovies() {
     }
 
     try {
-        const response = await fetch(
+        const response = await axios.get(
             `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}&language=en-US`
         );
-        const data = await response.json();
-        return data.results || [];
+        return response.data.results || [];
     } catch (error) {
         console.error('Error fetching trending:', error.message);
         return [];
@@ -27,11 +26,10 @@ async function fetchTrendingMovies() {
 // ─── FETCH MOVIE TRAILER ───
 async function fetchTrailer(movieId) {
     try {
-        const response = await fetch(
+        const response = await axios.get(
             `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${TMDB_API_KEY}&language=en-US`
         );
-        const data = await response.json();
-        const trailer = data.results?.find(v =>
+        const trailer = response.data.results?.find(v =>
             v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser')
         );
         return trailer?.key || null;
@@ -41,20 +39,25 @@ async function fetchTrailer(movieId) {
 }
 
 // ─── DOWNLOAD FILE ───
-function downloadFile(url, outputPath) {
-    return new Promise((resolve, reject) => {
-        const file = fs.createWriteStream(outputPath);
-        https.get(url, (response) => {
-            response.pipe(file);
-            file.on('finish', () => {
-                file.close();
-                resolve();
-            });
-        }).on('error', (err) => {
-            fs.unlink(outputPath, () => { });
-            reject(err);
+async function downloadFile(url, outputPath) {
+    try {
+        const response = await axios({
+            method: 'get',
+            url: url,
+            responseType: 'stream'
         });
-    });
+
+        const writer = fs.createWriteStream(outputPath);
+        response.data.pipe(writer);
+
+        return new Promise((resolve, reject) => {
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+        });
+    } catch (error) {
+        console.error(`   ⚠️ Download failed:`, error.message);
+        throw error;
+    }
 }
 
 // ─── CREATE 8-SECOND PREVIEW ───
@@ -185,4 +188,4 @@ async function main() {
     console.log(`📄 Data: ${dataPath}`);
 }
 
-main().catch(console.error);
+main().catch(console.error);    

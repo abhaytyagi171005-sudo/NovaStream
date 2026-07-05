@@ -1,9 +1,9 @@
-name: Update Hero Movies
+name: Update Hero Banner
 
 on:
   schedule:
     - cron: '0 0 * * 0'  # Every Sunday at midnight
-  workflow_dispatch:     # Allow manual trigger
+  workflow_dispatch:      # Allow manual trigger
 
 jobs:
   update-hero:
@@ -21,21 +21,26 @@ jobs:
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Install yt-dlp
-        run: pip install yt-dlp
+      - name: Install Python dependencies
+        run: |
+          pip install yt-dlp
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Node dependencies
+        run: |
+          cd backend
+          npm install
 
       - name: Run hero fetch script
         env:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-        run: npm run fetch-hero
+        run: |
+          cd backend
+          npm run fetch-hero
 
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add frontend/images/hero-posters/ frontend/images/hero-previews/ frontend/data/heroMovies.json
-          git commit -m "Update hero movies [skip ci]" || exit 0
+          git commit -m "Update hero movies [skip ci]" || echo "No changes to commit"
           git push
