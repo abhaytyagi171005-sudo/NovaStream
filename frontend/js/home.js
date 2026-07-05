@@ -10,10 +10,11 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies from Local JSON ── */
 /* ── Fetch Hero Movies ── */
 /* ── Fetch Hero Movies ── */
+/* ── Fetch Hero Movies ── */
 async function fetchHeroMovies() {
     try {
-        // Fetch from trending API
-        const response = await fetch(`${API}/trending?type=movie&limit=50`);
+        // Fetch 200 movies from trending
+        const response = await fetch(`${API}/trending?type=movie&limit=200`);
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -21,27 +22,33 @@ async function fetchHeroMovies() {
 
         const data = await response.json();
 
-        // Filter movies with good posters
-        const withPoster = data.filter(m =>
-            m.Poster && m.Poster !== 'N/A' && m.Poster !== '' &&
-            m.Backdrop && m.Backdrop !== 'N/A' && m.Backdrop !== ''
+        // ─── FILTER ONLY HD POSTERS ───
+        const withHDPoster = data.filter(m =>
+            m.Poster &&
+            m.Poster !== 'N/A' &&
+            m.Poster !== '' &&
+            // Only TMDB images (HD quality)
+            m.Poster.includes('image.tmdb.org') &&
+            // Must have backdrop too
+            m.Backdrop &&
+            m.Backdrop !== 'N/A' &&
+            m.Backdrop !== '' &&
+            m.Backdrop.includes('image.tmdb.org')
         );
 
-        if (withPoster.length === 0) {
-            console.warn('No movies with posters found, using fallback');
+        if (withHDPoster.length < 5) {
+            console.warn(`Only ${withHDPoster.length} HD posters found, using fallback`);
             useFallbackHero();
             return;
         }
 
         // ─── SHUFFLE AND PICK 5 RANDOM ───
-        // Fisher-Yates shuffle algorithm
-        const shuffled = [...withPoster];
+        const shuffled = [...withHDPoster];
         for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
 
-        // Pick first 5 from shuffled array
         const selected = shuffled.slice(0, 5);
 
         heroMovies = selected.map(m => ({
@@ -52,11 +59,12 @@ async function fetchHeroMovies() {
             backdrop: m.Backdrop || m.Poster,
             rating: m.imdbRating || "N/A",
             genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
-            language: m.Language || "en"
+            language: m.Language || "en",
+            trailerKey: m.trailerKey || null
         }));
 
         buildHero();
-        console.log('✅ Loaded fresh random hero movies from API');
+        console.log(`✅ Loaded ${heroMovies.length} random HD movies from ${withHDPoster.length} available`);
 
     } catch (error) {
         console.error('Hero fetch failed:', error);
