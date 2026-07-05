@@ -26,19 +26,6 @@
     "trailerKey": "n_pEJjq-9xQ"
   },
   {
-    "id": 1084244,
-    "title": "Toy Story 5",
-    "year": "2026",
-    "description": "When Bonnie receives a Lilypad tablet as a gift and becomes obsessed, Buzz, Woody, Jessie and the rest of the gang's jobs become exponentially harder when they have to go head to head with the all-new threat to playtime.",
-    "rating": "7.4",
-    "poster": "/images/hero-posters/toy-story-5.jpg",
-    "backdrop": "/images/hero-posters/toy-story-5-backdrop.jpg",
-    "preview": null,
-    "hasPreview": false,
-    "genres": "16 • 10751 • 35",
-    "trailerKey": "lSr5PDyURs8"
-  },
-  {
     "id": 1314481,
     "title": "The Devil Wears Prada 2",
     "year": "2026",
@@ -52,16 +39,29 @@
     "trailerKey": "iqShRFQ9ZYI"
   },
   {
-    "id": 1081003,
-    "title": "Supergirl",
+    "id": 1315772,
+    "title": "Minions & Monsters",
     "year": "2026",
-    "description": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
-    "rating": "6.3",
-    "poster": "/images/hero-posters/supergirl.jpg",
-    "backdrop": "/images/hero-posters/supergirl-backdrop.jpg",
+    "description": "This is the rambunctious, ridiculous and totally true story of how the Minions conquered Hollywood, became movie stars, lost everything, unleashed monsters onto the world and then banded together to try and save the planet from the mayhem they had just created.",
+    "rating": "6.5",
+    "poster": "/images/hero-posters/minions-monsters.jpg",
+    "backdrop": "/images/hero-posters/minions-monsters-backdrop.jpg",
     "preview": null,
     "hasPreview": false,
-    "genres": "28 • 12 • 878",
-    "trailerKey": "0tnDB-qe7KY"
+    "genres": "12 • 16 • 35",
+    "trailerKey": "a_G7XFjggI8"
+  },
+  {
+    "id": 1083381,
+    "title": "Backrooms",
+    "year": "2026",
+    "description": "A strange doorway appears in the basement of a furniture showroom.",
+    "rating": "6.8",
+    "poster": "/images/hero-posters/backrooms.jpg",
+    "backdrop": "/images/hero-posters/backrooms-backdrop.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "genres": "27 • 9648 • 878",
+    "trailerKey": "5C-zBIuvGnU"
   }
 ]
