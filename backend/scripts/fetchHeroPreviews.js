@@ -73,12 +73,26 @@ async function downloadFile(url, outputPath) {
 }
 
 // ─── CREATE 8-SECOND PREVIEW ───
+// ─── CREATE 8-SECOND PREVIEW (IMPROVED) ───
 function createPreview(inputPath, outputPath) {
     try {
-        execSync(`ffmpeg -ss 5 -i "${inputPath}" -t 8 -c:v libx264 -c:a aac -movflags +faststart -crf 23 -preset medium "${outputPath}" -y`, {
-            stdio: 'pipe'
+        // Check if input file exists and is valid
+        if (!fs.existsSync(inputPath) || fs.statSync(inputPath).size < 10000) {
+            console.log('   ⚠️ Input file too small or missing');
+            return false;
+        }
+
+        // Cut from 5s to 13s (8 seconds) with better settings
+        const cmd = `ffmpeg -ss 5 -i "${inputPath}" -t 8 -c:v libx264 -c:a aac -movflags +faststart -crf 28 -preset veryfast "${outputPath}" -y`;
+        execSync(cmd, {
+            stdio: 'pipe',
+            timeout: 60000 // 1 minute timeout
         });
-        return true;
+
+        if (fs.existsSync(outputPath) && fs.statSync(outputPath).size > 5000) {
+            return true;
+        }
+        return false;
     } catch (error) {
         console.error('   ⚠️ FFmpeg error:', error.message);
         return false;
@@ -86,21 +100,34 @@ function createPreview(inputPath, outputPath) {
 }
 
 // ─── DOWNLOAD YOUTUBE VIDEO ───
+// ─── DOWNLOAD YOUTUBE VIDEO (IMPROVED) ───
 function downloadYouTube(trailerKey, outputPath) {
     try {
+        // Try multiple formats and fallbacks
         const commands = [
-            `yt-dlp -f "best[height<=480][ext=mp4]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
-            `yt-dlp -f "best[height<=360]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
-            `yt-dlp -f "worst[ext=mp4]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`
+            // Try best quality with mp4
+            `yt-dlp -f "best[ext=mp4][height<=480]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
+            // Try with cookies and user-agent
+            `yt-dlp --user-agent "Mozilla/5.0" -f "best[height<=480]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
+            // Try with no check certificate
+            `yt-dlp --no-check-certificate -f "best" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
+            // Try with yt-dlp's default best format
+            `yt-dlp -f "best" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`
         ];
 
         for (const cmd of commands) {
             try {
-                execSync(cmd, { stdio: 'pipe' });
+                console.log(`      Trying: ${cmd.substring(0, 50)}...`);
+                execSync(cmd, {
+                    stdio: 'pipe',
+                    timeout: 120000 // 2 minutes timeout
+                });
                 if (fs.existsSync(outputPath) && fs.statSync(outputPath).size > 10000) {
+                    console.log(`      ✅ Downloaded: ${(fs.statSync(outputPath).size / 1024 / 1024).toFixed(1)} MB`);
                     return true;
                 }
             } catch (e) {
+                console.log(`      ⚠️ Attempt failed: ${e.message.substring(0, 50)}`);
                 continue;
             }
         }
