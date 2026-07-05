@@ -12,9 +12,10 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies ── */
 /* ── Fetch Hero Movies ── */
 /* ── Fetch Hero Movies (HD only) ── */
+/* ── Fetch Hero Movies (HD only, 2025-2026 trending) ── */
 async function fetchHeroMovies() {
     try {
-        // Use the new HD endpoint
+        // Use the HD endpoint with 2025-2026 filter
         const response = await fetch(`${API}/hero-hd`);
 
         if (!response.ok) {
@@ -26,7 +27,7 @@ async function fetchHeroMovies() {
         if (data && data.length > 0) {
             heroMovies = data;
             buildHero();
-            console.log(`✅ Loaded ${heroMovies.length} HD movies`);
+            console.log(`✅ Loaded ${heroMovies.length} trending 2025-2026 HD movies`);
             return;
         }
 
