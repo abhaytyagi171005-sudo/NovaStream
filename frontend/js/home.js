@@ -154,120 +154,43 @@ function buildHero() {
         const slide = document.createElement('div');
         slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
 
-        // ── BACKGROUND CONTAINER ──
+        // ── BACKGROUND ──
         const bgContainer = document.createElement('div');
         bgContainer.className = 'hero-bg-container';
-        bgContainer.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            overflow: hidden;
-            background: #0a0a0a;
-        `;
 
-        // ─── TRY VIDEO FIRST (if trailerKey exists) ───
-        const trailerKey = movie.trailerKey || null;
         const posterUrl = movie.backdrop || movie.poster || '';
+        const trailerKey = movie.trailerKey || null;
 
         if (trailerKey) {
-            // Use video element with YouTube embed (clean, fills frame)
-            const videoWrapper = document.createElement('div');
-            videoWrapper.style.cssText = `
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-            `;
-
+            // YouTube embed
             const iframe = document.createElement('iframe');
             iframe.src = `https://www.youtube-nocookie.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&playsinline=1`;
             iframe.allow = 'autoplay; encrypted-media; fullscreen';
             iframe.allowFullscreen = true;
-            iframe.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 100vw;
-                height: 56.25vw; /* 16:9 aspect ratio */
-                min-height: 100vh;
-                min-width: 177.77vh;
-                transform: translate(-50%, -50%);
-                border: none;
-                pointer-events: none;
-            `;
-            videoWrapper.appendChild(iframe);
-            bgContainer.appendChild(videoWrapper);
+            bgContainer.appendChild(iframe);
         } else if (posterUrl) {
-            // Use backdrop image if no video
+            // Poster image
             const img = document.createElement('img');
             img.src = posterUrl;
             img.alt = movie.title;
-            img.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 100vw;
-                height: 56.25vw;
-                min-height: 100vh;
-                min-width: 177.77vh;
-                transform: translate(-50%, -50%);
-                object-fit: cover;
-            `;
+            img.loading = 'lazy';
             bgContainer.appendChild(img);
-        } else {
-            bgContainer.style.background = '#1a1a1a';
         }
 
-        // ── GRADIENT OVERLAYS ──
+        slide.appendChild(bgContainer);
+
+        // ── GRADIENTS ──
         const gradLeft = document.createElement('div');
-        gradLeft.style.cssText = `
-            position: absolute; 
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(
-                to right,
-                rgba(0,0,0,0.85) 0%,
-                rgba(0,0,0,0.4) 40%,
-                rgba(0,0,0,0.1) 70%,
-                transparent 100%
-            );
-        `;
+        gradLeft.className = 'hero-gradient-left';
+        slide.appendChild(gradLeft);
 
         const gradBottom = document.createElement('div');
-        gradBottom.style.cssText = `
-            position: absolute; 
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(
-                to top,
-                rgba(10,10,10,1) 0%,
-                rgba(10,10,10,0.3) 25%,
-                transparent 60%
-            );
-        `;
+        gradBottom.className = 'hero-gradient-bottom';
+        slide.appendChild(gradBottom);
 
         // ── CONTENT ──
         const content = document.createElement('div');
         content.className = 'hero-content';
-        content.style.cssText = `
-            position: absolute;
-            bottom: 18%;
-            left: 5%;
-            max-width: 550px;
-            z-index: 4;
-            pointer-events: auto;
-        `;
 
         const rating = movie.rating && movie.rating !== 'N/A' && !isNaN(parseFloat(movie.rating))
             ? parseFloat(movie.rating).toFixed(1)
@@ -281,79 +204,28 @@ function buildHero() {
             <div style="color:#e50914;font-size:0.8rem;letter-spacing:4px;font-weight:600;margin-bottom:10px;text-transform:uppercase;">
                 ▶ Featured Today
             </div>
-            <h1 class="hero-title" style="
-                font-size: clamp(2rem, 4vw, 3.5rem);
-                font-weight: 800;
-                color: white;
-                text-shadow: 0 4px 20px rgba(0,0,0,0.9);
-                margin-bottom: 12px;
-                line-height: 1.1;
-            ">${movie.title}</h1>
-            <div class="hero-meta" style="
-                display: flex;
-                gap: 15px;
-                align-items: center;
-                margin-bottom: 12px;
-                flex-wrap: wrap;
-            ">
-                <span style="color:#d4af37;font-weight:600;">${movie.year || ''}</span>
-                ${rating ? `<span style="color:#46d369;font-weight:600;">⭐ ${rating}</span>` : ''}
-                ${genresStr ? `<span style="color:#aaa;font-size:0.9rem;">${genresStr}</span>` : ''}
-                ${movie.language && movie.language !== 'en' ? `<span style="color:#aaa;font-size:0.9rem;">${movie.language.toUpperCase()}</span>` : ''}
+            <h2 class="hero-title">${movie.title}</h2>
+            <div class="hero-meta">
+                <span class="hero-year">${movie.year || ''}</span>
+                ${rating ? `<span class="hero-rating">⭐ ${rating}</span>` : ''}
+                ${genresStr ? `<span class="hero-genre">${genresStr}</span>` : ''}
+                ${movie.language && movie.language !== 'en' ? `<span class="hero-genre">${movie.language.toUpperCase()}</span>` : ''}
             </div>
-            <p class="hero-description" style="
-                font-size: 1rem;
-                color: #ccc;
-                line-height: 1.6;
-                margin-bottom: 20px;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.9);
-            ">${movie.description || 'No description available'}</p>
-            <div class="hero-buttons" style="display:flex;gap:12px;flex-wrap:wrap;">
-                <button onclick="openMovie('${movie.title.replace(/'/g, "\\'")}')" style="
-                    background: white;
-                    color: black;
-                    border: none;
-                    padding: 12px 30px;
-                    border-radius: 8px;
-                    font-weight: 700;
-                    font-size: 1rem;
-                    cursor: pointer;
-                    font-family: 'Poppins', sans-serif;
-                    transition: transform 0.2s;
-                " onmouseover="this.style.transform='scale(1.04)'"
-                   onmouseout="this.style.transform='scale(1)'">
+            <p class="hero-description">${movie.description || 'No description available'}</p>
+            <div class="hero-buttons">
+                <button onclick="openMovie('${movie.title.replace(/'/g, "\\'")}')" class="hero-btn-play">
                     ▶ More Info
                 </button>
-                <button onclick="addToMyList('${movie.title.replace(/'/g, "\\'")}', '${movie.poster}')" style="
-                    background: rgba(255,255,255,0.15);
-                    color: white;
-                    border: 1px solid rgba(255,255,255,0.3);
-                    padding: 12px 30px;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    font-size: 1rem;
-                    cursor: pointer;
-                    font-family: 'Poppins', sans-serif;
-                    backdrop-filter: blur(4px);
-                    transition: transform 0.2s;
-                " onmouseover="this.style.transform='scale(1.04)'"
-                   onmouseout="this.style.transform='scale(1)'">
+                <button onclick="addToMyList('${movie.title.replace(/'/g, "\\'")}', '${movie.poster}')" class="hero-btn-mylist">
                     + My List
                 </button>
             </div>
         `;
 
-        slide.appendChild(bgContainer);
-        slide.appendChild(gradLeft);
-        slide.appendChild(gradBottom);
         slide.appendChild(content);
         slides.appendChild(slide);
 
-        // ── DOT INDICATOR ──
+        // ── DOT ──
         const dot = document.createElement('button');
         dot.className = `hero-dot${index === 0 ? ' active' : ''}`;
         dot.addEventListener('click', () => { goToSlide(index); resetAutoplay(); });
@@ -366,16 +238,6 @@ function buildHero() {
 
     const progressBar = document.createElement('div');
     progressBar.id = 'heroProgress';
-    progressBar.style.cssText = `
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 3px;
-        background: #e50914;
-        z-index: 10;
-        width: 0%;
-        transition: width ${HERO_INTERVAL}ms linear;
-    `;
     document.getElementById('heroBanner').appendChild(progressBar);
 
     goToSlide(0);
