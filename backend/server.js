@@ -208,9 +208,15 @@ app.get("/api/hero", async (req, res) => {
 
         const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-        // If no TMDB API key, return movies without videos
+        // ─── FUNCTION TO BUILD CLEAN YOUTUBE EMBED URL ───
+        function buildYouTubeEmbedUrl(key) {
+            if (!key) return null;
+            return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&loop=1&playlist=${key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
+        }
+
+        // If no TMDB API key, use catalog trailerKey
         if (!TMDB_API_KEY) {
-            console.warn('⚠️ TMDB_API_KEY not set - returning movies without trailers');
+            console.warn('⚠️ TMDB_API_KEY not set - using catalog trailerKey');
             const basicMovies = selected.map(movie => ({
                 id: movie.id,
                 title: movie.title,
@@ -221,10 +227,9 @@ app.get("/api/hero", async (req, res) => {
                 rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
                 genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
                 genres: movie.genres || [],
-                videoUrl: null,
-                videoKey: null,
-                videoType: null,
-                hasVideo: false,
+                trailerKey: movie.trailerKey || null,
+                videoUrl: buildYouTubeEmbedUrl(movie.trailerKey),
+                hasVideo: !!movie.trailerKey,
                 language: movie.language || "en"
             }));
             return res.json(basicMovies);
@@ -282,11 +287,8 @@ app.get("/api/hero", async (req, res) => {
                 console.log(`📦 Using catalog trailerKey for ${movie.title}: ${videoKey}`);
             }
 
-            // TMDB native player URL (no YouTube branding)
-            let videoUrl = null;
-            if (videoKey) {
-                videoUrl = `https://www.themoviedb.org/video/play/${videoKey}`;
-            }
+            // ─── BUILD CLEAN YOUTUBE EMBED URL ───
+            const videoUrl = buildYouTubeEmbedUrl(videoKey);
 
             return {
                 id: movie.id,
@@ -298,8 +300,8 @@ app.get("/api/hero", async (req, res) => {
                 rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
                 genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
                 genres: movie.genres || [],
-                videoUrl: videoUrl,
-                videoKey: videoKey,
+                trailerKey: videoKey,
+                videoUrl: videoUrl,  // ← Clean YouTube embed URL
                 videoType: videoType || 'Trailer',
                 hasVideo: !!videoUrl,
                 language: movie.language || "en",
