@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1339713,
+    "title": "Obsession",
+    "year": "2026",
+    "description": "After breaking the mysterious \"One Wish Willow\" to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
+    "rating": "8.2",
+    "poster": "/images/hero-posters/obsession.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "backdrop": "https://image.tmdb.org/t/p/original/diOZbaDnB2CIilwd0527AB1qMvW.jpg",
+    "genres": "27 • 53"
+  },
+  {
+    "id": 1202033,
+    "title": "Enola Holmes 3",
+    "year": "2026",
+    "description": "Adventure follows detective Enola Holmes to Malta, where her plans to tie the knot unravel when Sherlock's disappearance plunges her into a perilous case.",
+    "rating": "7.1",
+    "poster": "/images/hero-posters/enola-holmes-3.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "backdrop": "https://image.tmdb.org/t/p/original/jLuGZc84MvPYCQomQg9DI72mstt.jpg",
+    "genres": "12 • 80 • 9648"
+  },
+  {
+    "id": 1081003,
+    "title": "Supergirl",
+    "year": "2026",
+    "description": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
+    "rating": "6.3",
+    "poster": "/images/hero-posters/supergirl.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "backdrop": "https://image.tmdb.org/t/p/original/54KIfdTEzOliHDKx0OkzYGqAICx.jpg",
+    "genres": "28 • 12 • 878"
+  },
+  {
+    "id": 1083381,
+    "title": "Backrooms",
+    "year": "2026",
+    "description": "A strange doorway appears in the basement of a furniture showroom.",
+    "rating": "6.8",
+    "poster": "/images/hero-posters/backrooms.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "backdrop": "https://image.tmdb.org/t/p/original/mCpwRayjXMFzKHbjbzc5JRKfq1O.jpg",
+    "genres": "27 • 9648 • 878"
+  },
+  {
+    "id": 1084244,
+    "title": "Toy Story 5",
+    "year": "2026",
+    "description": "When Bonnie receives a Lilypad tablet as a gift and becomes obsessed, Buzz, Woody, Jessie and the rest of the gang's jobs become exponentially harder when they have to go head to head with the all-new threat to playtime.",
+    "rating": "7.4",
+    "poster": "/images/hero-posters/toy-story-5.jpg",
+    "preview": null,
+    "hasPreview": false,
+    "backdrop": "https://image.tmdb.org/t/p/original/4D1pdB27uph7J8HQzNf8QvvH9bn.jpg",
+    "genres": "16 • 10751 • 35"
+  }
+]
