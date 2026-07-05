@@ -9,7 +9,6 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies from Backend ── */
 async function fetchHeroMovies() {
     try {
-        // First try to get movies with videos from /api/hero
         const response = await fetch('https://novastream-o3ri.onrender.com/api/hero');
 
         if (!response.ok) {
@@ -19,7 +18,6 @@ async function fetchHeroMovies() {
         const data = await response.json();
 
         if (data && data.length > 0) {
-            // Use the data from /api/hero (has videoUrl)
             heroMovies = data.map(m => ({
                 title: m.title,
                 year: m.year,
@@ -28,22 +26,18 @@ async function fetchHeroMovies() {
                 backdrop: m.backdrop || m.Backdrop || m.poster || m.Poster || "N/A",
                 rating: m.rating || m.imdbRating || "N/A",
                 genres: m.genre || (m.genres || []).join(' • ') || 'Movie',
-                videoUrl: m.videoUrl || m.trailer || null,
-                hasVideo: m.hasVideo || !!m.videoUrl,
-                language: m.language || "en",
-                tmdbId: m.tmdbId || m.id
+                trailerKey: m.trailerKey || m.videoKey || null,  // ← USE TRAILERKEY
+                language: m.language || "en"
             }));
             buildHero();
             return;
         }
 
-        // Fallback: fetch from trending
         console.log('No hero data, fetching from trending...');
         await fetchHeroFromTrending();
 
     } catch (error) {
         console.error('Hero fetch failed:', error);
-        // Try trending as fallback
         await fetchHeroFromTrending();
     }
 }
@@ -73,10 +67,8 @@ async function fetchHeroFromTrending() {
             backdrop: m.Backdrop,
             rating: m.imdbRating || "N/A",
             genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
-            videoUrl: null, // No video from trending endpoint
-            hasVideo: false,
-            language: m.Language || "en",
-            tmdbId: m.tmdbId
+            trailerKey: m.trailerKey || null,
+            language: m.Language || "en"
         }));
 
         buildHero();
@@ -98,8 +90,8 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
             rating: "8.2",
             genres: "Sci-Fi • Adventure",
-            videoUrl: null,
-            hasVideo: false
+            trailerKey: "8Bk2Tt-EXeE",
+            language: "en"
         },
         {
             title: "The Dark Knight",
@@ -109,8 +101,8 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
             rating: "9.0",
             genres: "Action • Crime",
-            videoUrl: null,
-            hasVideo: false
+            trailerKey: "EXeTwQWrcwY",
+            language: "en"
         },
         {
             title: "Inception",
@@ -120,8 +112,8 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
             rating: "8.8",
             genres: "Sci-Fi • Thriller",
-            videoUrl: null,
-            hasVideo: false
+            trailerKey: "YoHD9XEInc0",
+            language: "en"
         },
         {
             title: "Interstellar",
@@ -131,8 +123,8 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
             rating: "8.6",
             genres: "Sci-Fi • Drama",
-            videoUrl: null,
-            hasVideo: false
+            trailerKey: "zSWdZVtXT7E",
+            language: "en"
         },
         {
             title: "Oppenheimer",
@@ -142,8 +134,8 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
             rating: "8.3",
             genres: "Drama • History",
-            videoUrl: null,
-            hasVideo: false
+            trailerKey: "uYPbbksJxIg",
+            language: "en"
         }
     ];
     buildHero();
@@ -172,14 +164,15 @@ function buildHero() {
             overflow: hidden;
         `;
 
-        // Check if we have a video URL
-        const videoUrl = movie.videoUrl || movie.trailer || null;
+        // ─── USE TRAILERKEY FOR VIDEO ───
+        const trailerKey = movie.trailerKey || null;
         const posterUrl = movie.backdrop || movie.poster || '';
 
-        if (videoUrl) {
-            // Use TMDB native video player
+        if (trailerKey) {
+            // Clean YouTube embed with 8-second preview (5s to 13s)
+            // No YouTube branding, no controls
             const iframe = document.createElement('iframe');
-            iframe.src = videoUrl;
+            iframe.src = `https://www.youtube-nocookie.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
             iframe.allow = 'autoplay; encrypted-media; fullscreen';
             iframe.allowFullscreen = true;
             iframe.style.cssText = `
@@ -201,7 +194,6 @@ function buildHero() {
             `;
             bgContainer.appendChild(img);
         } else {
-            // Ultimate fallback: dark background
             bgContainer.style.background = '#1a1a1a';
         }
 
@@ -244,6 +236,10 @@ function buildHero() {
             ? parseFloat(movie.rating).toFixed(1)
             : null;
 
+        const genresStr = movie.genres
+            ? (Array.isArray(movie.genres) ? movie.genres.join(' • ') : movie.genres)
+            : 'Movie';
+
         content.innerHTML = `
             <div style="color:#e50914;font-size:0.8rem;letter-spacing:4px;font-weight:600;margin-bottom:10px;text-transform:uppercase;">
                 ▶ Featured Today
@@ -265,7 +261,7 @@ function buildHero() {
             ">
                 <span style="color:#d4af37;font-weight:600;">${movie.year || ''}</span>
                 ${rating ? `<span style="color:#46d369;font-weight:600;">⭐ ${rating}</span>` : ''}
-                ${movie.genres ? `<span style="color:#aaa;font-size:0.9rem;">${movie.genres}</span>` : ''}
+                ${genresStr ? `<span style="color:#aaa;font-size:0.9rem;">${genresStr}</span>` : ''}
                 ${movie.language && movie.language !== 'en' ? `<span style="color:#aaa;font-size:0.9rem;">${movie.language.toUpperCase()}</span>` : ''}
             </div>
             <p class="hero-description" style="
@@ -362,7 +358,6 @@ function goToSlide(index) {
         d.classList.toggle('active', i === index);
     });
 
-    // Reset progress bar
     const bar = document.getElementById('heroProgress');
     if (bar) {
         bar.style.transition = 'none';
@@ -472,7 +467,9 @@ async function loadRow(endpoint, containerId, sectionId) {
         return;
     }
     container.innerHTML = shuffle(data).slice(0, 20).map(createCard).join("");
-    // attachPreviews() is called after all rows load
+    if (typeof attachPreviews === 'function') {
+        attachPreviews();
+    }
 }
 
 function openMovie(title) {
@@ -480,7 +477,6 @@ function openMovie(title) {
 }
 
 async function loadHome() {
-    // Hero is loaded separately via fetchHeroMovies()
     await loadRow("/trending", "trendingMovies", "sectionTrending");
     await loadRow("/movies?category=drama&limit=20", "topRated", "sectionTopRated");
     await loadRow("/movies?category=scifi&limit=20", "sciFiMovies", "sectionSciFi");
@@ -495,13 +491,11 @@ async function loadHome() {
     await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
     await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
     await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
-    // attachPreviews() from preview.js will be called after all rows load
     if (typeof attachPreviews === 'function') {
         attachPreviews();
     }
 }
 
 // ── Initialize ──
-// Hero loads first, then catalog rows
 fetchHeroMovies();
 loadHome();
