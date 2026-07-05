@@ -16,6 +16,14 @@ function normalize(details, type, flags = {}) {
         v => v.site === "YouTube" && (v.type === "Trailer" || v.type === "Teaser")
     );
 
+    // ─── GENERATE PREVIEW URL (8-second clip, no YouTube branding) ───
+    let preview = null;
+    if (trailer?.key) {
+        // Clean YouTube embed with 8-second preview (5s to 13s)
+        // No YouTube branding, no controls, clean loop
+        preview = `https://www.youtube-nocookie.com/embed/${trailer.key}?autoplay=1&mute=1&loop=1&playlist=${trailer.key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
+    }
+
     return {
 
         id: details.id,
@@ -62,6 +70,8 @@ function normalize(details, type, flags = {}) {
             image(details.backdrop_path, BACKDROP_SIZE),
 
         trailerKey: trailer?.key || null,
+
+        preview: preview,  // ← NEW: 8-second preview URL
 
         popularity:
             details.popularity,
