@@ -11,10 +11,11 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies ── */
 /* ── Fetch Hero Movies ── */
 /* ── Fetch Hero Movies ── */
+/* ── Fetch Hero Movies (HD only) ── */
 async function fetchHeroMovies() {
     try {
-        // Fetch 200 movies from trending
-        const response = await fetch(`${API}/trending?type=movie&limit=200`);
+        // Use the new HD endpoint
+        const response = await fetch(`${API}/hero-hd`);
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -22,28 +23,53 @@ async function fetchHeroMovies() {
 
         const data = await response.json();
 
-        // ─── FILTER ONLY HD POSTERS ───
-        const withHDPoster = data.filter(m =>
+        if (data && data.length > 0) {
+            heroMovies = data;
+            buildHero();
+            console.log(`✅ Loaded ${heroMovies.length} HD movies`);
+            return;
+        }
+
+        // Fallback: fetch from trending with HD filter
+        console.log('⚠️ No HD movies from endpoint, fetching from trending...');
+        await fetchHeroFromTrending();
+
+    } catch (error) {
+        console.error('Hero fetch failed:', error);
+        await fetchHeroFromTrending();
+    }
+}
+
+/* ── Fallback: Fetch from Trending with HD filter ── */
+async function fetchHeroFromTrending() {
+    try {
+        const res = await fetch(`${API}/trending?type=movie&limit=100`);
+        const data = await res.json();
+
+        // ─── HD FILTER ───
+        const hdMovies = data.filter(m =>
             m.Poster &&
             m.Poster !== 'N/A' &&
             m.Poster !== '' &&
-            // Only TMDB images (HD quality)
             m.Poster.includes('image.tmdb.org') &&
-            // Must have backdrop too
             m.Backdrop &&
             m.Backdrop !== 'N/A' &&
             m.Backdrop !== '' &&
-            m.Backdrop.includes('image.tmdb.org')
+            m.Backdrop.includes('image.tmdb.org') &&
+            m.Year &&
+            parseInt(m.Year) >= 2015 &&
+            m.imdbRating &&
+            parseFloat(m.imdbRating) > 5.0
         );
 
-        if (withHDPoster.length < 5) {
-            console.warn(`Only ${withHDPoster.length} HD posters found, using fallback`);
+        if (hdMovies.length === 0) {
+            console.warn('No HD movies found, using fallback');
             useFallbackHero();
             return;
         }
 
-        // ─── SHUFFLE AND PICK 5 RANDOM ───
-        const shuffled = [...withHDPoster];
+        // Shuffle and pick 5
+        const shuffled = [...hdMovies];
         for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -64,10 +90,10 @@ async function fetchHeroMovies() {
         }));
 
         buildHero();
-        console.log(`✅ Loaded ${heroMovies.length} random HD movies from ${withHDPoster.length} available`);
+        console.log(`✅ Loaded ${heroMovies.length} HD movies from trending`);
 
-    } catch (error) {
-        console.error('Hero fetch failed:', error);
+    } catch (err) {
+        console.error('Trending fetch failed:', err);
         useFallbackHero();
     }
 }

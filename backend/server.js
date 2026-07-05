@@ -187,34 +187,23 @@ app.post("/api/reload", (req, res) => {
     res.json({ message: "Catalog reloaded", total: CATALOG.length });
 });
 
-// ─── HERO BANNER ENDPOINT ───
+// ─── ORIGINAL HERO ENDPOINT ───
 app.get("/api/hero", async (req, res) => {
     try {
-        // Get all premium movies
         let movies = getPremiumMovies();
+        if (movies.length === 0) movies = getMovies();
+        if (movies.length === 0) return res.json([]);
 
-        // If no premium movies, use all movies
-        if (movies.length === 0) {
-            movies = getMovies();
-        }
-
-        if (movies.length === 0) {
-            return res.json([]);
-        }
-
-        // Shuffle and pick 5 random movies
         const shuffled = shuffle(movies);
         const selected = shuffled.slice(0, 5);
 
         const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-        // ─── FUNCTION TO BUILD CLEAN YOUTUBE EMBED URL ───
         function buildYouTubeEmbedUrl(key) {
             if (!key) return null;
             return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&loop=1&playlist=${key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
         }
 
-        // If no TMDB API key, use catalog trailerKey
         if (!TMDB_API_KEY) {
             console.warn('⚠️ TMDB_API_KEY not set - using catalog trailerKey');
             const basicMovies = selected.map(movie => ({
@@ -235,41 +224,25 @@ app.get("/api/hero", async (req, res) => {
             return res.json(basicMovies);
         }
 
-        // Fetch videos from TMDB for each movie
         const heroMovies = await Promise.all(selected.map(async (movie) => {
             let videoKey = null;
             let videoType = null;
-
             const tmdbId = movie.tmdbId || movie.id;
 
             try {
-                // Fetch videos from TMDB
                 const videoResponse = await fetch(
                     `https://api.themoviedb.org/3/movie/${tmdbId}/videos?api_key=${TMDB_API_KEY}&language=en-US`
                 );
-
                 if (videoResponse.ok) {
                     const videoData = await videoResponse.json();
                     const videos = videoData.results || [];
-
-                    // Priority: Trailer > Teaser > Clip > Featurette
                     const priority = ['Trailer', 'Teaser', 'Clip', 'Featurette'];
                     let bestVideo = null;
-
                     for (const type of priority) {
-                        const found = videos.find(v =>
-                            v.type === type && v.site === 'YouTube'
-                        );
-                        if (found) {
-                            bestVideo = found;
-                            break;
-                        }
+                        const found = videos.find(v => v.type === type && v.site === 'YouTube');
+                        if (found) { bestVideo = found; break; }
                     }
-
-                    if (!bestVideo) {
-                        bestVideo = videos.find(v => v.site === 'YouTube') || videos[0];
-                    }
-
+                    if (!bestVideo) bestVideo = videos.find(v => v.site === 'YouTube') || videos[0];
                     if (bestVideo && bestVideo.key) {
                         videoKey = bestVideo.key;
                         videoType = bestVideo.type || 'Trailer';
@@ -280,14 +253,12 @@ app.get("/api/hero", async (req, res) => {
                 console.warn(`⚠️ Could not fetch video for ${movie.title}:`, error.message);
             }
 
-            // Fallback: use catalog trailerKey if TMDB fetch failed
             if (!videoKey && movie.trailerKey) {
                 videoKey = movie.trailerKey;
                 videoType = 'Trailer (catalog)';
                 console.log(`📦 Using catalog trailerKey for ${movie.title}: ${videoKey}`);
             }
 
-            // ─── BUILD CLEAN YOUTUBE EMBED URL ───
             const videoUrl = buildYouTubeEmbedUrl(videoKey);
 
             return {
@@ -301,7 +272,7 @@ app.get("/api/hero", async (req, res) => {
                 genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
                 genres: movie.genres || [],
                 trailerKey: videoKey,
-                videoUrl: videoUrl,  // ← Clean YouTube embed URL
+                videoUrl: videoUrl,
                 videoType: videoType || 'Trailer',
                 hasVideo: !!videoUrl,
                 language: movie.language || "en",
@@ -313,6 +284,119 @@ app.get("/api/hero", async (req, res) => {
     } catch (error) {
         console.error('❌ Error in /api/hero:', error);
         res.status(500).json({ error: 'Failed to fetch hero movies' });
+    }
+});
+
+// ─── NEW: HD-ONLY HERO ENDPOINT ───
+app.get("/api/hero-hd", async (req, res) => {
+    try {
+        let movies = getPremiumMovies();
+        if (movies.length === 0) movies = getMovies();
+        if (movies.length === 0) return res.json([]);
+
+        // ─── HD FILTER ───
+        const hdMovies = movies.filter(movie => {
+            // Must have poster
+            if (!movie.poster || movie.poster === "N/A" || movie.poster === "") return false;
+
+            // Must have backdrop
+            if (!movie.backdrop || movie.backdrop === "N/A" || movie.backdrop === "") return false;
+
+            // Poster must be from TMDB (HD quality)
+            if (!movie.poster.includes('image.tmdb.org')) return false;
+
+            // Backdrop must be from TMDB
+            if (!movie.backdrop.includes('image.tmdb.org')) return false;
+
+            // Must have a rating (popularity check)
+            if (!movie.rating || parseFloat(movie.rating) < 5.0) return false;
+
+            // Must be from 2015 onwards (modern HD movies)
+            const year = parseInt(movie.year);
+            if (isNaN(year) || year < 2015) return false;
+
+            return true;
+        });
+
+        if (hdMovies.length === 0) {
+            console.warn('⚠️ No HD movies found');
+            return res.json([]);
+        }
+
+        console.log(`✅ Found ${hdMovies.length} HD movies`);
+
+        // Shuffle and pick 5 random
+        const shuffled = shuffle(hdMovies);
+        const selected = shuffled.slice(0, 5);
+
+        const TMDB_API_KEY = process.env.TMDB_API_KEY;
+
+        function buildYouTubeEmbedUrl(key) {
+            if (!key) return null;
+            return `https://www.youtube-nocookie.com/embed/${key}?autoplay=1&mute=1&loop=1&playlist=${key}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`;
+        }
+
+        const heroMovies = await Promise.all(selected.map(async (movie) => {
+            let videoKey = null;
+            let videoType = null;
+            const tmdbId = movie.tmdbId || movie.id;
+
+            if (TMDB_API_KEY) {
+                try {
+                    const videoResponse = await fetch(
+                        `https://api.themoviedb.org/3/movie/${tmdbId}/videos?api_key=${TMDB_API_KEY}&language=en-US`
+                    );
+                    if (videoResponse.ok) {
+                        const videoData = await videoResponse.json();
+                        const videos = videoData.results || [];
+                        const priority = ['Trailer', 'Teaser', 'Clip', 'Featurette'];
+                        let bestVideo = null;
+                        for (const type of priority) {
+                            const found = videos.find(v => v.type === type && v.site === 'YouTube');
+                            if (found) { bestVideo = found; break; }
+                        }
+                        if (!bestVideo) bestVideo = videos.find(v => v.site === 'YouTube') || videos[0];
+                        if (bestVideo && bestVideo.key) {
+                            videoKey = bestVideo.key;
+                            videoType = bestVideo.type || 'Trailer';
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`⚠️ Could not fetch video for ${movie.title}:`, error.message);
+                }
+            }
+
+            if (!videoKey && movie.trailerKey) {
+                videoKey = movie.trailerKey;
+                videoType = 'Trailer (catalog)';
+            }
+
+            const videoUrl = buildYouTubeEmbedUrl(videoKey);
+
+            return {
+                id: movie.id,
+                title: movie.title,
+                year: movie.year,
+                description: movie.description || "No description available",
+                poster: movie.poster,
+                backdrop: movie.backdrop,
+                rating: movie.rating && parseFloat(movie.rating) > 0 ? parseFloat(movie.rating).toFixed(1) : "N/A",
+                genre: movie.genres && movie.genres.length > 0 ? movie.genres[0] : "Movie",
+                genres: movie.genres || [],
+                trailerKey: videoKey,
+                videoUrl: videoUrl,
+                videoType: videoType || 'Trailer',
+                hasVideo: !!videoUrl,
+                language: movie.language || "en",
+                tmdbId: tmdbId
+            };
+        }));
+
+        console.log(`✅ Hero-HD: ${heroMovies.length} HD movies sent`);
+        res.json(heroMovies);
+    } catch (error) {
+        console.error('❌ Error in /api/hero-hd:', error);
+        res.status(500).json({ error: 'Failed to fetch HD hero movies' });
     }
 });
 
