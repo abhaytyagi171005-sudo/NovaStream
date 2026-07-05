@@ -9,9 +9,10 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies from Local JSON ── */
 /* ── Fetch Hero Movies from Local JSON ── */
 /* ── Fetch Hero Movies ── */
+/* ── Fetch Hero Movies ── */
 async function fetchHeroMovies() {
     try {
-        // Always fetch from the backend API for fresh movies
+        // Fetch from trending API
         const response = await fetch(`${API}/trending?type=movie&limit=50`);
 
         if (!response.ok) {
@@ -32,9 +33,18 @@ async function fetchHeroMovies() {
             return;
         }
 
-        // Shuffle and pick 5 random movies (fresh every refresh)
-        const shuffled = [...withPoster].sort(() => Math.random() - 0.5);
-        heroMovies = shuffled.slice(0, 5).map(m => ({
+        // ─── SHUFFLE AND PICK 5 RANDOM ───
+        // Fisher-Yates shuffle algorithm
+        const shuffled = [...withPoster];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        // Pick first 5 from shuffled array
+        const selected = shuffled.slice(0, 5);
+
+        heroMovies = selected.map(m => ({
             title: m.Title,
             year: m.Year,
             description: m.Plot || "No description available",
@@ -46,7 +56,7 @@ async function fetchHeroMovies() {
         }));
 
         buildHero();
-        console.log('✅ Loaded fresh hero movies from API');
+        console.log('✅ Loaded fresh random hero movies from API');
 
     } catch (error) {
         console.error('Hero fetch failed:', error);
