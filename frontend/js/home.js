@@ -9,43 +9,36 @@ const HERO_INTERVAL = 8000;
 /* ── Fetch Hero Movies from Backend ── */
 async function fetchHeroMovies() {
     try {
-        // Fetch from trending with high quality posters
-        const res = await fetch(`${API}/trending?type=movie&limit=50`);
-        const data = await res.json();
+        const response = await fetch('https://novastream-o3ri.onrender.com/api/hero');
 
-        // Filter movies with best quality posters and backdrops
-        const withQuality = data.filter(m =>
-            m.Poster && m.Poster !== 'N/A' && m.Poster !== '' &&
-            m.Backdrop && m.Backdrop !== 'N/A' && m.Backdrop !== '' &&
-            m.imdbRating && parseFloat(m.imdbRating) > 6.0
-        );
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-        // Sort by rating (highest first)
-        const sorted = [...withQuality].sort((a, b) =>
-            parseFloat(b.imdbRating || 0) - parseFloat(a.imdbRating || 0)
-        );
+        const data = await response.json();
 
-        // Shuffle and pick 5 random from top 20
-        const shuffled = shuffle(sorted.slice(0, 20));
-        const selected = shuffled.slice(0, 5);
+        if (data && data.length > 0) {
+            heroMovies = data.map(m => ({
+                title: m.title,
+                year: m.year,
+                description: m.description || m.Plot || "No description available",
+                poster: m.poster || m.Poster || "N/A",
+                backdrop: m.backdrop || m.Backdrop || m.poster || m.Poster || "N/A",
+                rating: m.rating || m.imdbRating || "N/A",
+                genres: m.genre || (m.genres || []).join(' • ') || 'Movie',
+                trailerKey: m.trailerKey || m.videoKey || null,
+                language: m.language || "en"
+            }));
+            buildHero();
+            return;
+        }
 
-        heroMovies = selected.map(m => ({
-            title: m.Title,
-            year: m.Year,
-            description: m.Plot || "No description available",
-            poster: m.Poster,
-            backdrop: m.Backdrop,
-            rating: m.imdbRating || "N/A",
-            genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
-            language: m.Language || "en",
-            tmdbId: m.tmdbId
-        }));
-
-        buildHero();
+        console.log('No hero data, fetching from trending...');
+        await fetchHeroFromTrending();
 
     } catch (error) {
         console.error('Hero fetch failed:', error);
-        useFallbackHero();
+        await fetchHeroFromTrending();
     }
 }
 
@@ -97,6 +90,7 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
             rating: "8.2",
             genres: "Sci-Fi • Adventure",
+            trailerKey: null,
             language: "en"
         },
         {
@@ -107,6 +101,7 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
             rating: "9.0",
             genres: "Action • Crime",
+            trailerKey: null,
             language: "en"
         },
         {
@@ -117,6 +112,7 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
             rating: "8.8",
             genres: "Sci-Fi • Thriller",
+            trailerKey: null,
             language: "en"
         },
         {
@@ -127,6 +123,7 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
             rating: "8.6",
             genres: "Sci-Fi • Drama",
+            trailerKey: null,
             language: "en"
         },
         {
@@ -137,6 +134,7 @@ function useFallbackHero() {
             poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
             rating: "8.3",
             genres: "Drama • History",
+            trailerKey: null,
             language: "en"
         }
     ];
@@ -156,39 +154,88 @@ function buildHero() {
         const slide = document.createElement('div');
         slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
 
-        // ── BACKGROUND ──
+        // ── BACKGROUND CONTAINER ──
         const bgContainer = document.createElement('div');
         bgContainer.className = 'hero-bg-container';
         bgContainer.style.cssText = `
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
             overflow: hidden;
             background: #0a0a0a;
         `;
 
-        // Use poster as background image
+        // ─── TRY VIDEO FIRST (if trailerKey exists) ───
+        const trailerKey = movie.trailerKey || null;
         const posterUrl = movie.backdrop || movie.poster || '';
-        if (posterUrl) {
+
+        if (trailerKey) {
+            // Use video element with YouTube embed (clean, fills frame)
+            const videoWrapper = document.createElement('div');
+            videoWrapper.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            `;
+
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube-nocookie.com/embed/${trailerKey}?autoplay=1&mute=1&loop=1&playlist=${trailerKey}&start=5&end=13&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&playsinline=1`;
+            iframe.allow = 'autoplay; encrypted-media; fullscreen';
+            iframe.allowFullscreen = true;
+            iframe.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100vw;
+                height: 56.25vw; /* 16:9 aspect ratio */
+                min-height: 100vh;
+                min-width: 177.77vh;
+                transform: translate(-50%, -50%);
+                border: none;
+                pointer-events: none;
+            `;
+            videoWrapper.appendChild(iframe);
+            bgContainer.appendChild(videoWrapper);
+        } else if (posterUrl) {
+            // Use backdrop image if no video
             const img = document.createElement('img');
             img.src = posterUrl;
             img.alt = movie.title;
             img.style.cssText = `
-                width: 100%;
-                height: 100%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100vw;
+                height: 56.25vw;
+                min-height: 100vh;
+                min-width: 177.77vh;
+                transform: translate(-50%, -50%);
                 object-fit: cover;
             `;
             bgContainer.appendChild(img);
+        } else {
+            bgContainer.style.background = '#1a1a1a';
         }
 
         // ── GRADIENT OVERLAYS ──
         const gradLeft = document.createElement('div');
         gradLeft.style.cssText = `
-            position: absolute; inset: 0; z-index: 2;
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
             background: linear-gradient(
                 to right,
-                rgba(0,0,0,0.92) 0%,
-                rgba(0,0,0,0.6) 40%,
+                rgba(0,0,0,0.85) 0%,
+                rgba(0,0,0,0.4) 40%,
                 rgba(0,0,0,0.1) 70%,
                 transparent 100%
             );
@@ -196,12 +243,17 @@ function buildHero() {
 
         const gradBottom = document.createElement('div');
         gradBottom.style.cssText = `
-            position: absolute; inset: 0; z-index: 2;
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
             background: linear-gradient(
                 to top,
                 rgba(10,10,10,1) 0%,
-                rgba(10,10,10,0.4) 20%,
-                transparent 50%
+                rgba(10,10,10,0.3) 25%,
+                transparent 60%
             );
         `;
 
@@ -214,6 +266,7 @@ function buildHero() {
             left: 5%;
             max-width: 550px;
             z-index: 4;
+            pointer-events: auto;
         `;
 
         const rating = movie.rating && movie.rating !== 'N/A' && !isNaN(parseFloat(movie.rating))
@@ -232,7 +285,7 @@ function buildHero() {
                 font-size: clamp(2rem, 4vw, 3.5rem);
                 font-weight: 800;
                 color: white;
-                text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+                text-shadow: 0 4px 20px rgba(0,0,0,0.9);
                 margin-bottom: 12px;
                 line-height: 1.1;
             ">${movie.title}</h1>
@@ -257,7 +310,7 @@ function buildHero() {
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+                text-shadow: 0 2px 10px rgba(0,0,0,0.9);
             ">${movie.description || 'No description available'}</p>
             <div class="hero-buttons" style="display:flex;gap:12px;flex-wrap:wrap;">
                 <button onclick="openMovie('${movie.title.replace(/'/g, "\\'")}')" style="
@@ -328,6 +381,7 @@ function buildHero() {
     goToSlide(0);
     startAutoplay();
 }
+
 /* ── Navigation ── */
 function goToSlide(index) {
     if (!heroMovies.length) return;
