@@ -23,6 +23,18 @@ async function fetchTrendingMovies() {
     }
 }
 
+// ─── FETCH MOVIE DETAILS ───
+async function fetchMovieDetails(movieId) {
+    try {
+        const response = await axios.get(
+            `https://api.themoviedb.org/3/movie/${movieId}?api_key=${TMDB_API_KEY}&language=en-US`
+        );
+        return response.data;
+    } catch (error) {
+        return null;
+    }
+}
+
 // ─── FETCH MOVIE TRAILER ───
 async function fetchTrailer(movieId) {
     try {
@@ -63,8 +75,7 @@ async function downloadFile(url, outputPath) {
 // ─── CREATE 8-SECOND PREVIEW ───
 function createPreview(inputPath, outputPath) {
     try {
-        // Cut from 5s to 13s (8 seconds)
-        execSync(`ffmpeg -ss 5 -i "${inputPath}" -t 8 -c:v libx264 -c:a aac -movflags +faststart "${outputPath}" -y`, {
+        execSync(`ffmpeg -ss 5 -i "${inputPath}" -t 8 -c:v libx264 -c:a aac -movflags +faststart -crf 23 -preset medium "${outputPath}" -y`, {
             stdio: 'pipe'
         });
         return true;
@@ -77,10 +88,23 @@ function createPreview(inputPath, outputPath) {
 // ─── DOWNLOAD YOUTUBE VIDEO ───
 function downloadYouTube(trailerKey, outputPath) {
     try {
-        execSync(`yt-dlp -f "best[height<=480]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`, {
-            stdio: 'pipe'
-        });
-        return true;
+        const commands = [
+            `yt-dlp -f "best[height<=480][ext=mp4]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
+            `yt-dlp -f "best[height<=360]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`,
+            `yt-dlp -f "worst[ext=mp4]" -o "${outputPath}" "https://www.youtube.com/watch?v=${trailerKey}"`
+        ];
+
+        for (const cmd of commands) {
+            try {
+                execSync(cmd, { stdio: 'pipe' });
+                if (fs.existsSync(outputPath) && fs.statSync(outputPath).size > 10000) {
+                    return true;
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+        return false;
     } catch (error) {
         console.error('   ⚠️ yt-dlp error:', error.message);
         return false;
@@ -97,7 +121,7 @@ function createSlug(title) {
 
 // ─── MAIN ───
 async function main() {
-    console.log('🎬 Fetching trending movies...');
+    console.log('🎬 Fetching trending movies from TMDB...');
     const movies = await fetchTrendingMovies();
 
     if (!movies || movies.length === 0) {
@@ -105,8 +129,65 @@ async function main() {
         return;
     }
 
-    // Take top 5 trending
-    const topMovies = movies.slice(0, 5);
+    console.log(`📊 Found ${movies.length} trending movies`);
+    console.log('🔍 Filtering: 2025-2026 + HD Poster + Trailer\n');
+
+    // ─── STRICT FILTER ───
+    const qualifiedMovies = [];
+
+    for (const movie of movies) {
+        const year = parseInt(movie.release_date?.slice(0, 4));
+
+        // 1. Must be 2025-2026
+        if (isNaN(year) || year < 2025 || year > 2026) {
+            console.log(`❌ ${movie.title} - Skipped (Year: ${year || 'N/A'})`);
+            continue;
+        }
+
+        // 2. Must have poster_path
+        if (!movie.poster_path) {
+            console.log(`❌ ${movie.title} - Skipped (No poster)`);
+            continue;
+        }
+
+        // 3. Must have backdrop_path
+        if (!movie.backdrop_path) {
+            console.log(`❌ ${movie.title} - Skipped (No backdrop)`);
+            continue;
+        }
+
+        // 4. Must have vote_count > 100 (popularity)
+        if (!movie.vote_count || movie.vote_count < 100) {
+            console.log(`❌ ${movie.title} - Skipped (Low popularity: ${movie.vote_count || 0} votes)`);
+            continue;
+        }
+
+        // 5. Must have trailer
+        const trailerKey = await fetchTrailer(movie.id);
+        if (!trailerKey) {
+            console.log(`❌ ${movie.title} - Skipped (No trailer)`);
+            continue;
+        }
+
+        // ─── PASSED ALL CHECKS ───
+        qualifiedMovies.push({
+            ...movie,
+            trailerKey: trailerKey
+        });
+
+        console.log(`✅ ${movie.title} (${year}) - Poster: Yes, Backdrop: Yes, Trailer: Yes, Votes: ${movie.vote_count}`);
+    }
+
+    // Take top 5 qualified movies
+    const topMovies = qualifiedMovies.slice(0, 5);
+
+    if (topMovies.length === 0) {
+        console.log('\n❌ No 2025-2026 movies with HD posters and trailers found!');
+        console.log('💡 Try running the workflow again later when more movies are available.');
+        return;
+    }
+
+    console.log(`\n📥 Processing ${topMovies.length} movies with HD posters...\n`);
 
     // Create directories
     const postersDir = path.join(__dirname, '../../frontend/images/hero-posters');
@@ -117,60 +198,72 @@ async function main() {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     });
 
-    console.log(`📥 Processing ${topMovies.length} movies...\n`);
-
     const heroData = [];
 
     for (const movie of topMovies) {
         const title = movie.title || movie.name;
         const slug = createSlug(title);
 
-        console.log(`📽️ ${title}`);
+        console.log(`📽️ ${title} (${movie.release_date?.slice(0, 4)})`);
 
-        // ─── 1. DOWNLOAD POSTER ───
+        // ─── 1. DOWNLOAD HD POSTER ───
         const posterPath = path.join(postersDir, `${slug}.jpg`);
         if (movie.poster_path) {
             const posterUrl = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
             try {
                 await downloadFile(posterUrl, posterPath);
-                console.log(`   ✅ Poster: ${slug}.jpg`);
+                console.log(`   ✅ HD Poster downloaded`);
             } catch (e) {
-                console.log(`   ⚠️ Poster failed`);
+                console.log(`   ⚠️ Poster download failed`);
             }
         }
 
-        // ─── 2. DOWNLOAD & CUT PREVIEW ───
+        // ─── 2. DOWNLOAD HD BACKDROP ───
+        const backdropPath = path.join(postersDir, `${slug}-backdrop.jpg`);
+        if (movie.backdrop_path) {
+            const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+            try {
+                await downloadFile(backdropUrl, backdropPath);
+                console.log(`   ✅ HD Backdrop downloaded`);
+            } catch (e) {
+                console.log(`   ⚠️ Backdrop download failed`);
+            }
+        }
+
+        // ─── 3. DOWNLOAD & CUT PREVIEW ───
         const previewPath = path.join(previewsDir, `${slug}.mp4`);
-        const trailerKey = await fetchTrailer(movie.id);
+        const trailerKey = movie.trailerKey;
 
         if (trailerKey) {
             console.log(`   🎬 Trailer: ${trailerKey}`);
             const tempVideo = path.join(tempDir, `${slug}.mp4`);
 
+            console.log(`   📥 Downloading trailer...`);
             if (downloadYouTube(trailerKey, tempVideo)) {
+                console.log(`   ✂️ Cutting 8-second preview...`);
                 if (createPreview(tempVideo, previewPath)) {
-                    console.log(`   ✅ Preview: 8 seconds`);
+                    const sizeMB = (fs.statSync(previewPath).size / 1024 / 1024).toFixed(1);
+                    console.log(`   ✅ Preview: 8 seconds (${sizeMB} MB)`);
                 }
-                // Clean up temp
                 if (fs.existsSync(tempVideo)) fs.unlinkSync(tempVideo);
+            } else {
+                console.log(`   ⚠️ Failed to download trailer`);
             }
-        } else {
-            console.log(`   ⚠️ No trailer found`);
         }
 
-        // ─── 3. SAVE TO DATA ───
-        // ─── 3. SAVE TO DATA ───
+        // ─── 4. SAVE TO DATA ───
         heroData.push({
             id: movie.id,
             title: title,
-            year: (movie.release_date || '').slice(0, 4),
+            year: movie.release_date?.slice(0, 4) || "N/A",
             description: movie.overview || "No description available",
             rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
-            poster: `images/hero-posters/${slug}.jpg`,  // ← REMOVE leading slash
-            backdrop: fs.existsSync(backdropPath) ? `images/hero-posters/${slug}-backdrop.jpg` : null,  // ← REMOVE leading slash
-            preview: fs.existsSync(previewPath) ? `images/hero-previews/${slug}.mp4` : null,  // ← REMOVE leading slash
+            poster: `/images/hero-posters/${slug}.jpg`,
+            backdrop: `/images/hero-posters/${slug}-backdrop.jpg`,
+            preview: fs.existsSync(previewPath) ? `/images/hero-previews/${slug}.mp4` : null,
             hasPreview: fs.existsSync(previewPath),
-            genres: (movie.genre_ids || []).slice(0, 3).join(' • ')
+            genres: (movie.genre_ids || []).slice(0, 3).join(' • '),
+            trailerKey: trailerKey
         });
 
         console.log('');
@@ -184,9 +277,11 @@ async function main() {
     fs.writeFileSync(dataPath, JSON.stringify(heroData, null, 2));
 
     console.log('✅ Done!');
-    console.log(`📁 Posters: ${postersDir}`);
+    console.log(`📁 HD Posters: ${postersDir}`);
     console.log(`📁 Previews: ${previewsDir}`);
     console.log(`📄 Data: ${dataPath}`);
+    console.log(`📊 Movies with previews: ${heroData.filter(m => m.hasPreview).length}/${heroData.length}`);
+    console.log(`📅 All movies are from 2025-2026 with HD posters!`);
 }
 
-main().catch(console.error);    
+main().catch(console.error);
