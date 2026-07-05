@@ -6,14 +6,54 @@ let slideInterval = null;
 let heroMovies = [];
 const HERO_INTERVAL = 8000;
 
-/* ── Fetch 5 random movies with backdrops for hero ── */
+/* ── Fetch Hero Movies from Backend ── */
 async function fetchHeroMovies() {
     try {
-        // Fetch from trending — already has backdrops from TMDB
+        // First try to get movies with videos from /api/hero
+        const response = await fetch('https://novastream-o3ri.onrender.com/api/hero');
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            // Use the data from /api/hero (has videoUrl)
+            heroMovies = data.map(m => ({
+                title: m.title,
+                year: m.year,
+                description: m.description || m.Plot || "No description available",
+                poster: m.poster || m.Poster || "N/A",
+                backdrop: m.backdrop || m.Backdrop || m.poster || m.Poster || "N/A",
+                rating: m.rating || m.imdbRating || "N/A",
+                genres: m.genre || (m.genres || []).join(' • ') || 'Movie',
+                videoUrl: m.videoUrl || m.trailer || null,
+                hasVideo: m.hasVideo || !!m.videoUrl,
+                language: m.language || "en",
+                tmdbId: m.tmdbId || m.id
+            }));
+            buildHero();
+            return;
+        }
+
+        // Fallback: fetch from trending
+        console.log('No hero data, fetching from trending...');
+        await fetchHeroFromTrending();
+
+    } catch (error) {
+        console.error('Hero fetch failed:', error);
+        // Try trending as fallback
+        await fetchHeroFromTrending();
+    }
+}
+
+/* ── Fallback: Fetch from Trending ── */
+async function fetchHeroFromTrending() {
+    try {
         const res = await fetch(`${API}/trending?type=movie&limit=50`);
         const data = await res.json();
 
-        // Filter only movies with good backdrops
         const withBackdrop = data.filter(m =>
             m.Backdrop && m.Backdrop !== 'N/A' && m.Backdrop !== '' &&
             m.Poster && m.Poster !== 'N/A'
@@ -24,28 +64,30 @@ async function fetchHeroMovies() {
             return;
         }
 
-        // Shuffle and pick 5 random ones — different every refresh
         const shuffled = [...withBackdrop].sort(() => Math.random() - 0.5);
         heroMovies = shuffled.slice(0, 5).map(m => ({
             title: m.Title,
             year: m.Year,
-            description: m.Plot,
+            description: m.Plot || "No description available",
             poster: m.Poster,
             backdrop: m.Backdrop,
-            rating: m.imdbRating,
-            genres: (m.genres || []).slice(0, 2).join(' • '),
-            trailerKey: m.trailerKey || null
+            rating: m.imdbRating || "N/A",
+            genres: (m.genres || []).slice(0, 2).join(' • ') || 'Movie',
+            videoUrl: null, // No video from trending endpoint
+            hasVideo: false,
+            language: m.Language || "en",
+            tmdbId: m.tmdbId
         }));
 
         buildHero();
 
     } catch (err) {
-        console.error('Hero fetch failed:', err);
+        console.error('Trending fetch failed:', err);
         useFallbackHero();
     }
 }
 
-/* ── Fallback ── */
+/* ── Fallback Hero Data ── */
 function useFallbackHero() {
     heroMovies = [
         {
@@ -55,7 +97,9 @@ function useFallbackHero() {
             backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
             poster: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
             rating: "8.2",
-            genres: "Sci-Fi • Adventure"
+            genres: "Sci-Fi • Adventure",
+            videoUrl: null,
+            hasVideo: false
         },
         {
             title: "The Dark Knight",
@@ -64,7 +108,9 @@ function useFallbackHero() {
             backdrop: "https://image.tmdb.org/t/p/original/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg",
             poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
             rating: "9.0",
-            genres: "Action • Crime"
+            genres: "Action • Crime",
+            videoUrl: null,
+            hasVideo: false
         },
         {
             title: "Inception",
@@ -73,7 +119,9 @@ function useFallbackHero() {
             backdrop: "https://image.tmdb.org/t/p/original/s3TBrgb1vv2QPEdn9c7H3uU3cYr.jpg",
             poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
             rating: "8.8",
-            genres: "Sci-Fi • Thriller"
+            genres: "Sci-Fi • Thriller",
+            videoUrl: null,
+            hasVideo: false
         },
         {
             title: "Interstellar",
@@ -82,7 +130,9 @@ function useFallbackHero() {
             backdrop: "https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg",
             poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
             rating: "8.6",
-            genres: "Sci-Fi • Drama"
+            genres: "Sci-Fi • Drama",
+            videoUrl: null,
+            hasVideo: false
         },
         {
             title: "Oppenheimer",
@@ -91,7 +141,9 @@ function useFallbackHero() {
             backdrop: "https://image.tmdb.org/t/p/original/rLb2cwF3Pazuxaj0sRXQ037tGI1.jpg",
             poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
             rating: "8.3",
-            genres: "Drama • History"
+            genres: "Drama • History",
+            videoUrl: null,
+            hasVideo: false
         }
     ];
     buildHero();
@@ -107,23 +159,53 @@ function buildHero() {
     indicators.innerHTML = '';
 
     heroMovies.forEach((movie, index) => {
-        // ── SLIDE ──
         const slide = document.createElement('div');
         slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
 
-        // Backdrop image
-        const bg = document.createElement('div');
-        bg.className = 'hero-bg';
-        bg.style.cssText = `
-            position: absolute; inset: 0;
-            background-image: url('${movie.backdrop || movie.poster}');
-            background-size: cover;
-            background-position: center top;
+        // ── BACKGROUND (Video or Image) ──
+        const bgContainer = document.createElement('div');
+        bgContainer.className = 'hero-bg-container';
+        bgContainer.style.cssText = `
+            position: absolute;
+            inset: 0;
             z-index: 1;
-            transition: opacity 0.8s ease;
+            overflow: hidden;
         `;
 
-        // Gradient overlays
+        // Check if we have a video URL
+        const videoUrl = movie.videoUrl || movie.trailer || null;
+        const posterUrl = movie.backdrop || movie.poster || '';
+
+        if (videoUrl) {
+            // Use TMDB native video player
+            const iframe = document.createElement('iframe');
+            iframe.src = videoUrl;
+            iframe.allow = 'autoplay; encrypted-media; fullscreen';
+            iframe.allowFullscreen = true;
+            iframe.style.cssText = `
+                width: 100%;
+                height: 100%;
+                border: none;
+                pointer-events: none;
+            `;
+            bgContainer.appendChild(iframe);
+        } else if (posterUrl) {
+            // Use backdrop image
+            const img = document.createElement('img');
+            img.src = posterUrl;
+            img.alt = movie.title;
+            img.style.cssText = `
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            `;
+            bgContainer.appendChild(img);
+        } else {
+            // Ultimate fallback: dark background
+            bgContainer.style.background = '#1a1a1a';
+        }
+
+        // ── GRADIENT OVERLAYS ──
         const gradLeft = document.createElement('div');
         gradLeft.style.cssText = `
             position: absolute; inset: 0; z-index: 2;
@@ -147,7 +229,7 @@ function buildHero() {
             );
         `;
 
-        // Content
+        // ── CONTENT ──
         const content = document.createElement('div');
         content.className = 'hero-content';
         content.style.cssText = `
@@ -157,6 +239,10 @@ function buildHero() {
             max-width: 550px;
             z-index: 4;
         `;
+
+        const rating = movie.rating && movie.rating !== 'N/A' && !isNaN(parseFloat(movie.rating))
+            ? parseFloat(movie.rating).toFixed(1)
+            : null;
 
         content.innerHTML = `
             <div style="color:#e50914;font-size:0.8rem;letter-spacing:4px;font-weight:600;margin-bottom:10px;text-transform:uppercase;">
@@ -178,12 +264,9 @@ function buildHero() {
                 flex-wrap: wrap;
             ">
                 <span style="color:#d4af37;font-weight:600;">${movie.year || ''}</span>
-                ${movie.rating && movie.rating !== 'N/A'
-                ? `<span style="color:#46d369;font-weight:600;">⭐ ${parseFloat(movie.rating).toFixed(1)}</span>`
-                : ''}
-                ${movie.genres
-                ? `<span style="color:#aaa;font-size:0.9rem;">${movie.genres}</span>`
-                : ''}
+                ${rating ? `<span style="color:#46d369;font-weight:600;">⭐ ${rating}</span>` : ''}
+                ${movie.genres ? `<span style="color:#aaa;font-size:0.9rem;">${movie.genres}</span>` : ''}
+                ${movie.language && movie.language !== 'en' ? `<span style="color:#aaa;font-size:0.9rem;">${movie.language.toUpperCase()}</span>` : ''}
             </div>
             <p class="hero-description" style="
                 font-size: 1rem;
@@ -194,7 +277,7 @@ function buildHero() {
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
-            ">${movie.description || ''}</p>
+            ">${movie.description || 'No description available'}</p>
             <div class="hero-buttons" style="display:flex;gap:12px;flex-wrap:wrap;">
                 <button onclick="openMovie('${movie.title.replace(/'/g, "\\'")}')" style="
                     background: white;
@@ -230,7 +313,7 @@ function buildHero() {
             </div>
         `;
 
-        slide.appendChild(bg);
+        slide.appendChild(bgContainer);
         slide.appendChild(gradLeft);
         slide.appendChild(gradBottom);
         slide.appendChild(content);
@@ -244,6 +327,9 @@ function buildHero() {
     });
 
     // ── PROGRESS BAR ──
+    const existingBar = document.getElementById('heroProgress');
+    if (existingBar) existingBar.remove();
+
     const progressBar = document.createElement('div');
     progressBar.id = 'heroProgress';
     progressBar.style.cssText = `
@@ -294,7 +380,6 @@ function prevSlide() { goToSlide(currentSlide - 1); }
 function startAutoplay() {
     if (slideInterval) clearInterval(slideInterval);
     slideInterval = setInterval(nextSlide, HERO_INTERVAL);
-    // Start progress bar
     setTimeout(() => {
         const bar = document.getElementById('heroProgress');
         if (bar) {
@@ -387,7 +472,7 @@ async function loadRow(endpoint, containerId, sectionId) {
         return;
     }
     container.innerHTML = shuffle(data).slice(0, 20).map(createCard).join("");
-    attachPreviews();
+    // attachPreviews() is called after all rows load
 }
 
 function openMovie(title) {
@@ -395,6 +480,7 @@ function openMovie(title) {
 }
 
 async function loadHome() {
+    // Hero is loaded separately via fetchHeroMovies()
     await loadRow("/trending", "trendingMovies", "sectionTrending");
     await loadRow("/movies?category=drama&limit=20", "topRated", "sectionTopRated");
     await loadRow("/movies?category=scifi&limit=20", "sciFiMovies", "sectionSciFi");
@@ -409,7 +495,13 @@ async function loadHome() {
     await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
     await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
     await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
-    attachPreviews();
+    // attachPreviews() from preview.js will be called after all rows load
+    if (typeof attachPreviews === 'function') {
+        attachPreviews();
+    }
 }
 
+// ── Initialize ──
+// Hero loads first, then catalog rows
+fetchHeroMovies();
 loadHome();
