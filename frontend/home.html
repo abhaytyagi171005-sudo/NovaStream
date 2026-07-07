@@ -62,28 +62,33 @@
 
     </nav>
 
-    <!-- ─── HERO BANNER ─── -->
+    <!-- ─── HERO BANNER (Single Preview) ─── -->
     <section class="hero" id="heroBanner">
-        <div class="hero-slides" id="heroSlides">
-            <!-- Slides will be injected by JavaScript -->
+        <!-- Background container -->
+        <div class="hero-background" id="heroBackground">
+            <!-- Preview Video (autoplay, muted, loop) -->
+            <video id="heroPreview" autoplay muted loop playsinline></video>
+            <!-- Poster Image (fallback) -->
+            <img id="heroPoster" src="" alt="" style="display:none;">
+            <!-- Dark Overlay -->
+            <div class="hero-overlay"></div>
         </div>
 
-        <!-- Hero controls (arrows) -->
-        <div class="hero-controls">
-            <button class="hero-btn hero-btn-left" id="heroPrev" aria-label="Previous">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
-            </button>
-            <button class="hero-btn hero-btn-right" id="heroNext" aria-label="Next">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
+        <!-- Hero Content -->
+        <div class="hero-content" id="heroContent">
+            <div class="hero-badge">▶ FEATURED TODAY</div>
+            <h1 id="heroTitle"></h1>
+            <div class="hero-meta">
+                <span id="heroYear"></span>
+                <span id="heroRating"></span>
+                <span id="heroGenres"></span>
+            </div>
+            <p id="heroDescription"></p>
+            <div class="hero-buttons">
+                <button class="watch-btn" id="heroWatchBtn">▶ Watch Now</button>
+                <button class="info-btn" id="heroMyListBtn">+ My List</button>
+            </div>
         </div>
-
-        <!-- Indicators (dots) -->
-        <div class="hero-indicators" id="heroIndicators"></div>
     </section>
 
     <!-- ─── MOVIE ROWS ─── -->
