@@ -511,3 +511,18 @@ ul li.active {
         height: 210px;
     }
 }
+
+/* ── POSTER & VIDEO TRANSITIONS ── */
+#heroPoster {
+    transition: opacity 0.5s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#heroPreview {
+    transition: opacity 0.5s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

@@ -95,24 +95,45 @@ function updateHeroDOM(hero) {
     const poster = document.getElementById('heroPoster');
     const heroContent = document.getElementById('heroContent');
 
-    // Set video source
-    if (hero.preview) {
-        video.src = hero.preview;
-        video.style.display = 'block';
-        poster.style.display = 'none';
-        video.load();
-        video.play().catch(() => { });
-    } else if (hero.backdrop) {
-        poster.src = hero.backdrop;
+    // ─── SHOW POSTER FIRST ───
+    // Use backdrop or poster
+    const posterUrl = hero.backdrop || hero.poster || '';
+
+    if (posterUrl) {
+        poster.src = posterUrl;
         poster.style.display = 'block';
-        video.style.display = 'none';
-    } else if (hero.poster) {
-        poster.src = hero.poster;
-        poster.style.display = 'block';
+        poster.style.opacity = '1';
+        poster.style.transition = 'opacity 0.5s ease';
         video.style.display = 'none';
     }
 
-    // ─── SAFE UPDATES (check if elements exist) ───
+    // ─── AFTER 3 SECONDS, SWITCH TO VIDEO ───
+    setTimeout(() => {
+        if (hero.preview) {
+            // Fade out poster
+            poster.style.opacity = '0';
+            poster.style.transition = 'opacity 0.5s ease';
+
+            // After poster fades, show video
+            setTimeout(() => {
+                poster.style.display = 'none';
+                video.src = hero.preview;
+                video.style.display = 'block';
+                video.style.opacity = '0';
+                video.style.transition = 'opacity 0.5s ease';
+                video.load();
+                video.play().catch(() => { });
+
+                // Fade in video
+                setTimeout(() => {
+                    video.style.opacity = '1';
+                }, 50);
+
+            }, 500);
+        }
+    }, 3000); // 3 seconds
+
+    // ─── UPDATE TEXT CONTENT ───
     const titleEl = document.getElementById('heroTitle');
     if (titleEl) titleEl.textContent = hero.title;
 
@@ -139,7 +160,7 @@ function updateHeroDOM(hero) {
     const myListBtn = document.getElementById('heroMyListBtn');
     if (myListBtn) myListBtn.onclick = () => addToMyList(hero.title, hero.poster);
 
-    // Fade in
+    // Fade in content
     if (heroContent) {
         heroContent.style.opacity = '1';
         heroContent.style.transition = 'opacity 0.8s ease';
@@ -147,7 +168,6 @@ function updateHeroDOM(hero) {
 
     console.log(`✅ Hero loaded: ${hero.title} (${hero.year})`);
 }
-
 /* ── Fallback Hero ── */
 function useFallbackHero() {
     const fallback = {
