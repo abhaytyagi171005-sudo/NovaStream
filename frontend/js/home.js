@@ -124,7 +124,7 @@ function updateHeroDOM(hero) {
                     }, 50);
                 }
             }, 500);
-        }, 8000);
+        }, 4000);
     } else {
         // No poster – show video immediately
         if (hero.preview) {
