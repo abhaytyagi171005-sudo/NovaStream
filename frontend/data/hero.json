@@ -1,5 +1,12 @@
 [
-    { "tmdb": 157336, "preview": "assets/hero/previews/interstellar.mp4" },
-    { "tmdb": 1399, "preview": "assets/hero/previews/game-of-thrones.mp4" },
-    { "tmdb": 604, "preview": "assets/hero/previews/the-matrix.mp4" }
+    { "tmdb": 1267865, "preview": "assets/hero/previews/humint.mp4" },
+    { "tmdb": 1273220, "preview": "assets/hero/previews/peddi.mp4" },
+    { "tmdb": 1194736, "preview": "assets/hero/previews/bhooth-bangla.mp4" },
+    { "tmdb": 1202033, "preview": "assets/hero/previews/enola-holmes-3.mp4" },
+    { "tmdb": 1275334, "preview": "assets/hero/previews/peaky-blinders.mp4" },
+    { "tmdb": 1325678, "preview": "assets/hero/previews/voicemails.mp4" },
+    { "tmdb": 1339713, "preview": "assets/hero/previews/obsession.mp4" },
+    { "tmdb": 603692, "preview": "assets/hero/previews/john-wick-4.mp4" },
+    { "tmdb": 1276779, "preview": "assets/hero/previews/people-we-meet.mp4" },
+    { "tmdb": 912649, "preview": "assets/hero/previews/venom.mp4" }
 ]
