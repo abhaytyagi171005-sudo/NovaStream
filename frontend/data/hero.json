@@ -1,1 +1,42 @@
-[{"tmdb":1094108,"preview":"assets/hero/previews/avatar.mp4"},{"tmdb":1140076,"preview":"assets/hero/previews/mission-impossible.mp4"},{"tmdb":968051,"preview":"assets/hero/previews/28-years-later.mp4"},{"tmdb":1146040,"preview":"assets/hero/previews/supergirl.mp4"},{"tmdb":1357158,"preview":"assets/hero/previews/dhurandhar.mp4"},{"tmdb":998280,"preview":"assets/hero/previews/chhaava.mp4"},{"tmdb":1308632,"preview":"assets/hero/previews/squid-game.mp4"},{"tmdb":1129684,"preview":"assets/hero/previews/demon-slayer.mp4"},{"tmdb":1357159,"preview":"assets/hero/previews/saiyaara.mp4"},{"tmdb":1140106,"preview":"assets/hero/previews/project-hail-mary.mp4"}] 
+[
+    {
+        "tmdb": 1094108,
+        "preview": "assets/hero/previews/avatar.mp4"
+    },
+    {
+        "tmdb": 872585,
+        "preview": "assets/hero/previews/oppenheimer.mp4"
+    },
+    {
+        "tmdb": 968051,
+        "preview": "assets/hero/previews/28-years-later.mp4"
+    },
+    {
+        "tmdb": 1146040,
+        "preview": "assets/hero/previews/supergirl.mp4"
+    },
+    {
+        "tmdb": 1357158,
+        "preview": "assets/hero/previews/dhurandhar.mp4"
+    },
+    {
+        "tmdb": 998280,
+        "preview": "assets/hero/previews/chhaava.mp4"
+    },
+    {
+        "tmdb": 1308632,
+        "preview": "assets/hero/previews/squid-game.mp4"
+    },
+    {
+        "tmdb": 1129684,
+        "preview": "assets/hero/previews/demon-slayer.mp4"
+    },
+    {
+        "tmdb": 1357159,
+        "preview": "assets/hero/previews/saiyaara.mp4"
+    },
+    {
+        "tmdb": 1140106,
+        "preview": "assets/hero/previews/project-hail-mary.mp4"
+    }
+]
