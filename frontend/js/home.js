@@ -90,41 +90,31 @@ async function renderHero() {
 
 /* ── Update Hero DOM ── */
 function updateHeroDOM(hero) {
-    // Video
     const video = document.getElementById('heroPreview');
     const poster = document.getElementById('heroPoster');
     const heroContent = document.getElementById('heroContent');
 
-    // ─── SHOW POSTER FIRST ───
     const posterUrl = hero.backdrop || hero.poster || '';
 
-    console.log('📸 Poster URL:', posterUrl); // Debug log
-
+    // ─── SHOW POSTER ───
     if (posterUrl) {
         poster.src = posterUrl;
         poster.style.display = 'block';
         poster.style.opacity = '1';
-        poster.style.transition = 'opacity 0.5s ease';
         video.style.display = 'none';
         video.style.opacity = '0';
 
-        // ─── AFTER 3 SECONDS, SWITCH TO VIDEO ───
+        // ─── AFTER 2 SECONDS, INSTANTLY SWITCH TO VIDEO ───
         setTimeout(() => {
-            poster.style.opacity = '0';
-            setTimeout(() => {
-                poster.style.display = 'none';
-                if (hero.preview) {
-                    video.src = hero.preview;
-                    video.style.display = 'block';
-                    video.style.opacity = '0';
-                    video.load();
-                    video.play().catch(() => { });
-                    setTimeout(() => {
-                        video.style.opacity = '1';
-                    }, 50);
-                }
-            }, 500);
-        }, 4000);
+            poster.style.display = 'none';
+            if (hero.preview) {
+                video.src = hero.preview;
+                video.style.display = 'block';
+                video.style.opacity = '1';
+                video.load();
+                video.play().catch(() => { });
+            }
+        }, 2000); // 2 seconds, no fade
     } else {
         // No poster – show video immediately
         if (hero.preview) {
@@ -171,20 +161,7 @@ function updateHeroDOM(hero) {
 
     console.log(`✅ Hero loaded: ${hero.title} (${hero.year})`);
 }
-/* ── Fallback Hero ── */
-function useFallbackHero() {
-    const fallback = {
-        title: "Dune: Part Two",
-        year: "2024",
-        description: "Paul Atreides unites with the Fremen and fights for the future of Arrakis.",
-        poster: "https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
-        backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
-        rating: "8.2",
-        genres: "Sci-Fi • Adventure",
-        preview: null
-    };
-    updateHeroDOM(fallback);
-}
+
 
 /* ── Utility ── */
 function openMovie(title) {
