@@ -112,37 +112,38 @@ function updateHeroDOM(hero) {
         video.style.display = 'none';
     }
 
-    // Title
-    document.getElementById('heroTitle').textContent = hero.title;
+    // ─── SAFE UPDATES (check if elements exist) ───
+    const titleEl = document.getElementById('heroTitle');
+    if (titleEl) titleEl.textContent = hero.title;
 
-    // Year
-    document.querySelector('.hero-meta .year').textContent = hero.year;
+    const yearEl = document.getElementById('heroYear');
+    if (yearEl) yearEl.textContent = hero.year;
 
-    // Rating
-    const ratingEl = document.querySelector('.hero-meta .rating');
-    if (hero.rating && hero.rating !== 'N/A') {
+    const ratingEl = document.getElementById('heroRating');
+    if (ratingEl && hero.rating && hero.rating !== 'N/A') {
         ratingEl.textContent = `⭐ ${hero.rating}`;
         ratingEl.style.display = 'inline';
-    } else {
+    } else if (ratingEl) {
         ratingEl.style.display = 'none';
     }
 
-    // Genres
-    document.querySelector('.hero-meta .genres').textContent = hero.genres;
+    const genresEl = document.getElementById('heroGenres');
+    if (genresEl) genresEl.textContent = hero.genres;
 
-    // Description
-    document.getElementById('heroDescription').textContent = hero.description;
+    const descEl = document.getElementById('heroDescription');
+    if (descEl) descEl.textContent = hero.description;
 
-    // Buttons
     const watchBtn = document.getElementById('heroWatchBtn');
-    watchBtn.onclick = () => openMovie(hero.title);
+    if (watchBtn) watchBtn.onclick = () => openMovie(hero.title);
 
     const myListBtn = document.getElementById('heroMyListBtn');
-    myListBtn.onclick = () => addToMyList(hero.title, hero.poster);
+    if (myListBtn) myListBtn.onclick = () => addToMyList(hero.title, hero.poster);
 
     // Fade in
-    heroContent.style.opacity = '1';
-    heroContent.style.transition = 'opacity 0.8s ease';
+    if (heroContent) {
+        heroContent.style.opacity = '1';
+        heroContent.style.transition = 'opacity 0.8s ease';
+    }
 
     console.log(`✅ Hero loaded: ${hero.title} (${hero.year})`);
 }
