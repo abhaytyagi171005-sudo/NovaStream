@@ -96,8 +96,9 @@ function updateHeroDOM(hero) {
     const heroContent = document.getElementById('heroContent');
 
     // ─── SHOW POSTER FIRST ───
-    // Use backdrop or poster
     const posterUrl = hero.backdrop || hero.poster || '';
+
+    console.log('📸 Poster URL:', posterUrl); // Debug log
 
     if (posterUrl) {
         poster.src = posterUrl;
@@ -105,33 +106,35 @@ function updateHeroDOM(hero) {
         poster.style.opacity = '1';
         poster.style.transition = 'opacity 0.5s ease';
         video.style.display = 'none';
-    }
+        video.style.opacity = '0';
 
-    // ─── AFTER 3 SECONDS, SWITCH TO VIDEO ───
-    setTimeout(() => {
-        if (hero.preview) {
-            // Fade out poster
+        // ─── AFTER 3 SECONDS, SWITCH TO VIDEO ───
+        setTimeout(() => {
             poster.style.opacity = '0';
-            poster.style.transition = 'opacity 0.5s ease';
-
-            // After poster fades, show video
             setTimeout(() => {
                 poster.style.display = 'none';
-                video.src = hero.preview;
-                video.style.display = 'block';
-                video.style.opacity = '0';
-                video.style.transition = 'opacity 0.5s ease';
-                video.load();
-                video.play().catch(() => { });
-
-                // Fade in video
-                setTimeout(() => {
-                    video.style.opacity = '1';
-                }, 50);
-
+                if (hero.preview) {
+                    video.src = hero.preview;
+                    video.style.display = 'block';
+                    video.style.opacity = '0';
+                    video.load();
+                    video.play().catch(() => { });
+                    setTimeout(() => {
+                        video.style.opacity = '1';
+                    }, 50);
+                }
             }, 500);
+        }, 3000);
+    } else {
+        // No poster – show video immediately
+        if (hero.preview) {
+            video.src = hero.preview;
+            video.style.display = 'block';
+            video.style.opacity = '1';
+            video.load();
+            video.play().catch(() => { });
         }
-    }, 3000); // 3 seconds
+    }
 
     // ─── UPDATE TEXT CONTENT ───
     const titleEl = document.getElementById('heroTitle');
