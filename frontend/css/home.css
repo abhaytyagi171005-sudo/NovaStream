@@ -81,6 +81,8 @@ body {
     max-width: 550px;
     z-index: 4;
     pointer-events: auto;
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 
 .hero-badge {
@@ -109,22 +111,22 @@ body {
     flex-wrap: wrap;
 }
 
-.hero-meta .year {
+.hero-meta #heroYear {
     color: #d4af37;
     font-weight: 600;
 }
 
-.hero-meta .rating {
+.hero-meta #heroRating {
     color: #46d369;
     font-weight: 600;
 }
 
-.hero-meta .genres {
+.hero-meta #heroGenres {
     color: #aaa;
     font-size: 0.9rem;
 }
 
-.hero-description {
+#heroDescription {
     font-size: 1rem;
     color: #ccc;
     line-height: 1.6;
@@ -143,7 +145,7 @@ body {
     flex-wrap: wrap;
 }
 
-.hero-buttons .watch-btn {
+.watch-btn {
     background: #fff;
     color: #000;
     border: none;
@@ -156,12 +158,12 @@ body {
     transition: transform 0.2s, background 0.2s;
 }
 
-.hero-buttons .watch-btn:hover {
+.watch-btn:hover {
     background: #e6e6e6;
     transform: scale(1.04);
 }
 
-.hero-buttons .info-btn {
+.info-btn {
     background: rgba(255, 255, 255, 0.15);
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -175,20 +177,9 @@ body {
     transition: transform 0.2s, background 0.2s;
 }
 
-.hero-buttons .info-btn:hover {
+.info-btn:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: scale(1.04);
-}
-
-/* ── LOADING SPINNER ── */
-.hero-loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    color: #e50914;
-    font-size: 2rem;
 }
 
 /* ── NAVBAR ── */
@@ -435,7 +426,7 @@ ul li.active {
         font-size: 1.8rem;
     }
 
-    .hero-description {
+    #heroDescription {
         font-size: 0.9rem;
         -webkit-line-clamp: 2;
     }
@@ -466,7 +457,7 @@ ul li.active {
         font-size: 1.4rem;
     }
 
-    .hero-description {
+    #heroDescription {
         display: none;
     }
 
@@ -488,8 +479,8 @@ ul li.active {
         font-size: 0.7rem;
     }
 
-    .hero-buttons .watch-btn,
-    .hero-buttons .info-btn {
+    .watch-btn,
+    .info-btn {
         padding: 8px 16px;
         font-size: 0.8rem;
     }
