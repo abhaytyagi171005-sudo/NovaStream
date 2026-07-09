@@ -105,27 +105,39 @@ function updateHeroDOM(hero) {
         // Preload poster image
         const img = new Image();
         img.onload = function () {
-            // Poster loaded – show it instantly
             poster.src = posterUrl;
             poster.style.display = 'block';
             poster.style.opacity = '1';
             video.style.display = 'none';
             video.style.opacity = '0';
 
-            // ─── AFTER 2 SECONDS, INSTANTLY SWITCH ───
+            // ─── AFTER 2 SECONDS, SWITCH TO VIDEO ───
             setTimeout(() => {
-                poster.style.display = 'none';
                 if (hero.preview) {
                     video.src = hero.preview;
                     video.style.display = 'block';
                     video.style.opacity = '1';
                     video.load();
-                    video.play().catch(() => { });
+
+                    // ─── IF VIDEO FAILS, SHOW POSTER AGAIN ───
+                    video.onerror = function () {
+                        video.style.display = 'none';
+                        poster.style.display = 'block';
+                        poster.style.opacity = '1';
+                        console.warn('⚠️ Video failed, showing poster');
+                    };
+
+                    video.play().catch(() => {
+                        // If play fails, show poster
+                        video.style.display = 'none';
+                        poster.style.display = 'block';
+                        poster.style.opacity = '1';
+                    });
                 }
             }, 2000);
         };
         img.onerror = function () {
-            // If poster fails to load, show video immediately
+            // If poster fails to load, try video
             if (hero.preview) {
                 video.src = hero.preview;
                 video.style.display = 'block';
