@@ -96,17 +96,36 @@ function updateHeroDOM(hero) {
 
     const posterUrl = hero.backdrop || hero.poster || '';
 
+    // ─── REMOVE ALL TRANSITIONS ───
+    poster.style.transition = 'none';
+    video.style.transition = 'none';
+
     // ─── SHOW POSTER ───
     if (posterUrl) {
-        poster.src = posterUrl;
-        poster.style.display = 'block';
-        poster.style.opacity = '1';
-        video.style.display = 'none';
-        video.style.opacity = '0';
+        // Preload poster image
+        const img = new Image();
+        img.onload = function () {
+            // Poster loaded – show it instantly
+            poster.src = posterUrl;
+            poster.style.display = 'block';
+            poster.style.opacity = '1';
+            video.style.display = 'none';
+            video.style.opacity = '0';
 
-        // ─── AFTER 2 SECONDS, INSTANTLY SWITCH TO VIDEO ───
-        setTimeout(() => {
-            poster.style.display = 'none';
+            // ─── AFTER 2 SECONDS, INSTANTLY SWITCH ───
+            setTimeout(() => {
+                poster.style.display = 'none';
+                if (hero.preview) {
+                    video.src = hero.preview;
+                    video.style.display = 'block';
+                    video.style.opacity = '1';
+                    video.load();
+                    video.play().catch(() => { });
+                }
+            }, 2000);
+        };
+        img.onerror = function () {
+            // If poster fails to load, show video immediately
             if (hero.preview) {
                 video.src = hero.preview;
                 video.style.display = 'block';
@@ -114,7 +133,8 @@ function updateHeroDOM(hero) {
                 video.load();
                 video.play().catch(() => { });
             }
-        }, 2000); // 2 seconds, no fade
+        };
+        img.src = posterUrl;
     } else {
         // No poster – show video immediately
         if (hero.preview) {
@@ -156,12 +176,11 @@ function updateHeroDOM(hero) {
     // Fade in content
     if (heroContent) {
         heroContent.style.opacity = '1';
-        heroContent.style.transition = 'opacity 0.8s ease';
+        heroContent.style.transition = 'opacity 0.5s ease';
     }
 
     console.log(`✅ Hero loaded: ${hero.title} (${hero.year})`);
 }
-
 
 /* ── Utility ── */
 function openMovie(title) {

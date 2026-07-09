@@ -534,3 +534,11 @@ ul li.active {
         height: 210px;
     }
 }
+
+#heroPoster {
+    transition: none !important;
+}
+
+#heroPreview {
+    transition: none !important;
+}
