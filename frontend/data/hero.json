@@ -4,10 +4,6 @@
         "preview": "assets/hero/previews/avatar.mp4"
     },
     {
-        "tmdb": 872585,
-        "preview": "assets/hero/previews/oppenheimer.mp4"
-    },
-    {
         "tmdb": 1100988,
         "preview": "assets/hero/previews/28-years-later.mp4"
     },
@@ -20,12 +16,12 @@
         "preview": "assets/hero/previews/dhurandhar.mp4"
     },
     {
-        "tmdb": 1442874,
-        "preview": "assets/hero/previews/chhaava.mp4"
+        "tmdb": 801688,
+        "preview": "assets/hero/previews/kalki.mp4"
     },
     {
-        "tmdb": 93405,
-        "preview": "assets/hero/previews/squid-game.mp4"
+        "tmdb": 94997,
+        "preview": "assets/hero/previews/house-of-the-dragon.mp4"
     },
     {
         "tmdb": 1311031,
@@ -38,5 +34,9 @@
     {
         "tmdb": 687163,
         "preview": "assets/hero/previews/project-hail-mary.mp4"
+    },
+    {
+        "tmdb": 872585,
+        "preview": "assets/hero/previews/oppenheimer.mp4"
     }
 ]
