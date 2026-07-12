@@ -8,22 +8,21 @@ body {
     background: #0a0a0a;
     color: white;
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
 }
 
-/* NAVBAR */
-
+/* ─── NAVBAR ─── */
 nav {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 25px 60px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
 }
 
 .logo {
@@ -61,191 +60,183 @@ ul li.active {
     color: #e50914;
 }
 
-/* HERO */
-
+/* ─── HERO BANNER (2K Optimized) ─── */
 .movies-hero {
-    height: 100vh;
-
+    height: 85vh;
+    min-height: 500px;
+    max-height: 900px;
     position: relative;
-
-    background:
-        linear-gradient(to right,
-            rgba(0, 0, 0, .92),
-            rgba(0, 0, 0, .35)),
-        url("../images/banners/dune-banner.jpg");
-
+    background: #0a0a0a;
     background-size: cover;
     background-position: center;
-
     transition: .8s ease;
+    overflow: hidden;
 }
 
 #hero-video {
-
     position: absolute;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     z-index: 1;
-
     opacity: 0;
-
     transition: opacity 1s ease;
 }
 
-.hero-overlay {
-
-    z-index: 2;
-}
-
-.hero-content {
-
-    z-index: 10;
-}
-
-.hero-preview-strip {
-
-    z-index: 20;
-}
-
+/* ─── HERO OVERLAY ─── */
 .hero-overlay {
     position: absolute;
     inset: 0;
-
-    background:
-        linear-gradient(to top,
-            #0a0a0a,
-            transparent 30%);
+    z-index: 2;
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.4) 40%,
+            rgba(0, 0, 0, 0.1) 70%,
+            transparent 100%);
 }
 
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(10, 10, 10, 1) 0%, transparent 100%);
+}
+
+/* ─── HERO CONTENT ─── */
 .hero-content {
     position: absolute;
-
     top: 50%;
-    left: 80px;
-
+    left: 60px;
     transform: translateY(-50%);
-
-    max-width: 650px;
-
+    max-width: 550px;
     z-index: 10;
+    pointer-events: auto;
 }
 
 .featured {
-    color: #d4af37;
+    color: #e50914;
     letter-spacing: 4px;
-    font-size: .85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
 }
 
 .hero-content h1 {
-
-    font-size: clamp(1rem, 4vw, 3rem);
-
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    margin-bottom: 10px;
+    line-height: 1.1;
     max-width: 700px;
-
-    line-height: 1.05;
-
-    margin: 5px 0;
-
     word-break: break-word;
 }
 
 .movie-meta {
     display: flex;
     gap: 15px;
+    color: #ccc;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
 
+.movie-meta span {
+    font-size: 0.9rem;
+}
+
+.movie-meta span:first-child {
     color: #d4af37;
+    font-weight: 600;
+}
 
-    margin-bottom: 20px;
+.movie-meta .rating {
+    color: #46d369;
+    font-weight: 600;
 }
 
 .hero-content p {
-    line-height: 1.8;
-    color: #ddd;
-    margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    max-width: 500px;
 }
 
 .hero-buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
-.watch-btn {
+.hero-buttons .watch-btn {
     background: #e50914;
     color: white;
-
     border: none;
-
-    padding: 14px 32px;
-
-    border-radius: 10px;
-
+    padding: 12px 30px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    transition: transform 0.2s, background 0.2s;
 }
 
-.info-btn {
-    background: rgba(255, 255, 255, .12);
+.hero-buttons .watch-btn:hover {
+    background: #f40612;
+    transform: scale(1.04);
+}
 
+.hero-buttons .info-btn {
+    background: rgba(255, 255, 255, 0.12);
     color: white;
-
-    border: none;
-
-    padding: 14px 32px;
-
-    border-radius: 10px;
-
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 30px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s, background 0.2s;
 }
 
-/* HERO PREVIEW STRIP */
+.hero-buttons .info-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.04);
+}
 
+/* ─── HERO PREVIEW STRIP ─── */
 .hero-preview-strip {
-
     position: absolute;
-
-    right: 50px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
+    bottom: 40px;
+    right: 40px;
     display: flex;
-    flex-direction: column;
-
-    gap: 15px;
-
+    gap: 12px;
     z-index: 20;
 }
 
 .preview-card {
-
-    width: 220px;
-    height: 120px;
-
-    border-radius: 14px;
-
+    width: 140px;
+    height: 80px;
+    border-radius: 12px;
     overflow: hidden;
-
     cursor: pointer;
-
-    border: 2px solid transparent;
-
     transition: .3s;
+    border: 2px solid transparent;
 }
 
 .preview-card:hover {
-
-    transform: scale(1.05);
-
-    border-color: #e50914;
-}
-
-.preview-card.active {
+    transform: scale(1.08);
     border-color: #e50914;
 }
 
@@ -255,221 +246,25 @@ ul li.active {
     object-fit: cover;
 }
 
-/* GENRE DROPDOWN */
-
+/* ─── GENRE DROPDOWN ─── */
 .genre-dropdown {
     position: relative;
 }
 
 .genre-btn {
     background: #151515;
-
     color: white;
-
     border: none;
-
     padding: 12px 20px;
-
     border-radius: 12px;
-
     cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    transition: background 0.2s;
 }
 
-.genre-menu {
-    position: absolute;
-
-    top: 50px;
-    right: 0;
-
-    width: 220px;
-
-    background: #151515;
-
-    border-radius: 12px;
-
-    display: none;
-
-    overflow: hidden;
-
-    z-index: 999;
-}
-
-.genre-dropdown:hover .genre-menu {
-    display: block;
-}
-
-.genre-menu p {
-    padding: 12px 18px;
-    cursor: pointer;
-}
-
-.genre-menu p:hover {
-    background: #e50914;
-}
-
-/* MOVIE SECTIONS */
-
-.movies-section {
-    padding: 50px 80px;
-}
-
-.movies-section h2 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
-
-/* MOVIE ROW */
-
-.movie-row {
-    display: flex;
-    gap: 20px;
-
-    overflow-x: auto;
-
-    scrollbar-width: none;
-
-    padding-bottom: 10px;
-}
-
-.movie-row::-webkit-scrollbar {
-    display: none;
-}
-
-/* CARD */
-
-.card {
-    min-width: 220px;
-    height: 320px;
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    position: relative;
-
-    cursor: pointer;
-
-    transition: .3s;
-
-    background: #111;
-}
-
-.card:hover {
-    transform: scale(1.08);
-}
-
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.movie-info {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    padding: 15px;
-
-    background:
-        linear-gradient(transparent,
-            rgba(0, 0, 0, .95));
-}
-
-/* RESPONSIVE */
-
-@media(max-width:900px) {
-
-    .hero-content {
-        left: 30px;
-        max-width: 90%;
-    }
-
-    .hero-content h1 {
-        font-size: 3.5rem;
-    }
-
-    .movies-section {
-        padding: 30px;
-    }
-
-    .hero-preview-strip {
-        display: none;
-    }
-}
-
-.hero-preview-strip {
-
-    position: absolute;
-
-    bottom: 40px;
-    right: 40px;
-
-    display: flex;
-
-    gap: 12px;
-
-    z-index: 20;
-}
-
-.preview-card {
-
-    width: 140px;
-    height: 80px;
-
-    border-radius: 12px;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    transition: .3s;
-}
-
-.preview-card:hover {
-
-    transform: scale(1.08);
-}
-
-.preview-card img {
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-#hero-video {
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    z-index: 1;
-
-    opacity: 0;
-
-    transition: opacity 1s ease;
-}
-
-.hero-overlay {
-    z-index: 2;
-}
-
-.hero-content {
-    z-index: 10;
-}
-
-.hero-preview-strip {
-    z-index: 20;
+.genre-btn:hover {
+    background: #222;
 }
 
 .genre-menu {
@@ -484,6 +279,11 @@ ul li.active {
     z-index: 9999;
     overflow: hidden;
     min-width: 520px;
+    margin-top: 8px;
+}
+
+.genre-dropdown:hover .genre-menu {
+    display: block;
 }
 
 .genre-menu-grid {
@@ -512,4 +312,231 @@ ul li.active {
 .genre-menu p:hover {
     background: #e50914;
     color: white;
+}
+
+/* ─── MOVIE SECTIONS ─── */
+.movies-section {
+    padding: 50px 80px;
+}
+
+.movies-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* ─── MOVIE ROW ─── */
+.movie-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 10px;
+}
+
+.movie-row::-webkit-scrollbar {
+    display: none;
+}
+
+/* ─── CARD ─── */
+.card {
+    min-width: 220px;
+    height: 320px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: .3s;
+    background: #111;
+}
+
+.card:hover {
+    transform: scale(1.08);
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 50px 15px 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.75) 55%, transparent 100%);
+    z-index: 2;
+}
+
+.movie-info h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+    color: #fff;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+    .hero-content {
+        left: 40px;
+        max-width: 80%;
+    }
+
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+
+    .movies-section {
+        padding: 40px 40px;
+    }
+
+    .hero-preview-strip {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        padding: 15px 30px;
+        flex-wrap: wrap;
+    }
+
+    ul {
+        gap: 15px;
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+    }
+
+    .movies-hero {
+        height: 60vh;
+        min-height: 400px;
+    }
+
+    .hero-content {
+        left: 30px;
+        max-width: 90%;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .hero-buttons .watch-btn,
+    .hero-buttons .info-btn {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+    }
+
+    .movies-section {
+        padding: 30px 30px;
+    }
+
+    .movies-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .card {
+        min-width: 160px;
+        height: 240px;
+    }
+
+    .genre-menu {
+        min-width: 300px;
+        right: -20px;
+    }
+
+    .genre-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    nav {
+        padding: 12px 15px;
+    }
+
+    .logo h1 {
+        font-size: 1.4rem;
+    }
+
+    ul {
+        gap: 10px;
+        font-size: 0.7rem;
+    }
+
+    .movies-hero {
+        height: 50vh;
+        min-height: 300px;
+    }
+
+    .hero-content {
+        left: 20px;
+        max-width: 95%;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        display: none;
+    }
+
+    .movie-meta span {
+        font-size: 0.7rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .hero-buttons .watch-btn,
+    .hero-buttons .info-btn {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+    }
+
+    .movies-section {
+        padding: 20px 15px;
+    }
+
+    .movies-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .card {
+        min-width: 140px;
+        height: 210px;
+    }
+
+    .genre-menu {
+        min-width: 240px;
+        right: -10px;
+    }
+
+    .genre-menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .genre-col {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .genre-menu p {
+        font-size: 0.8rem;
+        padding: 10px 16px;
+    }
 }
