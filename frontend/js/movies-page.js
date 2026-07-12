@@ -93,6 +93,7 @@ function getRandomMovie() {
 const heroList = [getRandomMovie()];
 
 console.log(`🎬 Movies page hero: ${heroList[0].title}`);
+console.log(`🆔 TMDB ID: ${heroList[0].tmdbId}`);
 
 let currentHero = 0;
 let videoTimeout = null;
@@ -126,6 +127,7 @@ async function changeHero(index) {
 
     // ─── FETCH ORIGINAL POSTER FROM TMDB ───
     const posterUrl = await fetchPoster(movie.tmdbId);
+    console.log('📸 Poster URL:', posterUrl);
 
     if (posterUrl) {
         banner.style.backgroundImage = `
