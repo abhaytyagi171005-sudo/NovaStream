@@ -97,7 +97,6 @@ console.log(`🆔 TMDB ID: ${heroList[0].tmdbId}`);
 
 let currentHero = 0;
 let videoTimeout = null;
-let posterTimeout = null;
 
 // ─── FETCH POSTER FROM TMDB ───
 async function fetchPoster(tmdbId) {
@@ -121,10 +120,7 @@ async function changeHero(index) {
     const banner = document.getElementById("moviesHero");
     const heroVideo = document.getElementById("hero-video");
     const heroSource = document.getElementById("hero-video-source");
-    const heroContent = document.querySelector('.hero-content');
-    const poster = document.getElementById('heroPoster');
 
-    // ─── UPDATE TEXT CONTENT ───
     document.getElementById("movieHeroTitle").innerText = movie.title;
     document.getElementById("movieHeroYear").innerText = movie.year;
     document.getElementById("movieHeroDescription").innerText = movie.description;
@@ -133,14 +129,6 @@ async function changeHero(index) {
     const posterUrl = await fetchPoster(movie.tmdbId);
     console.log('📸 Poster URL:', posterUrl);
 
-    // ─── SHOW POSTER ───
-    if (poster && posterUrl) {
-        poster.src = posterUrl;
-        poster.style.display = 'block';
-        poster.style.opacity = '1';
-    }
-
-    // ─── SET BACKGROUND (fallback) ───
     if (posterUrl) {
         banner.style.backgroundImage = `
             linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,.3)),
@@ -153,46 +141,52 @@ async function changeHero(index) {
         banner.style.backgroundColor = '#0a0a0a';
     }
 
-    // ─── LARGE TEXT (poster visible) ───
-    if (heroContent) {
-        heroContent.classList.remove('small');
-        heroContent.classList.add('large');
+    if (!heroVideo) return;
+    heroVideo.pause();
+    heroVideo.style.opacity = "0";
+    clearTimeout(videoTimeout);
+
+    videoTimeout = setTimeout(() => {
+        heroSource.src = movie.video;
+        heroVideo.load();
+        heroVideo.play().then(() => {
+            heroVideo.style.opacity = "1";
+            // Remove background image so video shows cleanly
+            banner.style.backgroundImage = 'none';
+            banner.style.backgroundColor = '#0a0a0a';
+        }).catch(() => {
+            heroVideo.style.opacity = "0";
+        });
+    }, 2000);
+    // ─── SHOW POSTER ───
+    const poster = document.getElementById('heroPoster');
+    const heroContent = document.querySelector('.hero-content');
+
+    // Set poster
+    if (poster && posterUrl) {
+        poster.src = posterUrl;
+        poster.style.display = 'block';
+        poster.style.opacity = '1';
     }
 
-    // ─── HIDE VIDEO ───
-    if (heroVideo) {
-        heroVideo.pause();
-        heroVideo.style.opacity = "0";
-        clearTimeout(videoTimeout);
-        clearTimeout(posterTimeout);
-    }
+    // Large text (poster visible)
+    heroContent.classList.remove('small');
+    heroContent.classList.add('large');
 
     // ─── AFTER 3 SECONDS, SHOW VIDEO AND SHRINK TEXT ───
-    posterTimeout = setTimeout(() => {
+    setTimeout(() => {
         // Fade out poster
         if (poster) {
             poster.style.opacity = '0';
         }
 
         // Show video
-        if (heroVideo && movie.video) {
-            heroSource.src = movie.video;
-            heroVideo.load();
-            heroVideo.play().then(() => {
-                heroVideo.style.opacity = "1";
-                // Remove background image so video shows cleanly
-                banner.style.backgroundImage = 'none';
-                banner.style.backgroundColor = '#0a0a0a';
-            }).catch(() => {
-                heroVideo.style.opacity = "0";
-            });
-        }
+        heroVideo.style.opacity = '1';
+        heroVideo.play();
 
         // Small text (video playing)
-        if (heroContent) {
-            heroContent.classList.remove('large');
-            heroContent.classList.add('small');
-        }
+        heroContent.classList.remove('large');
+        heroContent.classList.add('small');
 
     }, 3000);
 }
@@ -450,4 +444,4 @@ function filterGenre(genre) {
     setTimeout(() => {
         document.getElementById("dynamic_" + sections[0].id).scrollIntoView({ behavior: "smooth" });
     }, 100);
-}
+}   
