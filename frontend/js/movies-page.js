@@ -1,6 +1,6 @@
 const API = "https://novastream-o3ri.onrender.com/api";
 
-// ── HERO SYSTEM (Single Preview) ────────────────────────────
+// ── HERO SYSTEM ──────────────────────────────────────────────
 let currentHero = null;
 let heroData = [];
 
@@ -43,32 +43,27 @@ function getRandomHeroEntry() {
 
 /* ── Render Hero ── */
 async function renderHero() {
-    // Show loading state
     const heroContent = document.getElementById('heroContent');
-    heroContent.style.opacity = '0';
+    if (heroContent) heroContent.style.opacity = '0';
 
-    // 1. Load hero data
     await loadHeroData();
     if (heroData.length === 0) {
         useFallbackHero();
         return;
     }
 
-    // 2. Pick random entry
     const entry = getRandomHeroEntry();
     if (!entry) {
         useFallbackHero();
         return;
     }
 
-    // 3. Fetch TMDB details
     const details = await fetchTMDBDetails(entry.tmdb);
     if (!details) {
         useFallbackHero();
         return;
     }
 
-    // 4. Update UI
     currentHero = {
         ...entry,
         title: details.title,
@@ -96,13 +91,10 @@ function updateHeroDOM(hero) {
 
     const posterUrl = hero.backdrop || hero.poster || '';
 
-    // ─── REMOVE ALL TRANSITIONS ───
     poster.style.transition = 'none';
     video.style.transition = 'none';
 
-    // ─── SHOW POSTER ───
     if (posterUrl) {
-        // Preload poster image
         const img = new Image();
         img.onload = function () {
             poster.src = posterUrl;
@@ -111,7 +103,6 @@ function updateHeroDOM(hero) {
             video.style.display = 'none';
             video.style.opacity = '0';
 
-            // ─── AFTER 2 SECONDS, SWITCH TO VIDEO ───
             setTimeout(() => {
                 if (hero.preview) {
                     video.src = hero.preview;
@@ -119,7 +110,6 @@ function updateHeroDOM(hero) {
                     video.style.opacity = '1';
                     video.load();
 
-                    // ─── IF VIDEO FAILS, SHOW POSTER AGAIN ───
                     video.onerror = function () {
                         video.style.display = 'none';
                         poster.style.display = 'block';
@@ -128,7 +118,6 @@ function updateHeroDOM(hero) {
                     };
 
                     video.play().catch(() => {
-                        // If play fails, show poster
                         video.style.display = 'none';
                         poster.style.display = 'block';
                         poster.style.opacity = '1';
@@ -137,7 +126,6 @@ function updateHeroDOM(hero) {
             }, 2000);
         };
         img.onerror = function () {
-            // If poster fails to load, try video
             if (hero.preview) {
                 video.src = hero.preview;
                 video.style.display = 'block';
@@ -148,7 +136,6 @@ function updateHeroDOM(hero) {
         };
         img.src = posterUrl;
     } else {
-        // No poster – show video immediately
         if (hero.preview) {
             video.src = hero.preview;
             video.style.display = 'block';
@@ -158,7 +145,6 @@ function updateHeroDOM(hero) {
         }
     }
 
-    // ─── UPDATE TEXT CONTENT ───
     const titleEl = document.getElementById('heroTitle');
     if (titleEl) titleEl.textContent = hero.title;
 
@@ -185,13 +171,27 @@ function updateHeroDOM(hero) {
     const myListBtn = document.getElementById('heroMyListBtn');
     if (myListBtn) myListBtn.onclick = () => addToMyList(hero.title, hero.poster);
 
-    // Fade in content
     if (heroContent) {
         heroContent.style.opacity = '1';
         heroContent.style.transition = 'opacity 0.5s ease';
     }
 
     console.log(`✅ Hero loaded: ${hero.title} (${hero.year})`);
+}
+
+/* ── Fallback Hero ── */
+function useFallbackHero() {
+    const fallback = {
+        title: "Dune: Part Two",
+        year: "2024",
+        description: "Paul Atreides unites with the Fremen and fights for the future of Arrakis.",
+        poster: "https://image.tmdb.org/t/p/original/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
+        backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+        rating: "8.2",
+        genres: "Sci-Fi • Adventure",
+        preview: null
+    };
+    updateHeroDOM(fallback);
 }
 
 /* ── Utility ── */
@@ -276,6 +276,59 @@ async function loadHome() {
     await loadRow("/movies?category=family&limit=20", "familyMovies", "sectionFamily");
     await loadRow("/movies?category=documentary&limit=20", "documentaryMovies", "sectionDocumentary");
     await loadRow("/movies?category=romance&limit=20", "romanceMovies", "sectionRomance");
+}
+
+// ── GENRE FILTER ──
+function filterGenre(genre) {
+    const genreMenu = document.querySelector(".genre-menu");
+    if (genreMenu) {
+        genreMenu.style.display = "none";
+        setTimeout(() => { genreMenu.style.display = ""; }, 300);
+    }
+
+    const allSections = document.querySelectorAll(".movies, .movies-section");
+    allSections.forEach(s => s.style.display = "none");
+
+    if (genre === "all") {
+        allSections.forEach(s => s.style.display = "block");
+        const trendingSection = document.getElementById("sectionTrending");
+        if (trendingSection) {
+            setTimeout(() => trendingSection.scrollIntoView({ behavior: "smooth" }), 100);
+        }
+        return;
+    }
+
+    const sectionMap = {
+        'action': 'sectionAction',
+        'scifi': 'sectionSciFi',
+        'thriller': 'sectionThriller',
+        'horror': 'sectionHorror',
+        'comedy': 'sectionComedy',
+        'romance': 'sectionRomance',
+        'superhero': 'sectionSuperhero',
+        'animation': 'sectionAnimation',
+        'crime': 'sectionCrime',
+        'fantasy': 'sectionFantasy',
+        'bollywood': 'sectionBollywood',
+        'hollywood': 'sectionHollywood',
+        'hindi': 'sectionHindi',
+        'tamil': 'sectionTamil',
+        'anime': 'sectionAnime',
+        'sports': 'sectionSports',
+        'family': 'sectionFamily',
+        'documentary': 'sectionDocumentary',
+        'standup': 'sectionStandup',
+        'drama': 'sectionDrama'
+    };
+
+    const sectionId = sectionMap[genre];
+    if (sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'block';
+            setTimeout(() => section.scrollIntoView({ behavior: "smooth" }), 100);
+        }
+    }
 }
 
 // ── Initialize ──
