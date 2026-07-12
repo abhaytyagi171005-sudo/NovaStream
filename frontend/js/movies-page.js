@@ -68,7 +68,7 @@ const heroMovies = {
     }
 };
 
-// ─── ONLY ONE heroList ───
+// ─── ONLY ONE heroList (9 movies) ───
 const heroList = [
     heroMovies.obsession,
     heroMovies.avengers,
