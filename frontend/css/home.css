@@ -341,11 +341,11 @@ ul li.active {
 }
 
 /* ── MOVIE ROWS ── */
-.movies-section {
+.movies {
     padding: 50px 80px;
 }
 
-.movies-section h2 {
+.movies h2 {
     margin-bottom: 20px;
     font-size: 1.8rem;
 }
@@ -422,7 +422,7 @@ ul li.active {
         max-width: 450px;
     }
 
-    .movies-section {
+    .movies {
         padding: 40px 40px;
     }
 }
@@ -466,7 +466,7 @@ ul li.active {
         flex-wrap: wrap;
     }
 
-    .movies-section {
+    .movies {
         padding: 30px 30px;
     }
 
@@ -532,11 +532,11 @@ ul li.active {
         font-size: 0.7rem;
     }
 
-    .movies-section {
+    .movies {
         padding: 20px 15px;
     }
 
-    .movies-section h2 {
+    .moviesh2 {
         font-size: 1.2rem;
     }
 
