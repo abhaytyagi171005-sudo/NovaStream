@@ -7,7 +7,7 @@ let heroData = [];
 /* ── Load Hero JSON ── */
 async function loadHeroData() {
     try {
-        const response = await fetch('data/hero.json');
+        const response = await fetch('data/previews.json');
         if (!response.ok) throw new Error('Hero JSON not found');
         const data = await response.json();
         heroData = data;
