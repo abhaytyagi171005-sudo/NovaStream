@@ -88,7 +88,10 @@ function updateHeroDOM(hero) {
     const video = document.getElementById('heroPreview');
     const poster = document.getElementById('heroPoster');
     const heroContent = document.getElementById('heroContent');
-
+    if (!video || !poster || !heroContent) {
+        console.warn('⚠️ Hero elements not found in DOM');
+        return;
+    }
     const posterUrl = hero.backdrop || hero.poster || '';
 
     poster.style.transition = 'none';
