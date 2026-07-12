@@ -1,9 +1,10 @@
-// Netflix-style hover preview with YouTube trailer
+// Netflix-style hover preview with 2K MP4 or YouTube trailer
 let hoverTimer = null;
 let activePreview = null;
 
 function attachPreviews() {
-    document.querySelectorAll(".card[data-trailer]").forEach(card => {
+    // Look for cards with data-preview OR data-trailer
+    document.querySelectorAll(".card[data-preview], .card[data-trailer]").forEach(card => {
         card.addEventListener("mouseenter", () => {
             hoverTimer = setTimeout(() => showPreview(card), 1000);
         });
@@ -17,7 +18,8 @@ function attachPreviews() {
 function showPreview(card) {
     hidePreview();
 
-    const trailerKey = card.dataset.trailer;
+    const previewPath = card.dataset.preview;   // 2K MP4 preview
+    const trailerKey = card.dataset.trailer;    // YouTube fallback
     const title = card.dataset.title;
     const year = card.dataset.year;
     const rating = card.dataset.rating;
@@ -40,6 +42,28 @@ function showPreview(card) {
         animation: popIn .2s ease;
     `;
 
+    let videoContent = '';
+
+    // ─── PRIORITY 1: 2K MP4 Preview ───
+    if (previewPath) {
+        videoContent = `
+            <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+                <source src="${previewPath}" type="video/mp4">
+            </video>
+        `;
+    }
+    // ─── PRIORITY 2: YouTube Trailer (fallback) ───
+    else if (trailerKey) {
+        videoContent = `
+            <iframe
+                src="https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${trailerKey}"
+                style="width:100%;height:100%;border:none;"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+            </iframe>
+        `;
+    }
+
     preview.innerHTML = `
         <style>
             @keyframes popIn {
@@ -48,12 +72,7 @@ function showPreview(card) {
             }
         </style>
         <div style="width:100%;height:210px;background:#000;position:relative;">
-            <iframe
-                src="https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${trailerKey}"
-                style="width:100%;height:100%;border:none;"
-                allow="autoplay; encrypted-media"
-                allowfullscreen>
-            </iframe>
+            ${videoContent}
         </div>
         <div style="padding:15px;">
             <h3 style="font-size:1rem;margin-bottom:6px;color:white;">${title}</h3>
