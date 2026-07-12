@@ -1,0 +1,38 @@
+[
+    {
+        "tmdb": 1339713,
+        "preview": "assets/movies/previews/obsession.mp4"
+    },
+    {
+        "tmdb": 299534,
+        "preview": "assets/movies/previews/avengers-endgame.mp4"
+    },
+    {
+        "tmdb": 438631,
+        "preview": "assets/movies/previews/dune-part-one.mp4"
+    },
+    {
+        "tmdb": 823464,
+        "preview": "assets/movies/previews/godzilla-x-kong.mp4"
+    },
+    {
+        "tmdb": 19025,
+        "preview": "assets/movies/previews/bhool-bhulaiyaa.mp4"
+    },
+    {
+        "tmdb": 1327862,
+        "preview": "assets/movies/previews/regretting-you.mp4"
+    },
+    {
+        "tmdb": 1062722,
+        "preview": "assets/movies/previews/frankenstein.mp4"
+    },
+    {
+        "tmdb": 414906,
+        "preview": "assets/movies/previews/the-batman.mp4"
+    },
+    {
+        "tmdb": 541671,
+        "preview": "assets/movies/previews/ballerina.mp4"
+    }
+]
