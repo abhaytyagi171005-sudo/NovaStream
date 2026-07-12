@@ -23,7 +23,7 @@ async function loadHeroData() {
 async function fetchTMDBDetails(tmdbId) {
     try {
         const response = await fetch(
-            `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=1a0708d98fbe7c2fdfaac455645a9603&language=en-US`
+            `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=f08c9127f4fa4a8642bffa57c5b8955e`
         );
         if (!response.ok) throw new Error(`TMDB API error: ${response.status}`);
         const data = await response.json();
