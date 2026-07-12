@@ -130,10 +130,7 @@ async function changeHero(index) {
     console.log('📸 Poster URL:', posterUrl);
 
     if (posterUrl) {
-        banner.style.backgroundImage = `
-            linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,.3)),
-            url('${posterUrl}')
-        `;
+        banner.style.backgroundImage = `url('${posterUrl}')`;
         banner.style.backgroundSize = 'cover';
         banner.style.backgroundPosition = 'center top';
     } else {
