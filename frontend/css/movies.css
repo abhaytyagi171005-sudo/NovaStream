@@ -61,10 +61,10 @@ ul li.active {
 }
 
 /* ─── HERO ─── */
-.movies-hero {
-    height: 85vh;
-    min-height: 500px;
-    max-height: 900px;
+.hero {
+    height: 90vh;
+    min-height: 6500px;
+    max-height: 1100px;
     position: relative;
     background: #0a0a0a;
     background-size: cover;
@@ -383,7 +383,7 @@ ul li.active {
         flex-wrap: wrap;
     }
 
-    .movies-hero {
+    .hero {
         height: 60vh;
         min-height: 400px;
     }
@@ -445,7 +445,7 @@ ul li.active {
         font-size: 0.7rem;
     }
 
-    .movies-hero {
+    .hero {
         height: 50vh;
         min-height: 300px;
     }
