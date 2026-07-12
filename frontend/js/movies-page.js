@@ -135,7 +135,7 @@ async function changeHero(index) {
             url('${posterUrl}')
         `;
         banner.style.backgroundSize = 'cover';
-        banner.style.backgroundPosition = 'center';
+        banner.style.backgroundPosition = 'center top';
     } else {
         banner.style.backgroundImage = 'none';
         banner.style.backgroundColor = '#0a0a0a';
@@ -151,9 +151,6 @@ async function changeHero(index) {
         heroVideo.load();
         heroVideo.play().then(() => {
             heroVideo.style.opacity = "1";
-            // Remove background image so video shows cleanly
-            banner.style.backgroundImage = 'none';
-            banner.style.backgroundColor = '#0a0a0a';
         }).catch(() => {
             heroVideo.style.opacity = "0";
         });
