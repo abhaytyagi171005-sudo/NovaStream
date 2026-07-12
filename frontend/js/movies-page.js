@@ -1,9 +1,6 @@
 /* ==========================================
    HERO SYSTEM
 ========================================== */
-/* ==========================================
-   HERO SYSTEM
-========================================== */
 
 const heroMovies = {
     obsession: {
@@ -71,7 +68,7 @@ const heroMovies = {
     }
 };
 
-// ─── ONLY ONE heroList (the new one) ───
+// ─── ONLY ONE heroList ───
 const heroList = [
     heroMovies.obsession,
     heroMovies.avengers,
