@@ -1,70 +1,72 @@
 /* ==========================================
-   HERO SYSTEM (Random 1 Movie on Each Refresh)
+   HERO SYSTEM (Random 1 Movie + TMDB Poster)
 ========================================== */
+
+const TMDB_API_KEY = "f08c9127f4fa4a8642bffa57c5b8955e";
 
 const heroMovies = {
     obsession: {
         title: "OBSESSION",
         year: "2026",
         description: "After breaking the mysterious 'One Wish Willow' to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/obsession.mp4"
+        video: "assets/movies/previews/obsession.mp4",
+        tmdbId: 1339713
     },
     avengers: {
         title: "AVENGERS: ENDGAME",
         year: "2019",
         description: "After the devastating events of Infinity War, the Avengers assemble once more to undo Thanos's actions and restore order to the universe.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/avengers-endgame.mp4"
+        video: "assets/movies/previews/avengers-endgame.mp4",
+        tmdbId: 299534
     },
     dune: {
         title: "DUNE: PART ONE",
         year: "2021",
         description: "A mythic and emotionally charged hero's journey, Dune tells the story of Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/dune-part-one.mp4"
+        video: "assets/movies/previews/dune-part-one.mp4",
+        tmdbId: 438631
     },
     godzilla: {
         title: "GODZILLA X KONG: THE NEW EMPIRE",
         year: "2024",
         description: "Two ancient titans, Godzilla and Kong, clash in an epic battle as humans unravel their intertwined origins and connection to Skull Island's mysteries.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/godzilla-x-kong.mp4"
+        video: "assets/movies/previews/godzilla-x-kong.mp4",
+        tmdbId: 823464
     },
     bhool: {
         title: "BHOOL BHULAIYAA",
         year: "2007",
         description: "A newly married couple moves into a haunted palace, where the groom's brother, a psychiatrist, tries to uncover the truth behind the supernatural occurrences.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/bhool-bhulaiyaa.mp4"
+        video: "assets/movies/previews/bhool-bhulaiyaa.mp4",
+        tmdbId: 19025
     },
     regretting: {
         title: "REGRETTING YOU",
         year: "2025",
         description: "A mother and daughter navigate the aftermath of a devastating accident that uncovers a shocking betrayal.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/regretting-you.mp4"
+        video: "assets/movies/previews/regretting-you.mp4",
+        tmdbId: 1327862
     },
     frankenstein: {
         title: "FRANKENSTEIN",
         year: "2025",
         description: "Dr. Victor Frankenstein brings a creature to life in a monstrous experiment that ultimately leads to the undoing of both the creator and his tragic creation.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/frankenstein.mp4"
+        video: "assets/movies/previews/frankenstein.mp4",
+        tmdbId: 1062722
     },
     batman: {
         title: "THE BATMAN",
         year: "2022",
         description: "When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/the-batman.mp4"
+        video: "assets/movies/previews/the-batman.mp4",
+        tmdbId: 414906
     },
     ballerina: {
         title: "BALLERINA",
         year: "2025",
         description: "A young female assassin seeks revenge against the people who killed her family, using her ballet training to deadly effect.",
-        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
-        video: "assets/movies/previews/ballerina.mp4"
+        video: "assets/movies/previews/ballerina.mp4",
+        tmdbId: 541671
     }
 };
 
@@ -87,7 +89,7 @@ function getRandomMovie() {
     return allMovies[randomIndex];
 }
 
-// ─── USE RANDOM MOVIE ───
+// ─── USE RANDOM MOVIE (ONLY 1) ───
 const heroList = [getRandomMovie()];
 
 console.log(`🎬 Movies page hero: ${heroList[0].title}`);
@@ -95,7 +97,24 @@ console.log(`🎬 Movies page hero: ${heroList[0].title}`);
 let currentHero = 0;
 let videoTimeout = null;
 
-function changeHero(index) {
+// ─── FETCH POSTER FROM TMDB ───
+async function fetchPoster(tmdbId) {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${TMDB_API_KEY}`
+        );
+        const data = await response.json();
+        if (data.poster_path) {
+            return `https://image.tmdb.org/t/p/original${data.poster_path}`;
+        }
+        return null;
+    } catch (error) {
+        console.warn('Poster fetch failed:', error);
+        return null;
+    }
+}
+
+async function changeHero(index) {
     const movie = heroList[index];
     const banner = document.getElementById("moviesHero");
     const heroVideo = document.getElementById("hero-video");
@@ -105,9 +124,20 @@ function changeHero(index) {
     document.getElementById("movieHeroYear").innerText = movie.year;
     document.getElementById("movieHeroDescription").innerText = movie.description;
 
-    // Use the video as background instead of image
-    banner.style.backgroundImage = 'none';
-    banner.style.backgroundColor = '#0a0a0a';
+    // ─── FETCH ORIGINAL POSTER FROM TMDB ───
+    const posterUrl = await fetchPoster(movie.tmdbId);
+
+    if (posterUrl) {
+        banner.style.backgroundImage = `
+            linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,.3)),
+            url('${posterUrl}')
+        `;
+        banner.style.backgroundSize = 'cover';
+        banner.style.backgroundPosition = 'center';
+    } else {
+        banner.style.backgroundImage = 'none';
+        banner.style.backgroundColor = '#0a0a0a';
+    }
 
     if (!heroVideo) return;
     heroVideo.pause();
@@ -119,18 +149,19 @@ function changeHero(index) {
         heroVideo.load();
         heroVideo.play().then(() => {
             heroVideo.style.opacity = "1";
-        }).catch(() => { });
-    }, 500);
+            // Remove background image so video shows cleanly
+            banner.style.backgroundImage = 'none';
+            banner.style.backgroundColor = '#0a0a0a';
+        }).catch(() => {
+            heroVideo.style.opacity = "0";
+        });
+    }, 2000);
 }
 
 // ─── START HERO ───
 changeHero(0);
 
-// ─── NO AUTO-ROTATION ───
-// heroInterval is NOT set
-
-// ─── NO ENDED EVENT ───
-// The video will loop because of 'loop' attribute in HTML
+console.log(`✅ Movies page hero set to: ${heroList[0].title}`);
 
 /* ==========================================
    LOAD SECTION
