@@ -158,37 +158,6 @@ async function changeHero(index) {
             heroVideo.style.opacity = "0";
         });
     }, 2000);
-    // ─── SHOW POSTER ───
-    const poster = document.getElementById('heroPoster');
-    const heroContent = document.querySelector('.hero-content');
-
-    // Set poster
-    if (poster && posterUrl) {
-        poster.src = posterUrl;
-        poster.style.display = 'block';
-        poster.style.opacity = '1';
-    }
-
-    // Large text (poster visible)
-    heroContent.classList.remove('small');
-    heroContent.classList.add('large');
-
-    // ─── AFTER 3 SECONDS, SHOW VIDEO AND SHRINK TEXT ───
-    setTimeout(() => {
-        // Fade out poster
-        if (poster) {
-            poster.style.opacity = '0';
-        }
-
-        // Show video
-        heroVideo.style.opacity = '1';
-        heroVideo.play();
-
-        // Small text (video playing)
-        heroContent.classList.remove('large');
-        heroContent.classList.add('small');
-
-    }, 3000);
 }
 
 // ─── START HERO ───
@@ -444,4 +413,4 @@ function filterGenre(genre) {
     setTimeout(() => {
         document.getElementById("dynamic_" + sections[0].id).scrollIntoView({ behavior: "smooth" });
     }, 100);
-}   
+}
