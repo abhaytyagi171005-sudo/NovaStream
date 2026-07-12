@@ -27,3 +27,5 @@ backend/datasets/
 # Generated indexes
 backend/**/movies-index.json
 backend/**/tv-index.json
+"*.part" 
+"*.mp4" 
