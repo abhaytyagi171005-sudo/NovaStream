@@ -105,6 +105,9 @@ async function fetchPoster(tmdbId) {
             `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${TMDB_API_KEY}`
         );
         const data = await response.json();
+        if (data.backdrop_path) {
+            return `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+        }
         if (data.poster_path) {
             return `https://image.tmdb.org/t/p/original${data.poster_path}`;
         }
@@ -132,7 +135,7 @@ async function changeHero(index) {
     if (posterUrl) {
         banner.style.backgroundImage = `url('${posterUrl}')`;
         banner.style.backgroundSize = 'cover';
-        banner.style.backgroundPosition = 'center 30%';
+        banner.style.backgroundPosition = 'center center';
     } else {
         banner.style.backgroundImage = 'none';
         banner.style.backgroundColor = '#0a0a0a';
