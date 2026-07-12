@@ -68,7 +68,7 @@ const heroMovies = {
     }
 };
 
-// ─── LIST OF ALL 9 MOVIES ───
+// ─── ALL 9 MOVIES ───
 const allMovies = [
     heroMovies.obsession,
     heroMovies.avengers,
@@ -81,14 +81,16 @@ const allMovies = [
     heroMovies.ballerina
 ];
 
-// ─── PICK ONE RANDOM MOVIE ON EACH PAGE LOAD ───
+// ─── PICK ONE RANDOM MOVIE ───
 function getRandomMovie() {
     const randomIndex = Math.floor(Math.random() * allMovies.length);
     return allMovies[randomIndex];
 }
 
-// ─── ONLY ONE MOVIE (randomly selected) ───
+// ─── USE RANDOM MOVIE ───
 const heroList = [getRandomMovie()];
+
+console.log(`🎬 Movies page hero: ${heroList[0].title}`);
 
 let currentHero = 0;
 let videoTimeout = null;
@@ -103,10 +105,9 @@ function changeHero(index) {
     document.getElementById("movieHeroYear").innerText = movie.year;
     document.getElementById("movieHeroDescription").innerText = movie.description;
 
-    banner.style.backgroundImage = `
-        linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,.3)),
-        url('${movie.image}')
-    `;
+    // Use the video as background instead of image
+    banner.style.backgroundImage = 'none';
+    banner.style.backgroundColor = '#0a0a0a';
 
     if (!heroVideo) return;
     heroVideo.pause();
@@ -119,13 +120,17 @@ function changeHero(index) {
         heroVideo.play().then(() => {
             heroVideo.style.opacity = "1";
         }).catch(() => { });
-    }, 2000);
+    }, 500);
 }
 
-// Start the hero with random movie
+// ─── START HERO ───
 changeHero(0);
 
-console.log(`🎬 Movies page hero: ${heroList[0].title}`);
+// ─── NO AUTO-ROTATION ───
+// heroInterval is NOT set
+
+// ─── NO ENDED EVENT ───
+// The video will loop because of 'loop' attribute in HTML
 
 /* ==========================================
    LOAD SECTION
