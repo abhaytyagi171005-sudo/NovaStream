@@ -1,5 +1,5 @@
 /* ==========================================
-   HERO SYSTEM
+   HERO SYSTEM (Random 1 Movie on Each Refresh)
 ========================================== */
 
 const heroMovies = {
@@ -68,8 +68,8 @@ const heroMovies = {
     }
 };
 
-// ─── ONLY ONE heroList (9 movies) ───
-const heroList = [
+// ─── LIST OF ALL 9 MOVIES ───
+const allMovies = [
     heroMovies.obsession,
     heroMovies.avengers,
     heroMovies.dune,
@@ -81,8 +81,16 @@ const heroList = [
     heroMovies.ballerina
 ];
 
+// ─── PICK ONE RANDOM MOVIE ON EACH PAGE LOAD ───
+function getRandomMovie() {
+    const randomIndex = Math.floor(Math.random() * allMovies.length);
+    return allMovies[randomIndex];
+}
+
+// ─── ONLY ONE MOVIE (randomly selected) ───
+const heroList = [getRandomMovie()];
+
 let currentHero = 0;
-let heroInterval = null;
 let videoTimeout = null;
 
 function changeHero(index) {
@@ -114,21 +122,10 @@ function changeHero(index) {
     }, 2000);
 }
 
-function nextHero() {
-    currentHero = (currentHero + 1) % heroList.length;
-    changeHero(currentHero);
-}
-
+// Start the hero with random movie
 changeHero(0);
-heroInterval = setInterval(nextHero, 9000);
 
-const heroVideo = document.getElementById("hero-video");
-if (heroVideo) {
-    heroVideo.addEventListener("ended", () => {
-        currentHero = (currentHero + 1) % heroList.length;
-        changeHero(currentHero);
-    });
-}
+console.log(`🎬 Movies page hero: ${heroList[0].title}`);
 
 /* ==========================================
    LOAD SECTION
