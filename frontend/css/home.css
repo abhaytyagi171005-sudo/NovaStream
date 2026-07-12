@@ -13,7 +13,7 @@ body {
 }
 
 /* ─── HERO BANNER (Optimized for 2K/1440p) ─── */
-.hero {
+.movies-hero {
     position: relative;
     width: 100%;
     height: 90vh;
@@ -85,7 +85,7 @@ body {
     transition: opacity 0.8s ease;
 }
 
-.hero-badge {
+.featured {
     color: #e50914;
     font-size: 0.7rem;
     letter-spacing: 4px;
@@ -111,24 +111,24 @@ body {
     flex-wrap: wrap;
 }
 
-.hero-meta #heroYear {
+.hero-meta span:first-child {
     color: #d4af37;
     font-weight: 500;
     font-size: 0.9rem;
 }
 
-.hero-meta #heroRating {
+.hero-meta .rating {
     color: #46d369;
     font-weight: 500;
     font-size: 0.9rem;
 }
 
-.hero-meta #heroGenres {
+.hero-meta .genres {
     color: #aaa;
     font-size: 0.85rem;
 }
 
-#heroDescription {
+.hero-content p {
     font-size: 0.9rem;
     color: #ccc;
     line-height: 1.6;
@@ -269,12 +269,80 @@ ul li.active {
     display: block;
 }
 
+/* ── GENRE DROPDOWN ── */
+.genre-dropdown {
+    position: relative;
+}
+
+.genre-btn {
+    background: #151515;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.genre-btn:hover {
+    background: #222;
+}
+
+.genre-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #151515;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    min-width: 520px;
+    margin-top: 8px;
+}
+
+.genre-dropdown:hover .genre-menu {
+    display: block;
+}
+
+.genre-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.genre-col {
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.genre-col:last-child {
+    border-right: none;
+}
+
+.genre-menu p {
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: #ccc;
+    white-space: nowrap;
+}
+
+.genre-menu p:hover {
+    background: #e50914;
+    color: white;
+}
+
 /* ── MOVIE ROWS ── */
-.movies {
+.movies-section {
     padding: 50px 80px;
 }
 
-.movies h2 {
+.movies-section h2 {
     margin-bottom: 20px;
     font-size: 1.8rem;
 }
@@ -332,105 +400,12 @@ ul li.active {
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.3;
-}
-
-/* ── TOAST ── */
-.toast {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 28px;
-    background: linear-gradient(135deg, rgba(20, 20, 22, 0.95) 0%, rgba(30, 20, 22, 0.95) 100%);
-    border: 1px solid rgba(229, 9, 20, 0.35);
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
     color: #fff;
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    pointer-events: none;
-    transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-}
-
-.toast-icon {
-    font-size: 1.3rem;
-    color: #e50914;
-    filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.7));
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-.toast::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    border-radius: 0 0 16px 16px;
-    background: linear-gradient(to right, #e50914, #d4af37);
-    transform-origin: left;
-    transform: scaleX(0);
-}
-
-.toast.show::after {
-    animation: toastProgress 3s linear forwards;
-}
-
-@keyframes toastProgress {
-    from {
-        transform: scaleX(1);
-    }
-
-    to {
-        transform: scaleX(0);
-    }
-}
-
-@keyframes heartbeat {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.15);
-    }
-}
-
-/* ── POSTER & VIDEO ── */
-#heroPoster {
-    transition: none !important;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: #0a0a0a;
-}
-
-#heroPreview {
-    transition: none !important;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: #0a0a0a;
 }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-    .hero {
+    .movies-hero {
         height: 70vh;
         min-height: 500px;
         max-height: 800px;
@@ -443,10 +418,14 @@ ul li.active {
     .hero-content {
         max-width: 450px;
     }
+
+    .movies-section {
+        padding: 40px 40px;
+    }
 }
 
 @media (max-width: 768px) {
-    .hero {
+    .movies-hero {
         height: 60vh;
         min-height: 400px;
         max-height: 700px;
@@ -462,7 +441,7 @@ ul li.active {
         font-size: 1.8rem;
     }
 
-    #heroDescription {
+    .hero-content p {
         font-size: 0.85rem;
         -webkit-line-clamp: 2;
     }
@@ -484,13 +463,22 @@ ul li.active {
         flex-wrap: wrap;
     }
 
-    .movies {
+    .movies-section {
         padding: 30px 30px;
+    }
+
+    .genre-menu {
+        min-width: 300px;
+        right: -20px;
+    }
+
+    .genre-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 480px) {
-    .hero {
+    .movies-hero {
         height: 50vh;
         min-height: 300px;
         max-height: 500px;
@@ -500,7 +488,7 @@ ul li.active {
         font-size: 1.4rem;
     }
 
-    #heroDescription {
+    .hero-content p {
         display: none;
     }
 
@@ -541,11 +529,11 @@ ul li.active {
         font-size: 0.7rem;
     }
 
-    .movies {
+    .movies-section {
         padding: 20px 15px;
     }
 
-    .movies h2 {
+    .movies-section h2 {
         font-size: 1.2rem;
     }
 
@@ -553,4 +541,40 @@ ul li.active {
         min-width: 140px;
         height: 210px;
     }
+
+    .genre-menu {
+        min-width: 240px;
+        right: -10px;
+    }
+
+    .genre-menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .genre-col {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .genre-menu p {
+        font-size: 0.8rem;
+        padding: 10px 16px;
+    }
+}
+
+/* ── POSTER & VIDEO ── */
+#heroPoster {
+    transition: none !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #0a0a0a;
+}
+
+#heroPreview {
+    transition: none !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #0a0a0a;
 }
