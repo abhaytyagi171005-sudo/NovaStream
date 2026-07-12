@@ -61,19 +61,23 @@ ul li.active {
 }
 
 /* ─── HERO ─── */
-.movies-hero {
+/* ─── HERO ─── */
+.hero {
     height: 85vh;
     min-height: 500px;
     max-height: 900px;
     position: relative;
     background: #0a0a0a;
-    background-size: cover;
-    background-position: center;
-    transition: .8s ease;
     overflow: hidden;
 }
 
-#hero-video {
+#heroBackground {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+#heroPreview {
     position: absolute;
     top: 0;
     left: 0;
@@ -81,8 +85,16 @@ ul li.active {
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    opacity: 0;
-    transition: opacity 1s ease;
+}
+
+#heroPoster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
 }
 
 .hero-overlay {
@@ -116,7 +128,7 @@ ul li.active {
     pointer-events: auto;
 }
 
-.featured {
+.hero-badge {
     color: #e50914;
     letter-spacing: 4px;
     font-size: 0.8rem;
@@ -134,6 +146,83 @@ ul li.active {
     line-height: 1.1;
     max-width: 700px;
     word-break: break-word;
+}
+
+.hero-meta {
+    display: flex;
+    gap: 15px;
+    color: #ccc;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.hero-meta span {
+    font-size: 0.9rem;
+}
+
+#heroYear {
+    color: #d4af37;
+    font-weight: 600;
+}
+
+#heroRating {
+    color: #46d369;
+    font-weight: 600;
+}
+
+.hero-content p {
+    font-size: 0.95rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    max-width: 500px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.hero-buttons .watch-btn {
+    background: #e50914;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.hero-buttons .watch-btn:hover {
+    background: #f40612;
+    transform: scale(1.04);
+}
+
+.hero-buttons .info-btn {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.hero-buttons .info-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.04);
 }
 
 .movie-meta {
