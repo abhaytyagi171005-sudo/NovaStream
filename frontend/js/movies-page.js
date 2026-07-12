@@ -3,42 +3,82 @@
 ========================================== */
 
 const heroMovies = {
+    obsession: {
+        title: "OBSESSION",
+        year: "2026",
+        description: "After breaking the mysterious 'One Wish Willow' to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/obsession.mp4"
+    },
+    avengers: {
+        title: "AVENGERS: ENDGAME",
+        year: "2019",
+        description: "After the devastating events of Infinity War, the Avengers assemble once more to undo Thanos's actions and restore order to the universe.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/avengers-endgame.mp4"
+    },
     dune: {
-        title: "DUNE PART TWO",
+        title: "DUNE: PART ONE",
+        year: "2021",
+        description: "A mythic and emotionally charged hero's journey, Dune tells the story of Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/dune-part-one.mp4"
+    },
+    godzilla: {
+        title: "GODZILLA X KONG: THE NEW EMPIRE",
         year: "2024",
-        description: "Paul Atreides unites with the Fremen and fights for Arrakis.",
-        image: "images/banners/dune-banner.jpg",
-        video: "images/Dune 2-preview.mp4"
+        description: "Two ancient titans, Godzilla and Kong, clash in an epic battle as humans unravel their intertwined origins and connection to Skull Island's mysteries.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/godzilla-x-kong.mp4"
     },
-    oppenheimer: {
-        title: "OPPENHEIMER",
-        year: "2023",
-        description: "The story of J. Robert Oppenheimer and the atomic bomb.",
-        image: "images/banners/oppenheimer-banner.jpg",
-        video: "images/oppenheimer-preview.mp4"
+    bhool: {
+        title: "BHOOL BHULAIYAA",
+        year: "2007",
+        description: "A newly married couple moves into a haunted palace, where the groom's brother, a psychiatrist, tries to uncover the truth behind the supernatural occurrences.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/bhool-bhulaiyaa.mp4"
     },
-    topgun: {
-        title: "TOP GUN MAVERICK",
-        year: "2022",
-        description: "Maverick trains the next generation.",
-        image: "images/banners/topgun-banner.jpg",
-        video: "images/topgun-preview.mp4"
-    },
-    kingsman: {
-        title: "Kingsman: The Secret Service",
-        year: "2014",
-        description: "A spy organisation recruits a promising street kid into the agency's training program.",
-        image: "images/banners/kingsman-banner.jpg",
-        video: "images/kingsman-preview.mp4"
-    },
-    dhurandhar: {
-        title: "Dhurandhar",
+    regretting: {
+        title: "REGRETTING YOU",
         year: "2025",
-        description: "Hamza moves through the shadows of Karachi with the cold detachment of a man already dead.",
-        image: "images/banners/Dhurandhar-banner.jpg",
-        video: "images/Dhurandhar-preview.mp4"
+        description: "A mother and daughter navigate the aftermath of a devastating accident that uncovers a shocking betrayal.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/regretting-you.mp4"
+    },
+    frankenstein: {
+        title: "FRANKENSTEIN",
+        year: "2025",
+        description: "Dr. Victor Frankenstein brings a creature to life in a monstrous experiment that ultimately leads to the undoing of both the creator and his tragic creation.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/frankenstein.mp4"
+    },
+    batman: {
+        title: "THE BATMAN",
+        year: "2022",
+        description: "When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/the-batman.mp4"
+    },
+    ballerina: {
+        title: "BALLERINA",
+        year: "2025",
+        description: "A young female assassin seeks revenge against the people who killed her family, using her ballet training to deadly effect.",
+        image: "https://image.tmdb.org/t/p/original/your-poster.jpg",
+        video: "assets/movies/previews/ballerina.mp4"
     }
 };
+
+const heroList = [
+    heroMovies.obsession,
+    heroMovies.avengers,
+    heroMovies.dune,
+    heroMovies.godzilla,
+    heroMovies.bhool,
+    heroMovies.regretting,
+    heroMovies.frankenstein,
+    heroMovies.batman,
+    heroMovies.ballerina
+];
 
 const heroList = [
     heroMovies.dune,
