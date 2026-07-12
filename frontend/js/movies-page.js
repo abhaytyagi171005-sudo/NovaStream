@@ -132,7 +132,7 @@ async function changeHero(index) {
     if (posterUrl) {
         banner.style.backgroundImage = `url('${posterUrl}')`;
         banner.style.backgroundSize = 'cover';
-        banner.style.backgroundPosition = 'center top';
+        banner.style.backgroundPosition = 'center 30%';
     } else {
         banner.style.backgroundImage = 'none';
         banner.style.backgroundColor = '#0a0a0a';
