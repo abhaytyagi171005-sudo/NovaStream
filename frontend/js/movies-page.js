@@ -97,6 +97,7 @@ console.log(`🆔 TMDB ID: ${heroList[0].tmdbId}`);
 
 let currentHero = 0;
 let videoTimeout = null;
+let posterTimeout = null;
 
 // ─── FETCH POSTER FROM TMDB ───
 async function fetchPoster(tmdbId) {
@@ -120,7 +121,10 @@ async function changeHero(index) {
     const banner = document.getElementById("moviesHero");
     const heroVideo = document.getElementById("hero-video");
     const heroSource = document.getElementById("hero-video-source");
+    const heroContent = document.querySelector('.hero-content');
+    const poster = document.getElementById('heroPoster');
 
+    // ─── UPDATE TEXT CONTENT ───
     document.getElementById("movieHeroTitle").innerText = movie.title;
     document.getElementById("movieHeroYear").innerText = movie.year;
     document.getElementById("movieHeroDescription").innerText = movie.description;
@@ -129,6 +133,14 @@ async function changeHero(index) {
     const posterUrl = await fetchPoster(movie.tmdbId);
     console.log('📸 Poster URL:', posterUrl);
 
+    // ─── SHOW POSTER ───
+    if (poster && posterUrl) {
+        poster.src = posterUrl;
+        poster.style.display = 'block';
+        poster.style.opacity = '1';
+    }
+
+    // ─── SET BACKGROUND (fallback) ───
     if (posterUrl) {
         banner.style.backgroundImage = `
             linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,.3)),
@@ -141,23 +153,48 @@ async function changeHero(index) {
         banner.style.backgroundColor = '#0a0a0a';
     }
 
-    if (!heroVideo) return;
-    heroVideo.pause();
-    heroVideo.style.opacity = "0";
-    clearTimeout(videoTimeout);
+    // ─── LARGE TEXT (poster visible) ───
+    if (heroContent) {
+        heroContent.classList.remove('small');
+        heroContent.classList.add('large');
+    }
 
-    videoTimeout = setTimeout(() => {
-        heroSource.src = movie.video;
-        heroVideo.load();
-        heroVideo.play().then(() => {
-            heroVideo.style.opacity = "1";
-            // Remove background image so video shows cleanly
-            banner.style.backgroundImage = 'none';
-            banner.style.backgroundColor = '#0a0a0a';
-        }).catch(() => {
-            heroVideo.style.opacity = "0";
-        });
-    }, 2000);
+    // ─── HIDE VIDEO ───
+    if (heroVideo) {
+        heroVideo.pause();
+        heroVideo.style.opacity = "0";
+        clearTimeout(videoTimeout);
+        clearTimeout(posterTimeout);
+    }
+
+    // ─── AFTER 3 SECONDS, SHOW VIDEO AND SHRINK TEXT ───
+    posterTimeout = setTimeout(() => {
+        // Fade out poster
+        if (poster) {
+            poster.style.opacity = '0';
+        }
+
+        // Show video
+        if (heroVideo && movie.video) {
+            heroSource.src = movie.video;
+            heroVideo.load();
+            heroVideo.play().then(() => {
+                heroVideo.style.opacity = "1";
+                // Remove background image so video shows cleanly
+                banner.style.backgroundImage = 'none';
+                banner.style.backgroundColor = '#0a0a0a';
+            }).catch(() => {
+                heroVideo.style.opacity = "0";
+            });
+        }
+
+        // Small text (video playing)
+        if (heroContent) {
+            heroContent.classList.remove('large');
+            heroContent.classList.add('small');
+        }
+
+    }, 3000);
 }
 
 // ─── START HERO ───
