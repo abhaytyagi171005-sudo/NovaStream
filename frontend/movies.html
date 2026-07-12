@@ -8,7 +8,7 @@
 
     <title>Movies – NovaStream</title>
 
-    <link rel="stylesheet" href="css/movies.css">
+    <link rel="stylesheet" href="css/movies.css?v=2">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -24,9 +24,12 @@
 
             <span class="logo-icon">▶</span>
 
-            <h1>Nova<span>Stream</span></h1>
+            <h1>
+                Nova<span>Stream</span>
+            </h1>
 
         </div>
+
         <ul>
             <li onclick="window.location.href='home.html'">Home</li>
             <li class="active">Movies</li>
@@ -80,155 +83,168 @@
 
         </div>
 
-    </nav>
+        <div class="profile">
 
-    <!-- ─── HERO ─── -->
-    <section class="movies-hero" id="moviesHero">
+            <span>A</span>
 
-        <video id="hero-video" autoplay muted playsinline loop>
-            <source id="hero-video-source" src="" type="video/mp4">
-        </video>
+            <div class="dropdown">
 
-        <div class="hero-overlay"></div>
+                <p>Profile</p>
+                <p>My List</p>
+                <p>Settings</p>
+                <p>Logout</p>
 
-        <div class="hero-content">
-            <span class="featured">
-                FEATURED MOVIES
-            </span>
-
-            <h1 id="movieHeroTitle">
-                DUNE PART TWO
-            </h1>
-
-            <div class="movie-meta">
-                <span id="movieHeroYear">2024</span>
-                <span>PG-13</span>
-                <span>Action</span>
-            </div>
-
-            <p id="movieHeroDescription">
-                Paul Atreides unites with the Fremen and
-                seeks revenge against those who destroyed
-                his family.
-            </p>
-
-            <div class="hero-buttons">
-                <button class="watch-btn">
-                    ▶ Watch Now
-                </button>
-                <button class="info-btn">
-                    More Info
-                </button>
             </div>
 
         </div>
 
-        <!-- HERO PREVIEW STRIP -->
-        <div class="hero-preview-strip" id="heroPreviewStrip"></div>
+        </div>
 
+    </nav>
+
+    <!-- ─── HERO BANNER ─── -->
+    <section class="hero" id="heroBanner">
+        <!-- Background container -->
+        <div class="hero-background" id="heroBackground">
+            <!-- Preview Video (autoplay, muted, loop) -->
+            <video id="heroPreview" autoplay muted loop playsinline></video>
+            <!-- Poster Image (fallback) -->
+            <img id="heroPoster" src="" alt="" style="display:none;">
+            <!-- Dark Overlay -->
+            <div class="hero-overlay"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-content" id="heroContent">
+            <div class="hero-badge">▶ FEATURED MOVIES</div>
+            <h1 id="heroTitle"></h1>
+            <div class="hero-meta">
+                <span id="heroYear"></span>
+                <span id="heroRating"></span>
+                <span id="heroGenres"></span>
+            </div>
+            <p id="heroDescription"></p>
+            <div class="hero-buttons">
+                <button class="watch-btn" id="heroWatchBtn">▶ Watch Now</button>
+                <button class="info-btn" id="heroMyListBtn">+ My List</button>
+            </div>
+        </div>
     </section>
 
-    <!-- ─── MOVIE SECTIONS ─── -->
-    <section class="movies-section" id="sectionTrending">
+    <!-- ─── MOVIE ROWS ─── -->
+    <section class="movies" id="sectionTrending">
         <h2>Trending Now</h2>
         <div class="movie-row" id="trendingMovies"></div>
     </section>
 
-    <section class="movies-section" id="sectionAction">
+    <section class="movies" id="sectionAction">
         <h2>Action Movies</h2>
         <div class="movie-row" id="actionMovies"></div>
     </section>
 
-    <section class="movies-section" id="sectionSciFi">
+    <section class="movies" id="sectionSciFi">
         <h2>Sci-Fi Collection</h2>
         <div class="movie-row" id="sciFiMovies"></div>
     </section>
 
-    <section class="movies-section" id="sectionSuperhero">
+    <section class="movies" id="sectionSuperhero">
         <h2>Superhero Universe</h2>
         <div class="movie-row" id="superheroMovies"></div>
     </section>
 
-    <section class="movies-section" id="sectionTopRated">
+    <section class="movies" id="sectionTopRated">
         <h2>Top Rated</h2>
         <div class="movie-row" id="topRated"></div>
     </section>
 
-    <section class="movies-section" id="sectionComedy">
+    <section class="movies" id="sectionComedy">
         <h2>Comedy Collection</h2>
         <div class="movie-row" id="comedyMovies"></div>
     </section>
 
-    <section class="movies-section" id="sectionHorror">
+    <section class="movies" id="sectionHorror">
         <h2>Horror Collection</h2>
         <div class="movie-row" id="horrorMovies"></div>
     </section>
 
-    <section class="movies-section" id="sectionThriller" style="display:none;">
+    <section class="movies" id="sectionThriller" style="display:none;">
         <h2>Thriller Collection</h2>
         <div class="movie-row" id="thrillerMovies"></div>
     </section>
 
     <div id="movieSectionsContainer">
-        <section class="movies-section" id="sectionRomance" style="display:none;">
+        <section class="movies" id="sectionRomance" style="display:none;">
             <h2>Romance Collection</h2>
             <div class="movie-row" id="romanceMovies"></div>
         </section>
-        <section class="movies-section" id="sectionDrama" style="display:none;">
+        <section class="movies" id="sectionDrama" style="display:none;">
             <h2>Drama</h2>
             <div class="movie-row" id="dramaMovies"></div>
         </section>
-        <section class="movies-section" id="sectionAnimation" style="display:none;">
+        <section class="movies" id="sectionAnimation" style="display:none;">
             <h2>Animation</h2>
             <div class="movie-row" id="animationMovies"></div>
         </section>
-        <section class="movies-section" id="sectionCrime" style="display:none;">
+        <section class="movies" id="sectionCrime" style="display:none;">
             <h2>Crime</h2>
             <div class="movie-row" id="crimeMovies"></div>
         </section>
-        <section class="movies-section" id="sectionFantasy" style="display:none;">
+        <section class="movies" id="sectionFantasy" style="display:none;">
             <h2>Fantasy</h2>
             <div class="movie-row" id="fantasyMovies"></div>
         </section>
-        <section class="movies-section" id="sectionBollywood" style="display:none;">
+        <section class="movies" id="sectionBollywood" style="display:none;">
             <h2>Bollywood</h2>
             <div class="movie-row" id="bollywoodMovies"></div>
         </section>
-        <section class="movies-section" id="sectionHollywood" style="display:none;">
+        <section class="movies" id="sectionHollywood" style="display:none;">
             <h2>Hollywood</h2>
             <div class="movie-row" id="hollywoodMovies"></div>
         </section>
-        <section class="movies-section" id="sectionHindi" style="display:none;">
+        <section class="movies" id="sectionHindi" style="display:none;">
             <h2>Hindi</h2>
             <div class="movie-row" id="hindiMovies"></div>
         </section>
-        <section class="movies-section" id="sectionTamil" style="display:none;">
+        <section class="movies" id="sectionTamil" style="display:none;">
             <h2>Tamil</h2>
             <div class="movie-row" id="tamilMovies"></div>
         </section>
-        <section class="movies-section" id="sectionAnime" style="display:none;">
+        <section class="movies" id="sectionAnime" style="display:none;">
             <h2>Anime</h2>
             <div class="movie-row" id="animeMovies"></div>
         </section>
-        <section class="movies-section" id="sectionSports" style="display:none;">
+        <section class="movies" id="sectionSports" style="display:none;">
             <h2>Sports</h2>
             <div class="movie-row" id="sportsMovies"></div>
         </section>
-        <section class="movies-section" id="sectionFamily" style="display:none;">
+        <section class="movies" id="sectionFamily" style="display:none;">
             <h2>Family</h2>
             <div class="movie-row" id="familyMovies"></div>
         </section>
-        <section class="movies-section" id="sectionDocumentary" style="display:none;">
+        <section class="movies" id="sectionDocumentary" style="display:none;">
             <h2>Documentary</h2>
             <div class="movie-row" id="documentaryMovies"></div>
         </section>
-        <section class="movies-section" id="sectionStandup" style="display:none;">
+        <section class="movies" id="sectionStandup" style="display:none;">
             <h2>Stand-Up Comedy</h2>
             <div class="movie-row" id="standupMovies"></div>
         </section>
     </div>
 
+    <div id="toast" class="toast">
+        <span class="toast-icon">♥</span>
+        <span id="toastMsg">Added to My List</span>
+    </div>
+
+    <!-- JS -->
     <script src="js/movies-page.js?v=5"></script>
+    <script>
+        fetch("https://novastream-o3ri.onrender.com/api/test")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+    </script>
     <script src="js/preview.js"></script>
 
 </body>
