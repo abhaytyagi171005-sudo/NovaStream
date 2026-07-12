@@ -13,7 +13,8 @@ body {
 }
 
 /* ─── HERO BANNER (Optimized for 2K/1440p) ─── */
-.movies-hero {
+/* ─── HERO BANNER (Optimized for 2K/1440p) ─── */
+.hero {
     position: relative;
     width: 100%;
     height: 90vh;
@@ -85,7 +86,7 @@ body {
     transition: opacity 0.8s ease;
 }
 
-.featured {
+.hero-badge {
     color: #e50914;
     font-size: 0.7rem;
     letter-spacing: 4px;
@@ -111,19 +112,21 @@ body {
     flex-wrap: wrap;
 }
 
-.hero-meta span:first-child {
+.hero-meta span {
+    font-size: 0.9rem;
+}
+
+#heroYear {
     color: #d4af37;
     font-weight: 500;
-    font-size: 0.9rem;
 }
 
-.hero-meta .rating {
+#heroRating {
     color: #46d369;
     font-weight: 500;
-    font-size: 0.9rem;
 }
 
-.hero-meta .genres {
+#heroGenres {
     color: #aaa;
     font-size: 0.85rem;
 }
@@ -405,7 +408,7 @@ ul li.active {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-    .movies-hero {
+    .hero {
         height: 70vh;
         min-height: 500px;
         max-height: 800px;
@@ -425,7 +428,7 @@ ul li.active {
 }
 
 @media (max-width: 768px) {
-    .movies-hero {
+    .hero {
         height: 60vh;
         min-height: 400px;
         max-height: 700px;
@@ -478,7 +481,7 @@ ul li.active {
 }
 
 @media (max-width: 480px) {
-    .movies-hero {
+    .hero {
         height: 50vh;
         min-height: 300px;
         max-height: 500px;
