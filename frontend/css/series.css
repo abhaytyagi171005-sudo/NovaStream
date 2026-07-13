@@ -115,11 +115,7 @@ ul li.active {
 
 /* ── HERO ── */
 .series-hero {
-    height: 100vh;
-    position: relative;
-    background:
-        linear-gradient(to right, rgba(0, 0, 0, .92), rgba(0, 0, 0, .35)),
-        url("../images/banners/breakingbad-banner.jpg");
+    background: #0a0a0a;
     background-size: cover;
     background-position: center;
     transition: background-image .8s ease-in-out;

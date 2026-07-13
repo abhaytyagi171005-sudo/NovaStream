@@ -10,49 +10,76 @@ function shuffle(array) {
 // ─── SERIES DATA WITH TMDB IDs ───
 const featuredSeries = [
     {
-        title: "Breaking Bad",
-        year: "2008",
+        title: "Bloodhounds",
+        year: "2023",
+        genre: "Action • Crime",
+        description: "Two young boxers band together with a benevolent moneylender to take down a ruthless loan shark who preys on the financially desperate.",
+        video: "assets/series/previews/bloodhounds.mp4",
+        tmdb: 127529
+    },
+    {
+        title: "Delhi Crime",
+        year: "2019",
         genre: "Crime • Drama",
-        description: "A chemistry teacher diagnosed with cancer begins producing methamphetamine with a former student.",
-        banner: "images/banners/breakingbad-banner.jpg",
-        video: "images/breakingbad-preview.mp4",
-        tmdb: 1396
+        description: "Following the police force as they investigate high-profile crimes in Delhi, this series has seasons inspired by both real and fictional events.",
+        video: "assets/series/previews/delhi-crime.mp4",
+        tmdb: 87508
     },
     {
-        title: "Stranger Things",
-        year: "2016",
-        genre: "Sci-Fi • Horror",
-        description: "A group of kids uncover terrifying supernatural mysteries in their small town.",
-        banner: "images/banners/strangerthings-banner.jpg",
-        video: "images/strangerthings-preview.mp4",
-        tmdb: 1398
+        title: "Jujutsu Kaisen",
+        year: "2020",
+        genre: "Animation • Action",
+        description: "A boy swallows a cursed talisman - the finger of a demon - and becomes cursed himself, entering a shared existence with the demon Ryomen Sukuna.",
+        video: "assets/series/previews/jujutsu-kaisen.mp4",
+        tmdb: 95479
     },
     {
-        title: "Dark",
-        year: "2017",
-        genre: "Mystery • Sci-Fi",
-        description: "The disappearance of two children exposes secrets that span several generations.",
-        banner: "images/banners/dark-banner.jpg",
-        video: "images/dark-preview.mp4",
-        tmdb: 1399
+        title: "My Royal Nemesis",
+        year: "2026",
+        genre: "Romance • Fantasy",
+        description: "A Joseon-era villain doomed to die opens her eyes in modern-day Seoul — where a ruthless chaebol heir may be her last chance to rewrite her fate.",
+        video: "assets/series/previews/my-royal-nemesis.mp4",
+        tmdb: 303143
+    },
+    {
+        title: "Panchayat",
+        year: "2020",
+        genre: "Comedy • Drama",
+        description: "An engineering graduate, for lack of a better job option, joins as secretary of a panchayat office in a remote village of Uttar Pradesh.",
+        video: "assets/series/previews/panchayat.mp4",
+        tmdb: 101352
     },
     {
         title: "Peaky Blinders",
         year: "2013",
         genre: "Crime • Drama",
-        description: "Tommy Shelby leads one of the most feared gangs in post-war Birmingham.",
-        banner: "images/banners/peaky-banner.jpg",
-        video: "images/peakyblinders-preview.mp4",
-        tmdb: 1397
+        description: "A gangster family epic set in 1919 Birmingham, England, centered on a gang who sew razor blades in the peaks of their caps, and their fierce boss Tommy Shelby.",
+        video: "assets/series/previews/peaky-blinders.mp4",
+        tmdb: 60574
     },
     {
-        title: "Money Heist",
-        year: "2017",
-        genre: "Crime • Thriller",
-        description: "Eight robbers lock themselves inside the Royal Mint under the Professor's plan.",
-        banner: "images/banners/moneyheist-banner.jpg",
-        video: "images/moneyheist-preview.mp4",
-        tmdb: 1395
+        title: "Squid Game",
+        year: "2021",
+        genre: "Thriller • Drama",
+        description: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits — with deadly high stakes.",
+        video: "assets/series/previews/squid-game.mp4",
+        tmdb: 93405
+    },
+    {
+        title: "Stranger Things",
+        year: "2016",
+        genre: "Sci-Fi • Horror",
+        description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
+        video: "assets/series/previews/stranger-things.mp4",
+        tmdb: 66732
+    },
+    {
+        title: "The Boys",
+        year: "2019",
+        genre: "Action • Comedy",
+        description: "A group of vigilantes set out to take down corrupt superheroes who abuse their superpowers.",
+        video: "assets/series/previews/the-boys.mp4",
+        tmdb: 76479
     }
 ];
 
@@ -235,7 +262,7 @@ async function showGenre(category) {
 // ===============================
 const hero = document.getElementById("seriesHero");
 const heroTitle = document.getElementById("seriesHeroTitle");
-const heroYear = document.getElementById("seriesHeroYear");
+const heroYear = document.getElementById("seriesYear");
 const heroDescription = document.getElementById("seriesHeroDescription");
 const heroVideo = document.getElementById("hero-video");
 const heroVideoSource = document.getElementById("hero-video-source");
@@ -248,35 +275,29 @@ const randomSeries = getRandomSeries();
 async function loadHero() {
     const s = randomSeries;
 
-    // Fade out
     if (heroContent) heroContent.classList.add("fade-out");
     heroVideo.style.opacity = 0;
 
     setTimeout(async () => {
-        // ─── FETCH TMDB DETAILS ───
         const details = await fetchTMDBDetails(s.tmdb);
 
         if (details) {
-            // Update text content
             document.getElementById('seriesHeroTitle').textContent = details.name || s.title;
-            document.getElementById('seriesHeroYear').textContent = details.first_air_date?.slice(0, 4) || s.year;
+            document.getElementById('seriesYear').textContent = details.first_air_date?.slice(0, 4) || s.year;
             document.getElementById('seriesHeroDescription').textContent = details.overview || s.description;
 
-            // Update rating
             const ratingEl = document.getElementById('seriesRating');
             if (ratingEl && details.vote_average) {
                 ratingEl.textContent = `⭐ ${details.vote_average.toFixed(1)}`;
                 ratingEl.style.display = 'inline';
             }
 
-            // Update genres
             const genresEl = document.getElementById('seriesGenres');
             if (genresEl) {
                 const genres = (details.genres || []).map(g => g.name).slice(0, 3).join(' • ');
                 genresEl.textContent = genres || s.genre;
             }
 
-            // ─── SHOW POSTER ───
             if (poster && details.poster_path) {
                 const posterUrl = `https://image.tmdb.org/t/p/original${details.poster_path}`;
                 poster.src = posterUrl;
@@ -286,22 +307,29 @@ async function loadHero() {
             }
         }
 
-        // ─── SET BACKGROUND ───
-        hero.style.backgroundImage = `
-            linear-gradient(to right, rgba(0,0,0,.92), rgba(0,0,0,.35)),
-            url('${s.banner}')
-        `;
 
-        // ─── SET VIDEO ───
-        heroVideoSource.src = s.video;
+
+        // ─── USE SERIES.JSON FOR PREVIEW ───
+        const seriesData = await loadSeriesData();
+        let previewUrl = s.video; // fallback
+
+        if (seriesData) {
+            const match = seriesData.find(item => item.tmdb === s.tmdb);
+            if (match && match.preview) {
+                previewUrl = match.preview;
+                console.log(`✅ Using series.json preview: ${previewUrl}`);
+            } else {
+                console.log(`⚠️ No preview found for TMDB ${s.tmdb}, using fallback`);
+            }
+        }
+
+        heroVideoSource.src = previewUrl;
         heroVideo.load();
 
-        // ─── AFTER 3 SECONDS, SHOW VIDEO ───
         setTimeout(() => {
             heroVideo.play().catch(() => { });
             heroVideo.style.opacity = 1;
 
-            // Hide poster
             if (poster) {
                 poster.style.opacity = '0';
                 setTimeout(() => {
@@ -319,7 +347,6 @@ async function loadHero() {
 loadHero();
 
 // ─── NO AUTO-ROTATION ───
-// The hero will only change on page refresh
 
 // ===============================
 // LOAD STATIC HOME SECTIONS

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Series – NovaStream</title>
-    <link rel="stylesheet" href="css/series.css">
+    <link rel="stylesheet" href="css/series.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 </head>
@@ -32,7 +32,6 @@
                 <button class="genre-btn">Genres ▼</button>
 
                 <div class="genre-menu">
-                    <!-- FIX 1: ALL items are direct children of the grid — clean 3-col layout -->
                     <div class="genre-menu-grid">
                         <p onclick="showGenre('crime')">🕵 Crime</p>
                         <p onclick="showGenre('thriller')">🔪 Thriller</p>
@@ -56,7 +55,6 @@
 
                         <p onclick="showGenre('documentary')">🎥 Documentary</p>
                         <p></p>
-                        <!-- FIX 2: All Series scrolls DOWN to sections, not to page top -->
                         <p onclick="showHomeSections()">📺 All Series</p>
                     </div>
                 </div>
@@ -71,23 +69,20 @@
         </video>
         <img id="seriesPoster" class="series-poster" src="" alt="" style="display:none;">
         <div class="hero-overlay"></div>
+
         <div class="hero-content" id="heroContent">
             <span class="featured">FEATURED SERIES</span>
-            <h1 id="seriesHeroTitle">BREAKING BAD</h1>
+            <h1 id="seriesHeroTitle"></h1>
             <div class="series-meta" id="seriesMeta">
                 <span id="seriesYear"></span>
                 <span id="seriesRating"></span>
                 <span id="seriesGenres"></span>
             </div>
-        </div>
-        <p id="seriesHeroDescription">
-            A high-school chemistry teacher diagnosed with cancer begins manufacturing methamphetamine to secure his
-            family's future.
-        </p>
-        <div class="hero-buttons">
-            <button class="watch-btn">▶ Watch Now</button>
-            <button class="info-btn">More Info</button>
-        </div>
+            <p id="seriesHeroDescription"></p>
+            <div class="hero-buttons">
+                <button class="watch-btn">▶ Watch Now</button>
+                <button class="info-btn">More Info</button>
+            </div>
         </div>
     </section>
 
@@ -127,11 +122,10 @@
         <div class="series-row" id="topSeries"></div>
     </section>
 
-    <!-- Dynamic Genre Sections injected here -->
     <div id="dynamicGenreSections"></div>
+
     <script src="js/series-page.js?v=2"></script>
     <script>
-        // Sticky dropdown: stays open while moving mouse from button → menu
         const dropdown = document.querySelector('.genre-dropdown');
         const menu = document.querySelector('.genre-menu');
         let closeTimer = null;
