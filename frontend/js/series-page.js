@@ -102,17 +102,22 @@ async function loadSeriesData() {
     }
 }
 
-// ─── FETCH TMDB DETAILS ───
-async function fetchTMDBDetails(tmdbId) {
+// ─── FETCH POSTER FROM TMDB ───
+async function fetchSeriesPoster(tmdbId) {
     try {
         const response = await fetch(
             `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
         );
-        if (!response.ok) throw new Error(`TMDB API error: ${response.status}`);
         const data = await response.json();
-        return data;
+        if (data.backdrop_path) {
+            return `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+        }
+        if (data.poster_path) {
+            return `https://image.tmdb.org/t/p/original${data.poster_path}`;
+        }
+        return null;
     } catch (error) {
-        console.error('❌ TMDB fetch failed:', error);
+        console.warn('Poster fetch failed:', error);
         return null;
     }
 }
@@ -266,81 +271,76 @@ const heroYear = document.getElementById("seriesYear");
 const heroDescription = document.getElementById("seriesHeroDescription");
 const heroVideo = document.getElementById("hero-video");
 const heroVideoSource = document.getElementById("hero-video-source");
-const poster = document.getElementById('seriesPoster');
-const heroContent = document.getElementById('heroContent');
 
 // ─── PICK RANDOM SERIES ON PAGE LOAD ───
 const randomSeries = getRandomSeries();
 
+// ─── LOAD HERO ───
 async function loadHero() {
     const s = randomSeries;
+    const banner = document.getElementById("seriesHero");
+    const heroVideo = document.getElementById("hero-video");
+    const heroSource = document.getElementById("hero-video-source");
 
-    if (heroContent) heroContent.classList.add("fade-out");
-    heroVideo.style.opacity = 0;
+    // Update text content
+    document.getElementById('seriesHeroTitle').textContent = s.title;
+    document.getElementById('seriesYear').textContent = s.year;
+    document.getElementById('seriesHeroDescription').textContent = s.description;
 
-    setTimeout(async () => {
-        const details = await fetchTMDBDetails(s.tmdb);
+    // ─── FETCH POSTER FROM TMDB ───
+    const posterUrl = await fetchSeriesPoster(s.tmdb);
+    console.log('📸 Series Poster URL:', posterUrl);
 
-        if (details) {
-            document.getElementById('seriesHeroTitle').textContent = details.name || s.title;
-            document.getElementById('seriesYear').textContent = details.first_air_date?.slice(0, 4) || s.year;
-            document.getElementById('seriesHeroDescription').textContent = details.overview || s.description;
+    if (posterUrl) {
+        banner.style.backgroundImage = `url('${posterUrl}')`;
+        banner.style.backgroundSize = 'cover';
+        banner.style.backgroundPosition = 'center center';
+        banner.style.backgroundColor = 'transparent';
+    } else {
+        banner.style.backgroundImage = 'none';
+        banner.style.backgroundColor = '#0a0a0a';
+    }
 
-            const ratingEl = document.getElementById('seriesRating');
-            if (ratingEl && details.vote_average) {
-                ratingEl.textContent = `⭐ ${details.vote_average.toFixed(1)}`;
-                ratingEl.style.display = 'inline';
-            }
+    // ─── FETCH RATING AND GENRES FROM TMDB ───
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/tv/${s.tmdb}?api_key=${TMDB_API_KEY}&language=en-US`
+        );
+        const details = await response.json();
 
-            const genresEl = document.getElementById('seriesGenres');
-            if (genresEl) {
-                const genres = (details.genres || []).map(g => g.name).slice(0, 3).join(' • ');
-                genresEl.textContent = genres || s.genre;
-            }
-
-            if (poster && details.poster_path) {
-                const posterUrl = `https://image.tmdb.org/t/p/original${details.poster_path}`;
-                poster.src = posterUrl;
-                poster.style.display = 'block';
-                poster.style.opacity = '1';
-                poster.style.transition = 'opacity 0.5s ease';
-            }
+        const ratingEl = document.getElementById('seriesRating');
+        if (ratingEl && details.vote_average) {
+            ratingEl.textContent = `⭐ ${details.vote_average.toFixed(1)}`;
+            ratingEl.style.display = 'inline';
         }
 
-
-
-        // ─── USE SERIES.JSON FOR PREVIEW ───
-        const seriesData = await loadSeriesData();
-        let previewUrl = s.video; // fallback
-
-        if (seriesData) {
-            const match = seriesData.find(item => item.tmdb === s.tmdb);
-            if (match && match.preview) {
-                previewUrl = match.preview;
-                console.log(`✅ Using series.json preview: ${previewUrl}`);
-            } else {
-                console.log(`⚠️ No preview found for TMDB ${s.tmdb}, using fallback`);
-            }
+        const genresEl = document.getElementById('seriesGenres');
+        if (genresEl) {
+            const genres = (details.genres || []).map(g => g.name).slice(0, 3).join(' • ');
+            genresEl.textContent = genres || s.genre;
         }
+    } catch (error) {
+        console.warn('Could not fetch details:', error);
+    }
 
-        heroVideoSource.src = previewUrl;
+    // ─── LOAD VIDEO PREVIEW ───
+    const seriesData = await loadSeriesData();
+    let previewUrl = s.video;
+
+    if (seriesData) {
+        const match = seriesData.find(item => item.tmdb === s.tmdb);
+        if (match && match.preview) {
+            previewUrl = match.preview;
+            console.log(`✅ Using series.json preview: ${previewUrl}`);
+        }
+    }
+
+    if (heroVideo && heroSource) {
+        heroSource.src = previewUrl;
         heroVideo.load();
-
-        setTimeout(() => {
-            heroVideo.play().catch(() => { });
-            heroVideo.style.opacity = 1;
-
-            if (poster) {
-                poster.style.opacity = '0';
-                setTimeout(() => {
-                    poster.style.display = 'none';
-                }, 500);
-            }
-
-            if (heroContent) heroContent.classList.remove("fade-out");
-        }, 3000);
-
-    }, 500);
+        heroVideo.play().catch(() => { });
+        heroVideo.style.opacity = "1";
+    }
 }
 
 // ─── START HERO ───
