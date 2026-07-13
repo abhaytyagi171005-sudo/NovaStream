@@ -14,7 +14,7 @@ const featuredSeries = [
         year: "2023",
         genre: "Action • Crime",
         description: "Two young boxers band together with a benevolent moneylender to take down a ruthless loan shark who preys on the financially desperate.",
-        video: "assets/series/previews/bloodhounds.mp4",
+        video: "series/previews/bloodhounds.mp4",
         tmdb: 127529
     },
     {
@@ -22,7 +22,7 @@ const featuredSeries = [
         year: "2019",
         genre: "Crime • Drama",
         description: "Following the police force as they investigate high-profile crimes in Delhi, this series has seasons inspired by both real and fictional events.",
-        video: "assets/series/previews/delhi-crime.mp4",
+        video: "series/previews/delhi-crime.mp4",
         tmdb: 87508
     },
     {
@@ -30,7 +30,7 @@ const featuredSeries = [
         year: "2020",
         genre: "Animation • Action",
         description: "A boy swallows a cursed talisman - the finger of a demon - and becomes cursed himself, entering a shared existence with the demon Ryomen Sukuna.",
-        video: "assets/series/previews/jujutsu-kaisen.mp4",
+        video: "series/previews/jujutsu-kaisen.mp4",
         tmdb: 95479
     },
     {
@@ -38,7 +38,7 @@ const featuredSeries = [
         year: "2026",
         genre: "Romance • Fantasy",
         description: "A Joseon-era villain doomed to die opens her eyes in modern-day Seoul — where a ruthless chaebol heir may be her last chance to rewrite her fate.",
-        video: "assets/series/previews/my-royal-nemesis.mp4",
+        video: "series/previews/my-royal-nemesis.mp4",
         tmdb: 303143
     },
     {
@@ -46,7 +46,7 @@ const featuredSeries = [
         year: "2020",
         genre: "Comedy • Drama",
         description: "An engineering graduate, for lack of a better job option, joins as secretary of a panchayat office in a remote village of Uttar Pradesh.",
-        video: "assets/series/previews/panchayat.mp4",
+        video: "series/previews/panchayat.mp4",
         tmdb: 101352
     },
     {
@@ -54,7 +54,7 @@ const featuredSeries = [
         year: "2013",
         genre: "Crime • Drama",
         description: "A gangster family epic set in 1919 Birmingham, England, centered on a gang who sew razor blades in the peaks of their caps, and their fierce boss Tommy Shelby.",
-        video: "assets/series/previews/peaky-blinders.mp4",
+        video: "series/previews/peaky-blinders.mp4",
         tmdb: 60574
     },
     {
@@ -62,7 +62,7 @@ const featuredSeries = [
         year: "2021",
         genre: "Thriller • Drama",
         description: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits — with deadly high stakes.",
-        video: "assets/series/previews/squid-game.mp4",
+        video: "series/previews/squid-game.mp4",
         tmdb: 93405
     },
     {
@@ -70,7 +70,7 @@ const featuredSeries = [
         year: "2016",
         genre: "Sci-Fi • Horror",
         description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
-        video: "assets/series/previews/stranger-things.mp4",
+        video: "series/previews/stranger-things.mp4",
         tmdb: 66732
     },
     {
@@ -78,7 +78,7 @@ const featuredSeries = [
         year: "2019",
         genre: "Action • Comedy",
         description: "A group of vigilantes set out to take down corrupt superheroes who abuse their superpowers.",
-        video: "assets/series/previews/the-boys.mp4",
+        video: "series/previews/the-boys.mp4",
         tmdb: 76479
     }
 ];
