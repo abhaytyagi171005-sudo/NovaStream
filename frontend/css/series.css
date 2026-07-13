@@ -8,6 +8,7 @@ body {
     background: #0a0a0a;
     color: white;
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
 }
 
 /* ── NAVBAR ── */
@@ -21,6 +22,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 25px 60px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
 }
 
 .logo {
@@ -72,6 +74,11 @@ ul li.active {
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-size: .9rem;
+    transition: background 0.2s;
+}
+
+.genre-btn:hover {
+    background: #222;
 }
 
 .genre-menu {
@@ -89,9 +96,6 @@ ul li.active {
     padding: 8px 0;
 }
 
-/* Dropdown open/close is handled by JS with a delay timer — no CSS hover needed */
-
-/* FIX 1: Proper 3-column grid — ALL items inside the grid */
 .genre-menu-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -115,10 +119,15 @@ ul li.active {
 
 /* ── HERO ── */
 .series-hero {
+    height: 85vh;
+    min-height: 500px;
+    max-height: 900px;
+    position: relative;
     background: #0a0a0a;
     background-size: cover;
     background-position: center;
-    transition: background-image .8s ease-in-out;
+    transition: .8s ease;
+    overflow: hidden;
 }
 
 #hero-video {
@@ -137,38 +146,66 @@ ul li.active {
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: linear-gradient(to top, #0a0a0a, transparent 30%);
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.4) 40%,
+            rgba(0, 0, 0, 0.1) 70%,
+            transparent 100%);
+}
+
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(10, 10, 10, 1) 0%, transparent 100%);
 }
 
 .hero-content {
     position: absolute;
-    top: 50%;
-    left: 80px;
-    transform: translateY(-50%);
-    max-width: 650px;
+    bottom: 18%;
+    left: 5%;
+    max-width: 600px;
     z-index: 10;
-    transition: opacity .8s ease, transform .8s ease;
+    pointer-events: auto;
+}
+
+.hero-content.video-active {
+    transform: scale(0.92);
+}
+
+.hero-content.video-active h1 {
+    font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+    transition: font-size 0.6s ease;
 }
 
 .featured {
-    color: #d4af37;
+    color: #e50914;
     letter-spacing: 4px;
-    font-size: .85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
 }
 
 .hero-content h1 {
-    font-size: clamp(1rem, 4vw, 3rem);
+    font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    margin-bottom: 10px;
+    line-height: 1.1;
     max-width: 700px;
-    line-height: 1.05;
-    margin: 5px 0;
     word-break: break-word;
 }
 
 .series-meta {
     display: flex;
-    gap: 14px;
-    align-items: center;
-    margin-bottom: 10px;
+    gap: 15px;
+    color: #ccc;
+    margin-bottom: 14px;
     flex-wrap: wrap;
 }
 
@@ -178,12 +215,12 @@ ul li.active {
 
 #seriesYear {
     color: #d4af37;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 #seriesRating {
     color: #46d369;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 #seriesGenres {
@@ -192,68 +229,58 @@ ul li.active {
 }
 
 .hero-content p {
-    line-height: 1.8;
-    color: #ddd;
-    margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    max-width: 500px;
 }
 
 .hero-buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
 .watch-btn {
     background: #e50914;
     color: white;
     border: none;
-    padding: 14px 32px;
-    border-radius: 10px;
+    padding: 12px 30px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.watch-btn:hover {
+    background: #f40612;
+    transform: scale(1.04);
 }
 
 .info-btn {
-    background: rgba(255, 255, 255, .12);
+    background: rgba(255, 255, 255, 0.12);
     color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 30px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
     font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s, background 0.2s;
 }
 
-/* ── HERO PREVIEW STRIP ── */
-.hero-preview-strip {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-    display: flex;
-    gap: 12px;
-    z-index: 20;
-}
-
-.preview-card {
-    width: 140px;
-    height: 80px;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: .3s;
-}
-
-.preview-card:hover {
-    transform: scale(1.08);
-}
-
-.preview-card.active {
-    border-color: #e50914;
-}
-
-.preview-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.info-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.04);
 }
 
 /* ── SERIES SECTIONS ── */
@@ -266,7 +293,6 @@ ul li.active {
     font-size: 1.8rem;
 }
 
-/* ── SERIES ROW ── */
 .series-row {
     display: flex;
     gap: 20px;
@@ -307,18 +333,25 @@ ul li.active {
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 15px;
-    background: linear-gradient(transparent, rgba(0, 0, 0, .95));
+    padding: 50px 15px 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.75) 55%, transparent 100%);
+    z-index: 2;
 }
 
 .series-info h3 {
-    font-size: 1rem;
-    margin-bottom: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+    color: #fff;
 }
 
 .series-info p {
-    color: #ccc;
-    font-size: .85rem;
+    display: none;
 }
 
 /* ── FADE ANIMATIONS ── */
@@ -333,9 +366,36 @@ ul li.active {
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
+    .hero-content {
+        left: 40px;
+        max-width: 80%;
+    }
+
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+
+    .series-section {
+        padding: 40px 40px;
+    }
+}
+
+@media (max-width: 768px) {
     nav {
-        padding: 20px 20px;
+        padding: 15px 30px;
+        flex-wrap: wrap;
+    }
+
+    ul {
+        gap: 15px;
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+    }
+
+    .series-hero {
+        height: 60vh;
+        min-height: 400px;
     }
 
     .hero-content {
@@ -344,15 +404,31 @@ ul li.active {
     }
 
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .watch-btn,
+    .info-btn {
+        padding: 10px 20px;
+        font-size: 0.85rem;
     }
 
     .series-section {
-        padding: 30px 20px;
+        padding: 30px 30px;
     }
 
-    .hero-preview-strip {
-        display: none;
+    .series-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .card {
+        min-width: 160px;
+        height: 240px;
     }
 
     .genre-menu {
@@ -365,19 +441,72 @@ ul li.active {
     }
 }
 
-/* ── POSTER & VIDEO ── */
-#seriesPoster {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    display: none;
-    background: #0a0a0a;
-}
+@media (max-width: 480px) {
+    nav {
+        padding: 12px 15px;
+    }
 
-#hero-video {
-    z-index: 1;
+    .logo h1 {
+        font-size: 1.4rem;
+    }
+
+    ul {
+        gap: 10px;
+        font-size: 0.7rem;
+    }
+
+    .series-hero {
+        height: 50vh;
+        min-height: 300px;
+    }
+
+    .hero-content {
+        left: 20px;
+        max-width: 95%;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        display: none;
+    }
+
+    .series-meta span {
+        font-size: 0.7rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .watch-btn,
+    .info-btn {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+    }
+
+    .series-section {
+        padding: 20px 15px;
+    }
+
+    .series-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .card {
+        min-width: 140px;
+        height: 210px;
+    }
+
+    .genre-menu {
+        min-width: 240px;
+        right: -10px;
+    }
+
+    .genre-menu-grid {
+        grid-template-columns: 1fr;
+    }
 }
