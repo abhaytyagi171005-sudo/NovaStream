@@ -69,23 +69,25 @@
         <video id="hero-video" autoplay muted loop playsinline>
             <source id="hero-video-source" src="" type="video/mp4">
         </video>
+        <img id="seriesPoster" class="series-poster" src="" alt="" style="display:none;">
         <div class="hero-overlay"></div>
-        <div class="hero-content">
+        <div class="hero-content" id="heroContent">
             <span class="featured">FEATURED SERIES</span>
             <h1 id="seriesHeroTitle">BREAKING BAD</h1>
-            <div class="series-meta">
-                <span id="seriesHeroYear">2008</span>
-                <span>TV-MA</span>
-                <span>Crime Drama</span>
+            <div class="series-meta" id="seriesMeta">
+                <span id="seriesYear"></span>
+                <span id="seriesRating"></span>
+                <span id="seriesGenres"></span>
             </div>
-            <p id="seriesHeroDescription">
-                A high-school chemistry teacher diagnosed with cancer begins manufacturing methamphetamine to secure his
-                family's future.
-            </p>
-            <div class="hero-buttons">
-                <button class="watch-btn">▶ Watch Now</button>
-                <button class="info-btn">More Info</button>
-            </div>
+        </div>
+        <p id="seriesHeroDescription">
+            A high-school chemistry teacher diagnosed with cancer begins manufacturing methamphetamine to secure his
+            family's future.
+        </p>
+        <div class="hero-buttons">
+            <button class="watch-btn">▶ Watch Now</button>
+            <button class="info-btn">More Info</button>
+        </div>
         </div>
     </section>
 
@@ -127,8 +129,7 @@
 
     <!-- Dynamic Genre Sections injected here -->
     <div id="dynamicGenreSections"></div>
-
-    <script src="js/series-page.js"></script>
+    <script src="js/series-page.js?v=2"></script>
     <script>
         // Sticky dropdown: stays open while moving mouse from button → menu
         const dropdown = document.querySelector('.genre-dropdown');

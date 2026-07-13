@@ -1,10 +1,13 @@
 // ===============================
 // FEATURED SERIES
 // ===============================
+const TMDB_API_KEY = "f08c9127f4fa4a8642bffa57c5b8955e";
+
 function shuffle(array) {
     return [...array].sort(() => Math.random() - 0.5);
 }
 
+// ─── SERIES DATA WITH TMDB IDs ───
 const featuredSeries = [
     {
         title: "Breaking Bad",
@@ -12,7 +15,8 @@ const featuredSeries = [
         genre: "Crime • Drama",
         description: "A chemistry teacher diagnosed with cancer begins producing methamphetamine with a former student.",
         banner: "images/banners/breakingbad-banner.jpg",
-        video: "images/breakingbad-preview.mp4"
+        video: "images/breakingbad-preview.mp4",
+        tmdb: 1396
     },
     {
         title: "Stranger Things",
@@ -20,7 +24,8 @@ const featuredSeries = [
         genre: "Sci-Fi • Horror",
         description: "A group of kids uncover terrifying supernatural mysteries in their small town.",
         banner: "images/banners/strangerthings-banner.jpg",
-        video: "images/strangerthings-preview.mp4"
+        video: "images/strangerthings-preview.mp4",
+        tmdb: 1398
     },
     {
         title: "Dark",
@@ -28,7 +33,8 @@ const featuredSeries = [
         genre: "Mystery • Sci-Fi",
         description: "The disappearance of two children exposes secrets that span several generations.",
         banner: "images/banners/dark-banner.jpg",
-        video: "images/dark-preview.mp4"
+        video: "images/dark-preview.mp4",
+        tmdb: 1399
     },
     {
         title: "Peaky Blinders",
@@ -36,7 +42,8 @@ const featuredSeries = [
         genre: "Crime • Drama",
         description: "Tommy Shelby leads one of the most feared gangs in post-war Birmingham.",
         banner: "images/banners/peaky-banner.jpg",
-        video: "images/peakyblinders-preview.mp4"
+        video: "images/peakyblinders-preview.mp4",
+        tmdb: 1397
     },
     {
         title: "Money Heist",
@@ -44,9 +51,44 @@ const featuredSeries = [
         genre: "Crime • Thriller",
         description: "Eight robbers lock themselves inside the Royal Mint under the Professor's plan.",
         banner: "images/banners/moneyheist-banner.jpg",
-        video: "images/moneyheist-preview.mp4"
+        video: "images/moneyheist-preview.mp4",
+        tmdb: 1395
     }
 ];
+
+// ─── GET RANDOM SERIES ───
+function getRandomSeries() {
+    const randomIndex = Math.floor(Math.random() * featuredSeries.length);
+    return featuredSeries[randomIndex];
+}
+
+// ─── LOAD SERIES JSON ───
+async function loadSeriesData() {
+    try {
+        const response = await fetch('data/series.json');
+        if (!response.ok) throw new Error('Series JSON not found');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.warn('⚠️ Series JSON not found, using fallback');
+        return null;
+    }
+}
+
+// ─── FETCH TMDB DETAILS ───
+async function fetchTMDBDetails(tmdbId) {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`
+        );
+        if (!response.ok) throw new Error(`TMDB API error: ${response.status}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('❌ TMDB fetch failed:', error);
+        return null;
+    }
+}
 
 // ===============================
 // GENRE TEMPLATES
@@ -189,7 +231,7 @@ async function showGenre(category) {
 }
 
 // ===============================
-// HERO ROTATION
+// HERO (Random on Refresh - NO AUTO-ROTATION)
 // ===============================
 const hero = document.getElementById("seriesHero");
 const heroTitle = document.getElementById("seriesHeroTitle");
@@ -197,37 +239,87 @@ const heroYear = document.getElementById("seriesHeroYear");
 const heroDescription = document.getElementById("seriesHeroDescription");
 const heroVideo = document.getElementById("hero-video");
 const heroVideoSource = document.getElementById("hero-video-source");
+const poster = document.getElementById('seriesPoster');
+const heroContent = document.getElementById('heroContent');
 
-let heroIndex = 0;
+// ─── PICK RANDOM SERIES ON PAGE LOAD ───
+const randomSeries = getRandomSeries();
 
-function loadHero(index) {
-    hero.querySelector(".hero-content").classList.add("fade-out");
+async function loadHero() {
+    const s = randomSeries;
+
+    // Fade out
+    if (heroContent) heroContent.classList.add("fade-out");
     heroVideo.style.opacity = 0;
 
-    setTimeout(() => {
-        const s = featuredSeries[index];
-        hero.style.backgroundImage =
-            `linear-gradient(to right, rgba(0,0,0,.92), rgba(0,0,0,.35)), url('${s.banner}')`;
-        heroTitle.textContent = s.title;
-        heroYear.textContent = s.year;
-        document.querySelector(".series-meta span:last-child").textContent = s.genre;
-        heroDescription.textContent = s.description;
+    setTimeout(async () => {
+        // ─── FETCH TMDB DETAILS ───
+        const details = await fetchTMDBDetails(s.tmdb);
 
+        if (details) {
+            // Update text content
+            document.getElementById('seriesHeroTitle').textContent = details.name || s.title;
+            document.getElementById('seriesHeroYear').textContent = details.first_air_date?.slice(0, 4) || s.year;
+            document.getElementById('seriesHeroDescription').textContent = details.overview || s.description;
+
+            // Update rating
+            const ratingEl = document.getElementById('seriesRating');
+            if (ratingEl && details.vote_average) {
+                ratingEl.textContent = `⭐ ${details.vote_average.toFixed(1)}`;
+                ratingEl.style.display = 'inline';
+            }
+
+            // Update genres
+            const genresEl = document.getElementById('seriesGenres');
+            if (genresEl) {
+                const genres = (details.genres || []).map(g => g.name).slice(0, 3).join(' • ');
+                genresEl.textContent = genres || s.genre;
+            }
+
+            // ─── SHOW POSTER ───
+            if (poster && details.poster_path) {
+                const posterUrl = `https://image.tmdb.org/t/p/original${details.poster_path}`;
+                poster.src = posterUrl;
+                poster.style.display = 'block';
+                poster.style.opacity = '1';
+                poster.style.transition = 'opacity 0.5s ease';
+            }
+        }
+
+        // ─── SET BACKGROUND ───
+        hero.style.backgroundImage = `
+            linear-gradient(to right, rgba(0,0,0,.92), rgba(0,0,0,.35)),
+            url('${s.banner}')
+        `;
+
+        // ─── SET VIDEO ───
         heroVideoSource.src = s.video;
         heroVideo.load();
-        heroVideo.oncanplay = () => {
-            heroVideo.style.opacity = 1;
+
+        // ─── AFTER 3 SECONDS, SHOW VIDEO ───
+        setTimeout(() => {
             heroVideo.play().catch(() => { });
-        };
-        hero.querySelector(".hero-content").classList.remove("fade-out");
-    }, 700);
+            heroVideo.style.opacity = 1;
+
+            // Hide poster
+            if (poster) {
+                poster.style.opacity = '0';
+                setTimeout(() => {
+                    poster.style.display = 'none';
+                }, 500);
+            }
+
+            if (heroContent) heroContent.classList.remove("fade-out");
+        }, 3000);
+
+    }, 500);
 }
 
-loadHero(heroIndex);
-setInterval(() => {
-    heroIndex = (heroIndex + 1) % featuredSeries.length;
-    loadHero(heroIndex);
-}, 6800);
+// ─── START HERO ───
+loadHero();
+
+// ─── NO AUTO-ROTATION ───
+// The hero will only change on page refresh
 
 // ===============================
 // LOAD STATIC HOME SECTIONS
@@ -256,3 +348,6 @@ loadSection(sections.drama, "dramaSeries");
 loadSection(sections.comedy, "comedySeries");
 loadSection(sections.scifi, "scifiSeries");
 loadSection(sections.top, "topSeries");
+
+// ─── LOAD SERIES JSON (for future use) ───
+loadSeriesData();

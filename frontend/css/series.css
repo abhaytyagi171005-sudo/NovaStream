@@ -170,9 +170,29 @@ ul li.active {
 
 .series-meta {
     display: flex;
-    gap: 15px;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.series-meta span {
+    font-size: 0.9rem;
+}
+
+#seriesYear {
     color: #d4af37;
-    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+#seriesRating {
+    color: #46d369;
+    font-weight: 500;
+}
+
+#seriesGenres {
+    color: #aaa;
+    font-size: 0.85rem;
 }
 
 .hero-content p {
@@ -347,4 +367,21 @@ ul li.active {
     .genre-menu-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+/* ── POSTER & VIDEO ── */
+#seriesPoster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    display: none;
+    background: #0a0a0a;
+}
+
+#hero-video {
+    z-index: 1;
 }
