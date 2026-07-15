@@ -55,7 +55,6 @@ async function doSearch(query) {
     console.log("Searching for:", query); // Debug
 
     try {
-
         // Hide status immediately - no loading text
         searchStatus.style.display = "none";
         searchResults.innerHTML = "";
@@ -86,8 +85,6 @@ async function doSearch(query) {
             allResults = allResults.concat(results);
             totalPages = Math.min(data.total_pages || 1, 5);
 
-
-
             currentPage++;
             await new Promise(resolve => setTimeout(resolve, 200));
         }
@@ -110,14 +107,8 @@ async function doSearch(query) {
             return;
         }
 
-        // Show count
-        const countDisplay = document.createElement("div");
-        countDisplay.className = "search-count";
-        countDisplay.style.cssText = "width: 100%; padding: 10px; margin-bottom: 15px; color: #888; text-align: center; font-size: 14px;";
-        countDisplay.innerHTML = `<p>Found ${filtered.length} results for "${query}"</p>`;
-        searchResults.appendChild(countDisplay);
+        // COUNT REMOVED - Nothing here!
 
-        // Display results
         // Display results
         filtered.forEach(item => {
             if (!item.poster_path) {
@@ -126,14 +117,14 @@ async function doSearch(query) {
                 const card = document.createElement("div");
                 card.className = "search-card";
                 card.innerHTML = `
-            <div style="height:270px;background:#333;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px;">
-                🎬 ${title}
-            </div>
-            <div class="search-card-info">
-                <h3>${title}</h3>
-                <span>${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"}</span>
-            </div>
-        `;
+                    <div style="height:270px;background:#333;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px;">
+                        🎬 ${title}
+                    </div>
+                    <div class="search-card-info">
+                        <h3>${title}</h3>
+                        <span>${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"}</span>
+                    </div>
+                `;
                 card.onclick = () => {
                     window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
                 };
@@ -149,14 +140,13 @@ async function doSearch(query) {
             const card = document.createElement("div");
             card.className = "search-card";
             card.innerHTML = `
-        <img src="${posterUrl}" alt="${title}" onerror="this.style.display='none'">
-        <div class="search-card-info">
-            <h3>${title}</h3>
-            <span>${year || 'N/A'} • ${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"} ${rating ? '• ' + rating : ''}</span>
-        </div>
-    `;
+                <img src="${posterUrl}" alt="${title}" onerror="this.style.display='none'">
+                <div class="search-card-info">
+                    <h3>${title}</h3>
+                    <span>${year || 'N/A'} • ${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"} ${rating ? '• ' + rating : ''}</span>
+                </div>
+            `;
             card.onclick = () => {
-                // Direct to movie page
                 window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
             };
             searchResults.appendChild(card);
