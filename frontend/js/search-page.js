@@ -52,7 +52,7 @@ function setType(type, btn) {
 }
 
 async function doSearch(query) {
-    console.log("Searching for:", query); // Keep this one if you want
+    console.log("Searching for:", query);
 
     try {
         searchStatus.style.display = "none";
@@ -85,6 +85,7 @@ async function doSearch(query) {
             await new Promise(resolve => setTimeout(resolve, 200));
         }
 
+        // Filter results
         const filtered = allResults.filter(item => {
             if (item.media_type !== "movie" && item.media_type !== "tv") return false;
             if (searchType === "movie") return item.media_type === "movie";
@@ -92,16 +93,27 @@ async function doSearch(query) {
             return true;
         });
 
-        // BOTH CONSOLE LOG AND COUNT DISPLAY REMOVED
+        // REMOVE DUPLICATES by ID
+        const seen = new Set();
+        const uniqueResults = filtered.filter(item => {
+            const key = item.id; // TMDB uses unique ID
+            if (seen.has(key)) {
+                return false; // Skip duplicate
+            }
+            seen.add(key);
+            return true;
+        });
 
-        if (filtered.length === 0) {
+        console.log(`Found ${filtered.length} results, ${uniqueResults.length} unique`);
+
+        if (uniqueResults.length === 0) {
             searchStatus.style.display = "block";
             searchStatus.innerHTML = `<h2>No results for "${query}"</h2><p>Try a different search term</p>`;
             return;
         }
 
-        // Display results
-        filtered.forEach(item => {
+        // Display unique results
+        uniqueResults.forEach(item => {
             if (!item.poster_path) {
                 const title = item.title || item.name;
                 const card = document.createElement("div");
