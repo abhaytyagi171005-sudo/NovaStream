@@ -52,10 +52,9 @@ function setType(type, btn) {
 }
 
 async function doSearch(query) {
-    console.log("Searching for:", query); // Debug
+    console.log("Searching for:", query); // Keep this one if you want
 
     try {
-        // Hide status immediately - no loading text
         searchStatus.style.display = "none";
         searchResults.innerHTML = "";
 
@@ -63,7 +62,6 @@ async function doSearch(query) {
         let currentPage = 1;
         let totalPages = 1;
 
-        // Fetch ALL pages from TMDB (max 5 pages)
         while (currentPage <= totalPages && currentPage <= 5) {
             const res = await fetch(
                 `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&page=${currentPage}`
@@ -76,8 +74,6 @@ async function doSearch(query) {
             const data = await res.json();
             const results = data.results || [];
 
-            console.log(`Page ${currentPage}: Found ${results.length} results`); // Debug
-
             if (results.length === 0) {
                 break;
             }
@@ -89,9 +85,6 @@ async function doSearch(query) {
             await new Promise(resolve => setTimeout(resolve, 200));
         }
 
-        searchStatus.style.display = "none";
-
-        // Filter results
         const filtered = allResults.filter(item => {
             if (item.media_type !== "movie" && item.media_type !== "tv") return false;
             if (searchType === "movie") return item.media_type === "movie";
@@ -99,7 +92,7 @@ async function doSearch(query) {
             return true;
         });
 
-        console.log("Total filtered results:", filtered.length); // Debug
+        // BOTH CONSOLE LOG AND COUNT DISPLAY REMOVED
 
         if (filtered.length === 0) {
             searchStatus.style.display = "block";
@@ -107,12 +100,9 @@ async function doSearch(query) {
             return;
         }
 
-        // COUNT REMOVED - Nothing here!
-
         // Display results
         filtered.forEach(item => {
             if (!item.poster_path) {
-                // If no poster, show placeholder
                 const title = item.title || item.name;
                 const card = document.createElement("div");
                 card.className = "search-card";
