@@ -1,6 +1,59 @@
+const API = "https://novastream-o3ri.onrender.com/api";
 const TMDB_API_KEY = "f08c9127f4fa4a8642bffa57c5b8955e";
+let searchType = "all";
+let searchTimeout = null;
+
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+const searchStatus = document.getElementById("searchStatus");
+
+// Pre-fill search if coming from another page
+const params = new URLSearchParams(window.location.search);
+const preQuery = params.get("q");
+if (preQuery) {
+    searchInput.value = preQuery;
+    doSearch(preQuery);
+}
+
+// Input event (auto-search)
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim();
+    clearTimeout(searchTimeout);
+
+    if (query.length < 2) {
+        searchResults.innerHTML = "";
+        searchStatus.style.display = "block";
+        searchStatus.innerHTML = `<h2>🔍 What are you looking for?</h2><p>Start typing to search 5000+ movies and series</p>`;
+        return;
+    }
+
+    searchStatus.innerHTML = `<h2>Searching...</h2>`;
+
+    searchTimeout = setTimeout(() => doSearch(query), 400);
+});
+
+// Enter key support
+searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+            clearTimeout(searchTimeout);
+            doSearch(query);
+        }
+    }
+});
+
+function setType(type, btn) {
+    searchType = type;
+    document.querySelectorAll(".type-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const query = searchInput.value.trim();
+    if (query.length >= 2) doSearch(query);
+}
 
 async function doSearch(query) {
+    console.log("Searching for:", query); // Debug
+
     try {
         // Show searching status
         searchStatus.style.display = "block";
@@ -11,43 +64,45 @@ async function doSearch(query) {
         let currentPage = 1;
         let totalPages = 1;
 
-        // Fetch ALL pages from TMDB (max 5 pages to avoid rate limiting)
+        // Fetch ALL pages from TMDB (max 5 pages)
         while (currentPage <= totalPages && currentPage <= 5) {
             const res = await fetch(
                 `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&page=${currentPage}`
             );
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
             const data = await res.json();
             const results = data.results || [];
+
+            console.log(`Page ${currentPage}: Found ${results.length} results`); // Debug
 
             if (results.length === 0) {
                 break;
             }
 
-            // Add results to our collection
             allResults = allResults.concat(results);
-
-            // Update total pages (TMDB returns total_pages)
             totalPages = Math.min(data.total_pages || 1, 5);
 
-            // Update progress
             searchStatus.innerHTML = `<h2>🔍 Searching for "${query}"...</h2><p>Found ${allResults.length} results (Page ${currentPage}/${totalPages})</p>`;
 
             currentPage++;
-
-            // Small delay to avoid rate limiting
             await new Promise(resolve => setTimeout(resolve, 200));
         }
 
-        // Hide status
         searchStatus.style.display = "none";
 
-        // Filter results based on type
+        // Filter results
         const filtered = allResults.filter(item => {
             if (item.media_type !== "movie" && item.media_type !== "tv") return false;
             if (searchType === "movie") return item.media_type === "movie";
             if (searchType === "series") return item.media_type === "tv";
-            return true; // "all"
+            return true;
         });
+
+        console.log("Total filtered results:", filtered.length); // Debug
 
         if (filtered.length === 0) {
             searchStatus.style.display = "block";
@@ -55,13 +110,14 @@ async function doSearch(query) {
             return;
         }
 
-        // Display results with total count
+        // Show count
         const countDisplay = document.createElement("div");
         countDisplay.className = "search-count";
         countDisplay.style.cssText = "width: 100%; padding: 10px; margin-bottom: 15px; color: #888; text-align: center; font-size: 14px;";
         countDisplay.innerHTML = `<p>Found ${filtered.length} results for "${query}"</p>`;
         searchResults.appendChild(countDisplay);
 
+        // Display results
         filtered.forEach(item => {
             if (!item.poster_path) return;
             const title = item.title || item.name;
@@ -79,15 +135,14 @@ async function doSearch(query) {
                 </div>
             `;
             card.onclick = () => {
-                // Navigate to detail page with TMDB ID
                 window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
             };
             searchResults.appendChild(card);
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Search error:", err);
         searchStatus.style.display = "block";
-        searchStatus.innerHTML = `<h2>Error connecting to server</h2><p>${err.message}</p>`;
+        searchStatus.innerHTML = `<h2>Error searching</h2><p>${err.message}</p>`;
     }
 }
