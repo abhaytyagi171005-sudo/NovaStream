@@ -85,7 +85,7 @@ async function doSearch(query) {
             await new Promise(resolve => setTimeout(resolve, 200));
         }
 
-        // Filter results
+        // Filter by type
         const filtered = allResults.filter(item => {
             if (item.media_type !== "movie" && item.media_type !== "tv") return false;
             if (searchType === "movie") return item.media_type === "movie";
@@ -93,47 +93,32 @@ async function doSearch(query) {
             return true;
         });
 
-        // REMOVE DUPLICATES by ID
+        // Remove duplicates
         const seen = new Set();
         const uniqueResults = filtered.filter(item => {
-            const key = item.id; // TMDB uses unique ID
-            if (seen.has(key)) {
-                return false; // Skip duplicate
-            }
+            const key = item.id;
+            if (seen.has(key)) return false;
             seen.add(key);
             return true;
         });
 
-        console.log(`Found ${filtered.length} results, ${uniqueResults.length} unique`);
+        // ONLY SHOW MOVIES WITH POSTERS
+        const resultsWithPosters = uniqueResults.filter(item =>
+            item.poster_path !== null &&
+            item.poster_path !== undefined &&
+            item.poster_path !== ''
+        );
 
-        if (uniqueResults.length === 0) {
+        console.log(`Found ${filtered.length} results, ${uniqueResults.length} unique, ${resultsWithPosters.length} with posters`);
+
+        if (resultsWithPosters.length === 0) {
             searchStatus.style.display = "block";
-            searchStatus.innerHTML = `<h2>No results for "${query}"</h2><p>Try a different search term</p>`;
+            searchStatus.innerHTML = `<h2>No results with posters for "${query}"</h2><p>Try a different search term</p>`;
             return;
         }
 
-        // Display unique results
-        uniqueResults.forEach(item => {
-            if (!item.poster_path) {
-                const title = item.title || item.name;
-                const card = document.createElement("div");
-                card.className = "search-card";
-                card.innerHTML = `
-                    <div style="height:270px;background:#333;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px;">
-                        🎬 ${title}
-                    </div>
-                    <div class="search-card-info">
-                        <h3>${title}</h3>
-                        <span>${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"}</span>
-                    </div>
-                `;
-                card.onclick = () => {
-                    window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
-                };
-                searchResults.appendChild(card);
-                return;
-            }
-
+        // Display results (all with posters)
+        resultsWithPosters.forEach(item => {
             const title = item.title || item.name;
             const year = (item.release_date || item.first_air_date || '').slice(0, 4);
             const posterUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
