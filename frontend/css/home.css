@@ -272,6 +272,18 @@ ul li.active {
     display: block;
 }
 
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #e50914;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+}
+
 /* ── GENRE DROPDOWN ── */
 .genre-dropdown {
     position: relative;
@@ -536,7 +548,7 @@ ul li.active {
         padding: 20px 15px;
     }
 
-    .moviesh2 {
+    .movies h2 {
         font-size: 1.2rem;
     }
 
@@ -580,4 +592,34 @@ ul li.active {
     height: 100%;
     object-fit: cover;
     background: #0a0a0a;
+}
+
+/* ── TOAST NOTIFICATION ── */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #151515;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-icon {
+    color: #e50914;
+    font-size: 1.1rem;
 }
