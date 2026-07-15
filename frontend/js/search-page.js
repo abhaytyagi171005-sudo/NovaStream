@@ -55,9 +55,9 @@ async function doSearch(query) {
     console.log("Searching for:", query); // Debug
 
     try {
-        // Show searching status
-        searchStatus.style.display = "block";
-        searchStatus.innerHTML = `<h2>🔍 Searching for "${query}"...</h2><p>Please wait...</p>`;
+
+        // Hide status immediately - no loading text
+        searchStatus.style.display = "none";
         searchResults.innerHTML = "";
 
         let allResults = [];
@@ -86,7 +86,7 @@ async function doSearch(query) {
             allResults = allResults.concat(results);
             totalPages = Math.min(data.total_pages || 1, 5);
 
-            searchStatus.innerHTML = `<h2>🔍 Searching for "${query}"...</h2><p>Found ${allResults.length} results (Page ${currentPage}/${totalPages})</p>`;
+
 
             currentPage++;
             await new Promise(resolve => setTimeout(resolve, 200));
@@ -118,23 +118,45 @@ async function doSearch(query) {
         searchResults.appendChild(countDisplay);
 
         // Display results
+        // Display results
         filtered.forEach(item => {
-            if (!item.poster_path) return;
+            if (!item.poster_path) {
+                // If no poster, show placeholder
+                const title = item.title || item.name;
+                const card = document.createElement("div");
+                card.className = "search-card";
+                card.innerHTML = `
+            <div style="height:270px;background:#333;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px;">
+                🎬 ${title}
+            </div>
+            <div class="search-card-info">
+                <h3>${title}</h3>
+                <span>${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"}</span>
+            </div>
+        `;
+                card.onclick = () => {
+                    window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
+                };
+                searchResults.appendChild(card);
+                return;
+            }
+
             const title = item.title || item.name;
             const year = (item.release_date || item.first_air_date || '').slice(0, 4);
             const posterUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-            const rating = item.vote_average ? `⭐ ${item.vote_average.toFixed(1)}` : '';
+            const rating = item.vote_average ? `★ ${item.vote_average.toFixed(1)}` : '';
 
             const card = document.createElement("div");
             card.className = "search-card";
             card.innerHTML = `
-                <img src="${posterUrl}" alt="${title}" onerror="this.parentElement.style.display='none'">
-                <div class="search-card-info">
-                    <h3>${title}</h3>
-                    <span>${year || 'N/A'} • ${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"} ${rating ? '• ' + rating : ''}</span>
-                </div>
-            `;
+        <img src="${posterUrl}" alt="${title}" onerror="this.style.display='none'">
+        <div class="search-card-info">
+            <h3>${title}</h3>
+            <span>${year || 'N/A'} • ${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"} ${rating ? '• ' + rating : ''}</span>
+        </div>
+    `;
             card.onclick = () => {
+                // Direct to movie page
                 window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
             };
             searchResults.appendChild(card);
