@@ -94,7 +94,9 @@ async function loadMovie() {
                 // Display similar movies
                 similarData.results.slice(0, 10).forEach((movie, index) => {
                     if (movie.poster_path) {
-                        const posterUrl = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+                        const imageUrl = movie.backdrop_path
+                            ? `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`
+                            : `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
                         console.log(`🖼️ Movie ${index + 1}: ${movie.title} - ${posterUrl}`);
 
                         const card = document.createElement("div");
@@ -103,10 +105,11 @@ async function loadMovie() {
 
                         // Create image element
                         const img = document.createElement("img");
-                        img.src = posterUrl;
+                        img.src = imageUrl;
                         img.alt = movie.title;
                         img.style.width = "100%";
-                        img.style.height = "270px";
+                        img.style.aspectRatio = "16 / 9";
+                        img.style.height = "auto";
                         img.style.objectFit = "cover";
                         img.style.borderRadius = "10px 10px 0 0";
                         img.onerror = function () {
