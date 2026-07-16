@@ -1,3 +1,4 @@
+const TMDB_API_KEY = "f08c9127f4fa4a8642bffa57c5b8955e";
 const params = new URLSearchParams(window.location.search);
 const movieName = params.get("movie");
 
@@ -14,18 +15,20 @@ document.getElementById("topResult").innerHTML = `
 
 async function loadMovie() {
     try {
-        const response = await fetch(
+        // First, search for the movie to get its IMDB ID
+        const searchResponse = await fetch(
             `https://novastream-o3ri.onrender.com/api/search?q=${encodeURIComponent(movieName)}&limit=20`
         );
-        const data = await response.json();
+        const searchData = await searchResponse.json();
 
-        if (!data || data.length === 0) {
+        if (!searchData || searchData.length === 0) {
             document.getElementById("topResult").innerHTML = `<h2 style="padding:40px">No results found for "${movieName}"</h2>`;
             return;
         }
 
-        const top = data[0];
+        const top = searchData[0];
 
+        // Display movie details
         document.getElementById("topResult").innerHTML = `
             <div class="movie-hero" style="
                 background-image: linear-gradient(to right, rgba(0,0,0,.95), rgba(0,0,0,.7), rgba(0,0,0,.95)),
@@ -51,23 +54,72 @@ async function loadMovie() {
             </div>
         `;
 
+        // ===== FETCH SIMILAR MOVIES FROM TMDB =====
         const similarMovies = document.getElementById("similarMovies");
-        similarMovies.innerHTML = "";
+        similarMovies.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                <div class="loading-spinner"></div>
+                <p>Loading similar movies...</p>
+            </div>
+        `;
 
-        data.slice(1).forEach(movie => {
-            if (movie.Poster && movie.Poster !== "N/A") {
-                similarMovies.innerHTML += `
-                    <div class="card" onclick="window.location.href='search.html?movie=${encodeURIComponent(movie.Title)}'">
-                        <img src="${movie.Poster}" alt="${movie.Title}" onerror="this.parentElement.style.display='none'">
-                        <div class="movie-info"><h3>${movie.Title}</h3></div>
+        // Get movie ID from TMDB using the title
+        const tmdbSearch = await fetch(
+            `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(top.Title)}&year=${top.Year}`
+        );
+        const tmdbData = await tmdbSearch.json();
+
+        if (tmdbData.results && tmdbData.results.length > 0) {
+            const movieId = tmdbData.results[0].id;
+
+            // Fetch similar movies from TMDB
+            const similarResponse = await fetch(
+                `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${TMDB_API_KEY}&language=en-US&page=1`
+            );
+            const similarData = await similarResponse.json();
+
+            similarMovies.innerHTML = "";
+
+            if (similarData.results && similarData.results.length > 0) {
+                // Display similar movies
+                similarData.results.slice(0, 10).forEach(movie => {
+                    if (movie.poster_path) {
+                        similarMovies.innerHTML += `
+                            <div class="card" onclick="window.location.href='search.html?movie=${encodeURIComponent(movie.title)}'">
+                                <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" 
+                                     alt="${movie.title}" 
+                                     onerror="this.parentElement.style.display='none'">
+                                <div class="movie-info">
+                                    <h3>${movie.title}</h3>
+                                    <p>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            } else {
+                similarMovies.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                        <p>No similar movies found</p>
                     </div>
                 `;
             }
-        });
+        } else {
+            similarMovies.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                    <p>Could not find similar movies</p>
+                </div>
+            `;
+        }
 
     } catch (error) {
         console.error(error);
         document.getElementById("topResult").innerHTML = `<h2 style="padding:40px">Error loading results. Please try again.</h2>`;
+        document.getElementById("similarMovies").innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #e50914;">
+                <p>Error loading similar movies</p>
+            </div>
+        `;
     }
 }
 
