@@ -603,3 +603,24 @@ body {
 .retry-btn:hover {
     background: #ff0a1a;
 }
+
+#similarMovies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+#similarMovies .card {
+    background: #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #2a2a2a;
+}
+
+#similarMovies .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    border-color: #e50914;
+}

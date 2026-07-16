@@ -55,8 +55,10 @@ async function loadMovie() {
         `;
 
         // ===== FETCH SIMILAR MOVIES FROM TMDB =====
-        const similarMovies = document.getElementById("similarMovies");
-        similarMovies.innerHTML = `
+        const similarContainer = document.getElementById("similarMovies");
+
+        // Clear container and show loading
+        similarContainer.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
                 <div class="loading-spinner"></div>
                 <p>Loading similar movies...</p>
@@ -86,39 +88,75 @@ async function loadMovie() {
             console.log("📽️ Similar movies found:", similarData.results?.length || 0);
 
             // Clear loading message
-            similarMovies.innerHTML = "";
+            similarContainer.innerHTML = "";
 
             if (similarData.results && similarData.results.length > 0) {
-                // Display similar movies
-                similarData.results.slice(0, 10).forEach(movie => {
+                // Display similar movies using createElement (safer than innerHTML)
+                similarData.results.slice(0, 10).forEach((movie, index) => {
                     if (movie.poster_path) {
+                        const posterUrl = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+                        console.log(`🖼️ Movie ${index + 1}: ${movie.title} - ${posterUrl}`);
+
                         const card = document.createElement("div");
                         card.className = "card";
-                        card.innerHTML = `
-                            <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" 
-                                 alt="${movie.title}" 
-                                 onerror="this.parentElement.style.display='none'">
-                            <div class="movie-info">
-                                <h3>${movie.title}</h3>
-                                <p>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
-                            </div>
-                        `;
-                        card.onclick = () => {
+                        card.style.cursor = "pointer";
+
+                        // Create image element
+                        const img = document.createElement("img");
+                        img.src = posterUrl;
+                        img.alt = movie.title;
+                        img.style.width = "100%";
+                        img.style.height = "270px";
+                        img.style.objectFit = "cover";
+                        img.style.borderRadius = "10px 10px 0 0";
+                        img.onerror = function () {
+                            console.error(`❌ Failed to load image for: ${movie.title}`);
+                            this.style.display = "none";
+                        };
+
+                        // Create info div
+                        const infoDiv = document.createElement("div");
+                        infoDiv.className = "movie-info";
+                        infoDiv.style.padding = "10px 15px";
+
+                        const titleH3 = document.createElement("h3");
+                        titleH3.textContent = movie.title;
+                        titleH3.style.margin = "0";
+                        titleH3.style.fontSize = "14px";
+                        titleH3.style.color = "white";
+
+                        const yearP = document.createElement("p");
+                        yearP.textContent = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
+                        yearP.style.margin = "5px 0 0";
+                        yearP.style.fontSize = "12px";
+                        yearP.style.color = "#888";
+
+                        infoDiv.appendChild(titleH3);
+                        infoDiv.appendChild(yearP);
+                        card.appendChild(img);
+                        card.appendChild(infoDiv);
+
+                        // Click handler
+                        card.onclick = function () {
                             window.location.href = `search.html?movie=${encodeURIComponent(movie.title)}`;
                         };
-                        similarMovies.appendChild(card);
+
+                        similarContainer.appendChild(card);
+                    } else {
+                        console.log(`⚠️ No poster for: ${movie.title}`);
                     }
                 });
-                console.log("✅ Similar movies displayed!");
+
+                console.log(`✅ Displayed ${similarContainer.children.length} similar movies!`);
             } else {
-                similarMovies.innerHTML = `
+                similarContainer.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
                         <p>No similar movies found</p>
                     </div>
                 `;
             }
         } else {
-            similarMovies.innerHTML = `
+            similarContainer.innerHTML = `
                 <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
                     <p>Could not find movie on TMDB</p>
                 </div>
