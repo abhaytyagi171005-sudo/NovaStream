@@ -620,7 +620,7 @@ body {
     width: 100%;
 }
 
-#similarMovies .card {
+#similarMovies .similar-card {
     background: #181818;
     border-radius: 8px;
     overflow: hidden;
@@ -629,17 +629,17 @@ body {
     border: none;
 }
 
-#similarMovies .card:hover {
+#similarMovies .similar-card:hover {
     transform: scale(1.04);
     z-index: 5;
 }
 
-#similarMovies .card img {
+#similarMovies .similar-card img {
     width: 100%;
     aspect-ratio: 16/9;
     /* Horizontal poster */
     height: auto;
-    object-fit: contain;
+    object-fit: cover;
     /* Shows complete image */
     background: #000;
     display: block;

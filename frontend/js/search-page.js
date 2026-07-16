@@ -100,18 +100,13 @@ async function loadMovie() {
                         console.log(`🖼️ Movie ${index + 1}: ${movie.title} - ${imageUrl}`);
 
                         const card = document.createElement("div");
-                        card.className = "card";
+                        card.className = "similar-card";
                         card.style.cursor = "pointer";
 
                         // Create image element
                         const img = document.createElement("img");
                         img.src = imageUrl;
                         img.alt = movie.title;
-                        img.style.width = "100%";
-                        img.style.aspectRatio = "16 / 9";
-                        img.style.height = "auto";
-                        img.style.objectFit = "cover";
-                        img.style.borderRadius = "10px 10px 0 0";
                         img.onerror = function () {
                             console.error(`❌ Failed to load image for: ${movie.title}`);
                             this.style.display = "none";
