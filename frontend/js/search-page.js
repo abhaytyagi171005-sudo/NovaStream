@@ -114,7 +114,7 @@ async function loadMovie() {
 
                         // Create info div
                         const infoDiv = document.createElement("div");
-                        infoDiv.className = "movie-info";
+                        infoDiv.className = "similar-info";
                         infoDiv.style.padding = "10px 15px";
 
                         const titleH3 = document.createElement("h3");

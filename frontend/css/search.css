@@ -645,11 +645,13 @@ body {
     display: block;
 }
 
-#similarMovies .movie-info {
+#similarMovies .similar-info {
     padding: 14px;
+    position: static;
+    background: #181818;
 }
 
-#similarMovies .movie-info h3 {
+#similarMovies .similar-info h3 {
     font-size: 18px;
     font-weight: 600;
     color: #fff;
@@ -662,7 +664,7 @@ body {
     overflow: hidden;
 }
 
-#similarMovies .movie-info p {
+#similarMovies .similar-info p {
     margin: 0;
     color: #9a9a9a;
     font-size: 14px;
