@@ -10,6 +10,11 @@ let isLoading = false;
 let currentQuery = "";
 let allResults = [];
 let hasMoreResults = true;
+let retryCount = 0;
+const MAX_RETRIES = 3;
+const ITEMS_PER_PAGE = 20;
+const MAX_PAGES = 10;
+let loadingTimeout = null;
 
 const searchInput = document.getElementById("searchInput");
 const searchResults = document.getElementById("searchResults");
@@ -58,19 +63,22 @@ function setType(type, btn) {
     if (query.length >= 2) doSearch(query);
 }
 
-// ===== MAIN SEARCH FUNCTION =====
+// ===== MAIN SEARCH FUNCTION (ADVANCED) =====
 async function doSearch(query) {
-    console.log("Searching for:", query);
+    console.log("🚀 Searching for:", query);
 
-    // Reset pagination for new search
+    // Reset everything
     currentPage = 1;
     totalPages = 1;
     currentQuery = query;
     allResults = [];
     hasMoreResults = true;
     isLoading = false;
+    retryCount = 0;
 
-    // Remove old scroll listener if exists
+    // Clean up
+    hideLoading();
+    hideError();
     window.removeEventListener('scroll', handleScroll);
 
     try {
@@ -80,8 +88,8 @@ async function doSearch(query) {
         // Load first page
         await loadPage(query, 1);
 
-        // Add scroll listener for loading more
-        window.addEventListener('scroll', handleScroll);
+        // Add scroll listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
     } catch (err) {
         console.error("Search error:", err);
@@ -90,16 +98,37 @@ async function doSearch(query) {
     }
 }
 
-// ===== LOAD PAGE FUNCTION =====
+// ===== LOAD PAGE FUNCTION (ADVANCED) =====
 async function loadPage(query, page) {
+    // Prevent multiple loads
     if (isLoading || !hasMoreResults) return;
 
+    // Check if we've reached max pages
+    if (page > MAX_PAGES) {
+        hasMoreResults = false;
+        showEndMessage();
+        return;
+    }
+
     isLoading = true;
+    retryCount = 0;
+
+    // Show loading indicator
+    if (page > 1) {
+        showLoading();
+    }
 
     try {
+        // Add timeout to prevent hanging
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
         const res = await fetch(
-            `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&page=${page}`
+            `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&page=${page}`,
+            { signal: controller.signal }
         );
+
+        clearTimeout(timeoutId);
 
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
@@ -111,12 +140,14 @@ async function loadPage(query, page) {
         if (results.length === 0) {
             hasMoreResults = false;
             isLoading = false;
+            hideLoading();
             showEndMessage();
             return;
         }
 
-        totalPages = Math.min(data.total_pages || 1, 10);
+        totalPages = Math.min(data.total_pages || 1, MAX_PAGES);
 
+        // Filter results
         const filtered = results.filter(item => {
             if (item.media_type !== "movie" && item.media_type !== "tv") return false;
             if (searchType === "movie") return item.media_type === "movie";
@@ -124,10 +155,18 @@ async function loadPage(query, page) {
             return true;
         });
 
+        // Remove duplicates and filter posters
         const newResults = filtered.filter(item => {
             const exists = allResults.some(existing => existing.id === item.id);
-            return !exists && item.poster_path !== null && item.poster_path !== undefined && item.poster_path !== '';
+            return !exists &&
+                item.poster_path !== null &&
+                item.poster_path !== undefined &&
+                item.poster_path !== '';
         });
+
+        // Hide loading
+        hideLoading();
+        hideError();
 
         if (newResults.length === 0 && allResults.length === 0) {
             searchStatus.style.display = "block";
@@ -137,27 +176,45 @@ async function loadPage(query, page) {
             return;
         }
 
+        // Add to all results
         allResults = allResults.concat(newResults);
-        displayResults(newResults);
 
-        if (page >= totalPages) {
+        // Display new results with animation
+        displayResultsWithAnimation(newResults);
+
+        // Update current page
+        currentPage = page + 1;
+
+        // Check if we have more pages
+        if (page >= totalPages || currentPage > MAX_PAGES) {
             hasMoreResults = false;
-            showEndMessage();
+            setTimeout(showEndMessage, 500);
         }
 
-        currentPage = page + 1;
         isLoading = false;
+
+        // Log progress
+        console.log(`📊 Loaded ${allResults.length} results (Page ${page}/${totalPages})`);
 
     } catch (err) {
         console.error("Load page error:", err);
+        hideLoading();
+
+        // Handle abort (timeout)
+        if (err.name === 'AbortError') {
+            showError('Request timed out. Please try again.');
+        } else {
+            showError(`Failed to load results: ${err.message}`);
+        }
+
         isLoading = false;
         hasMoreResults = false;
     }
 }
 
-// ===== DISPLAY RESULTS FUNCTION =====
-function displayResults(results) {
-    results.forEach(item => {
+// ===== DISPLAY RESULTS WITH ANIMATION =====
+function displayResultsWithAnimation(results) {
+    results.forEach((item, index) => {
         const title = item.title || item.name;
         const year = (item.release_date || item.first_air_date || '').slice(0, 4);
         const posterUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
@@ -165,6 +222,10 @@ function displayResults(results) {
 
         const card = document.createElement("div");
         card.className = "search-card";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = `opacity 0.3s ease, transform 0.3s ease`;
+
         card.innerHTML = `
             <img src="${posterUrl}" alt="${title}" onerror="this.style.display='none'">
             <div class="search-card-info">
@@ -176,38 +237,101 @@ function displayResults(results) {
             window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
         };
         searchResults.appendChild(card);
+
+        // Trigger animation with delay
+        setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }, index * 50);
     });
 }
 
-// ===== SCROLL HANDLER =====
-function handleScroll() {
-    if (isLoading || !hasMoreResults) return;
+// ===== LOADING INDICATOR FUNCTIONS =====
+function showLoading() {
+    // Remove existing loading if any
+    hideLoading();
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const windowHeight = window.innerHeight;
-    const docHeight = document.documentElement.scrollHeight;
+    const loadingDiv = document.createElement("div");
+    loadingDiv.className = "loading-indicator";
+    loadingDiv.id = "loadingIndicator";
+    loadingDiv.innerHTML = `
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading more results...</div>
+    `;
+    searchResults.appendChild(loadingDiv);
+}
 
-    if (scrollTop + windowHeight >= docHeight * 0.8) {
+function hideLoading() {
+    const loading = document.getElementById("loadingIndicator");
+    if (loading) {
+        loading.remove();
+    }
+}
+
+function showError(message) {
+    hideLoading();
+
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "loading-indicator";
+    errorDiv.id = "errorIndicator";
+    errorDiv.innerHTML = `
+        <div style="color: #e50914; font-size: 24px; margin-bottom: 10px;">⚠️</div>
+        <div class="loading-text" style="color: #e50914;">${message}</div>
+        <button class="retry-btn" onclick="retryLoad()">Retry</button>
+    `;
+    searchResults.appendChild(errorDiv);
+}
+
+function hideError() {
+    const error = document.getElementById("errorIndicator");
+    if (error) {
+        error.remove();
+    }
+}
+
+function retryLoad() {
+    hideError();
+    if (currentQuery && hasMoreResults) {
         loadPage(currentQuery, currentPage);
     }
+}
+
+// ===== SCROLL HANDLER (DEBOUNCED) =====
+let scrollTimeout = null;
+
+function handleScroll() {
+    // Debounce scroll events
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+
+    scrollTimeout = setTimeout(() => {
+        if (isLoading || !hasMoreResults) return;
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+
+        // Load when scrolled to 70% (earlier for smoother experience)
+        const threshold = 0.7;
+        if (scrollTop + windowHeight >= docHeight * threshold) {
+            console.log(`🔄 Loading more at ${Math.round((scrollTop + windowHeight) / docHeight * 100)}%`);
+            loadPage(currentQuery, currentPage);
+        }
+    }, 200); // Wait 200ms after scrolling stops
 }
 
 // ===== END MESSAGE =====
 function showEndMessage() {
     if (document.querySelector('.search-end')) return;
+    if (document.getElementById('loadingIndicator')) return;
 
     const endMessage = document.createElement("div");
     endMessage.className = "search-end";
-    endMessage.style.cssText = `
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 30px;
-        color: #666;
-        font-size: 14px;
-        border-top: 1px solid #222;
-        margin-top: 20px;
+    endMessage.innerHTML = `
+        <span class="search-end-icon">🎬</span>
+        You've seen all results (${allResults.length} total)
     `;
-    endMessage.textContent = "✨ You've seen all results";
     searchResults.appendChild(endMessage);
 }
 
