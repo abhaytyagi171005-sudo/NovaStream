@@ -1,207 +1,293 @@
+const API = "https://novastream-o3ri.onrender.com/api";
 const TMDB_API_KEY = "f08c9127f4fa4a8642bffa57c5b8955e";
+let searchType = "all";
+let searchTimeout = null;
+
+// ===== PAGINATION VARIABLES =====
+let currentPage = 1;
+let totalPages = 1;
+let isLoading = false;
+let currentQuery = "";
+let allResults = [];
+let hasMoreResults = true;
+let retryCount = 0;
+const MAX_RETRIES = 3;
+const ITEMS_PER_PAGE = 20;
+const MAX_PAGES = 10;
+let loadingTimeout = null;
+
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+const searchStatus = document.getElementById("searchStatus");
+
+// Pre-fill search if coming from another page
 const params = new URLSearchParams(window.location.search);
-const movieName = params.get("movie");
+const preQuery = params.get("q");
+if (preQuery) {
+    searchInput.value = preQuery;
+    doSearch(preQuery);
+}
 
-document.getElementById("topResult").innerHTML = `
-    <div class="skeleton-hero">
-        <div class="skeleton-poster skeleton-box"></div>
-        <div class="skeleton-info">
-            <div class="skeleton-box" style="height:36px;width:60%;margin-bottom:16px;border-radius:8px;"></div>
-            <div class="skeleton-box" style="height:16px;width:80%;margin-bottom:10px;border-radius:6px;"></div>
-            <div class="skeleton-box" style="height:44px;width:200px;margin-top:20px;border-radius:8px;"></div>
-        </div>
-    </div>
-`;
+// Input event (auto-search)
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim();
+    clearTimeout(searchTimeout);
 
-async function loadMovie() {
+    if (query.length < 2) {
+        searchResults.innerHTML = "";
+        searchStatus.style.display = "block";
+        searchStatus.innerHTML = `<h2>🔍 What are you looking for?</h2><p>Start typing to search 5000+ movies and series</p>`;
+        return;
+    }
+
+    searchStatus.style.display = "none";
+    searchTimeout = setTimeout(() => doSearch(query), 400);
+});
+
+// Enter key support
+searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+            clearTimeout(searchTimeout);
+            doSearch(query);
+        }
+    }
+});
+
+function setType(type, btn) {
+    searchType = type;
+    document.querySelectorAll(".type-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const query = searchInput.value.trim();
+    if (query.length >= 2) doSearch(query);
+}
+
+// ===== MAIN SEARCH FUNCTION =====
+async function doSearch(query) {
+    console.log("🚀 Searching for:", query);
+
+    // Reset everything
+    currentPage = 1;
+    totalPages = 1;
+    currentQuery = query;
+    allResults = [];
+    hasMoreResults = true;
+    isLoading = false;
+    retryCount = 0;
+
+    // Clean up
+    hideLoading();
+    hideError();
+    window.removeEventListener('scroll', handleScroll);
+
     try {
-        // First, search for the movie to get its details
-        const searchResponse = await fetch(
-            `https://novastream-o3ri.onrender.com/api/search?q=${encodeURIComponent(movieName)}&limit=20`
-        );
-        const searchData = await searchResponse.json();
+        searchStatus.style.display = "none";
+        searchResults.innerHTML = "";
 
-        if (!searchData || searchData.length === 0) {
-            document.getElementById("topResult").innerHTML = `<h2 style="padding:40px">No results found for "${movieName}"</h2>`;
+        // Load first page
+        await loadPage(query, 1);
+
+        // Add scroll listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+    } catch (err) {
+        console.error("Search error:", err);
+        searchStatus.style.display = "block";
+        searchStatus.innerHTML = `<h2>Error searching</h2><p>${err.message}</p>`;
+    }
+}
+
+// ===== LOAD PAGE FUNCTION =====
+async function loadPage(query, page) {
+    if (isLoading || !hasMoreResults) return;
+
+    if (page > MAX_PAGES) {
+        hasMoreResults = false;
+        return;
+    }
+
+    isLoading = true;
+    retryCount = 0;
+
+    if (page > 1) {
+        showLoading();
+    }
+
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const res = await fetch(
+            `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&page=${page}`,
+            { signal: controller.signal }
+        );
+
+        clearTimeout(timeoutId);
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        const results = data.results || [];
+
+        if (results.length === 0) {
+            hasMoreResults = false;
+            isLoading = false;
+            hideLoading();
             return;
         }
 
-        const top = searchData[0];
+        totalPages = Math.min(data.total_pages || 1, MAX_PAGES);
 
-        // Display movie details
-        document.getElementById("topResult").innerHTML = `
-            <div class="movie-hero" style="
-                background-image: linear-gradient(to right, rgba(0,0,0,.95), rgba(0,0,0,.7), rgba(0,0,0,.95)),
-                url('${top.Backdrop && top.Backdrop !== 'N/A' ? top.Backdrop : top.Poster}');
-                background-size: cover;
-                background-position: center;
-            ">
-                <div class="top-result-card">
-                    <img src="${top.Poster}" alt="${top.Title}">
-                    <div class="movie-details">
-                        <h1>${top.Title}</h1>
-                        <p>${top.Year} • ⭐ ${top.imdbRating !== 'N/A' ? Number(top.imdbRating).toFixed(1) : 'N/A'}</p>
-                        <p><strong>${(top.genres || []).join(', ')}</strong></p>
-                        <p>${top.Plot || ''}</p>
-                        <p><strong>Language:</strong> ${top.Language || 'N/A'}</p>
-                        <div class="buttons">
-                            <button class="watch-btn">▶ Watch Now</button>
-                            <button class="info-btn" onclick="playTrailer('${top.Title.replace(/'/g, "\\'")}')">🎬 Trailer</button>
-                            <button class="list-btn" onclick="addToMyList('${top.Title.replace(/'/g, "\\'")}', '${top.Poster}')">♥ My List</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        const filtered = results.filter(item => {
+            if (item.media_type !== "movie" && item.media_type !== "tv") return false;
+            if (searchType === "movie") return item.media_type === "movie";
+            if (searchType === "series") return item.media_type === "tv";
+            return true;
+        });
 
-        // ===== FETCH SIMILAR MOVIES FROM TMDB =====
-        const similarContainer = document.getElementById("similarMovies");
+        const newResults = filtered.filter(item => {
+            const exists = allResults.some(existing => existing.id === item.id);
+            return !exists &&
+                item.poster_path !== null &&
+                item.poster_path !== undefined &&
+                item.poster_path !== '';
+        });
 
-        // Clear container and show loading
-        similarContainer.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
-                <div class="loading-spinner"></div>
-                <p>Loading similar movies...</p>
-            </div>
-        `;
+        hideLoading();
+        hideError();
 
-        console.log("🔍 Searching TMDB for:", top.Title);
-
-        // Get movie ID from TMDB using the title
-        const tmdbSearch = await fetch(
-            `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(top.Title)}&year=${top.Year}`
-        );
-        const tmdbData = await tmdbSearch.json();
-
-        console.log("📊 TMDB Search Results:", tmdbData);
-
-        if (tmdbData.results && tmdbData.results.length > 0) {
-            const movieId = tmdbData.results[0].id;
-            console.log("🎬 Found TMDB ID:", movieId);
-
-            // Fetch similar movies from TMDB
-            const similarResponse = await fetch(
-                `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${TMDB_API_KEY}&language=en-US&page=1`
-            );
-            const similarData = await similarResponse.json();
-
-            console.log("📽️ Similar movies found:", similarData.results?.length || 0);
-
-            // Clear loading message
-            similarContainer.innerHTML = "";
-
-            if (similarData.results && similarData.results.length > 0) {
-                // Display similar movies using createElement (safer than innerHTML)
-                similarData.results.slice(0, 10).forEach((movie, index) => {
-                    if (movie.poster_path) {
-                        const posterUrl = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
-                        console.log(`🖼️ Movie ${index + 1}: ${movie.title} - ${posterUrl}`);
-
-                        const card = document.createElement("div");
-                        card.className = "card";
-                        card.style.cursor = "pointer";
-
-                        // Create image element
-                        const img = document.createElement("img");
-                        img.src = posterUrl;
-                        img.alt = movie.title;
-                        img.style.width = "100%";
-                        img.style.height = "270px";
-                        img.style.objectFit = "cover";
-                        img.style.borderRadius = "10px 10px 0 0";
-                        img.onerror = function () {
-                            console.error(`❌ Failed to load image for: ${movie.title}`);
-                            this.style.display = "none";
-                        };
-
-                        // Create info div
-                        const infoDiv = document.createElement("div");
-                        infoDiv.className = "movie-info";
-                        infoDiv.style.padding = "10px 15px";
-
-                        const titleH3 = document.createElement("h3");
-                        titleH3.textContent = movie.title;
-                        titleH3.style.margin = "0";
-                        titleH3.style.fontSize = "14px";
-                        titleH3.style.color = "white";
-
-                        const yearP = document.createElement("p");
-                        yearP.textContent = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
-                        yearP.style.margin = "5px 0 0";
-                        yearP.style.fontSize = "12px";
-                        yearP.style.color = "#888";
-
-                        infoDiv.appendChild(titleH3);
-                        infoDiv.appendChild(yearP);
-                        card.appendChild(img);
-                        card.appendChild(infoDiv);
-
-                        // Click handler
-                        card.onclick = function () {
-                            window.location.href = `search.html?movie=${encodeURIComponent(movie.title)}`;
-                        };
-
-                        similarContainer.appendChild(card);
-                    } else {
-                        console.log(`⚠️ No poster for: ${movie.title}`);
-                    }
-                });
-
-                console.log(`✅ Displayed ${similarContainer.children.length} similar movies!`);
-            } else {
-                similarContainer.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
-                        <p>No similar movies found</p>
-                    </div>
-                `;
-            }
-        } else {
-            similarContainer.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
-                    <p>Could not find movie on TMDB</p>
-                </div>
-            `;
+        if (newResults.length === 0 && allResults.length === 0) {
+            searchStatus.style.display = "block";
+            searchStatus.innerHTML = `<h2>No results with posters for "${query}"</h2><p>Try a different search term</p>`;
+            isLoading = false;
+            hasMoreResults = false;
+            return;
         }
 
-    } catch (error) {
-        console.error("❌ Error:", error);
-        document.getElementById("topResult").innerHTML = `<h2 style="padding:40px">Error loading results. Please try again.</h2>`;
-        document.getElementById("similarMovies").innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #e50914;">
-                <p>Error loading similar movies</p>
+        allResults = allResults.concat(newResults);
+        displayResultsWithAnimation(newResults);
+        currentPage = page + 1;
+
+        if (page >= totalPages || currentPage > MAX_PAGES) {
+            hasMoreResults = false;
+        }
+
+        isLoading = false;
+        console.log(`📊 Loaded ${allResults.length} results (Page ${page}/${totalPages})`);
+
+    } catch (err) {
+        console.error("Load page error:", err);
+        hideLoading();
+        if (err.name === 'AbortError') {
+            showError('Request timed out. Please try again.');
+        } else {
+            showError(`Failed to load results: ${err.message}`);
+        }
+        isLoading = false;
+        hasMoreResults = false;
+    }
+}
+
+// ===== DISPLAY RESULTS =====
+function displayResultsWithAnimation(results) {
+    results.forEach((item, index) => {
+        const title = item.title || item.name;
+        const year = (item.release_date || item.first_air_date || '').slice(0, 4);
+        const posterUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+        const rating = item.vote_average ? `★ ${item.vote_average.toFixed(1)}` : '';
+
+        const card = document.createElement("div");
+        card.className = "search-card";
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = `opacity 0.3s ease, transform 0.3s ease`;
+
+        card.innerHTML = `
+            <img src="${posterUrl}" alt="${title}" onerror="this.style.display='none'">
+            <div class="search-card-info">
+                <h3>${title}</h3>
+                <span>${year || 'N/A'} • ${item.media_type === "tv" ? "📺 Series" : "🎬 Movie"} ${rating ? '• ' + rating : ''}</span>
             </div>
         `;
+        card.onclick = () => {
+            window.location.href = `search.html?movie=${encodeURIComponent(title)}`;
+        };
+        searchResults.appendChild(card);
+
+        setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }, index * 50);
+    });
+}
+
+// ===== LOADING INDICATOR FUNCTIONS =====
+function showLoading() {
+    hideLoading();
+    const loadingDiv = document.createElement("div");
+    loadingDiv.className = "loading-indicator";
+    loadingDiv.id = "loadingIndicator";
+    loadingDiv.innerHTML = `
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading more results...</div>
+    `;
+    searchResults.appendChild(loadingDiv);
+}
+
+function hideLoading() {
+    const loading = document.getElementById("loadingIndicator");
+    if (loading) loading.remove();
+}
+
+function showError(message) {
+    hideLoading();
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "loading-indicator";
+    errorDiv.id = "errorIndicator";
+    errorDiv.innerHTML = `
+        <div style="color: #e50914; font-size: 24px; margin-bottom: 10px;">⚠️</div>
+        <div class="loading-text" style="color: #e50914;">${message}</div>
+        <button class="retry-btn" onclick="retryLoad()">Retry</button>
+    `;
+    searchResults.appendChild(errorDiv);
+}
+
+function hideError() {
+    const error = document.getElementById("errorIndicator");
+    if (error) error.remove();
+}
+
+function retryLoad() {
+    hideError();
+    if (currentQuery && hasMoreResults) {
+        loadPage(currentQuery, currentPage);
     }
 }
 
-loadMovie();
+// ===== SCROLL HANDLER =====
+let scrollTimeout = null;
 
-function playTrailer(title) {
-    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title + " official trailer")}`, "_blank");
-}
-
-function showToast(message, type = "success") {
-    const toast = document.getElementById("toast");
-    const toastMsg = document.getElementById("toastMsg");
-    const toastIcon = document.querySelector(".toast-icon");
-    if (!toast) return;
-    toastMsg.innerText = message;
-    toastIcon.innerText = type === "warn" ? "!" : "♥";
-    toast.classList.remove("show");
-    void toast.offsetWidth;
-    toast.classList.add("show");
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => toast.classList.remove("show"), 3000);
-}
-
-function addToMyList(title, poster) {
-    let myList = JSON.parse(localStorage.getItem("myList")) || [];
-    const exists = myList.some(movie => movie.title === title);
-    if (!exists) {
-        myList.push({ title, poster });
-        localStorage.setItem("myList", JSON.stringify(myList));
-        showToast("Added to My List", "success");
-    } else {
-        showToast("Already in your list", "warn");
+function handleScroll() {
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
     }
+
+    scrollTimeout = setTimeout(() => {
+        if (isLoading || !hasMoreResults) return;
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+
+        const threshold = 0.7;
+        if (scrollTop + windowHeight >= docHeight * threshold) {
+            console.log(`🔄 Loading more at ${Math.round((scrollTop + windowHeight) / docHeight * 100)}%`);
+            loadPage(currentQuery, currentPage);
+        }
+    }, 200);
 }
+
+console.log("✅ Search with pagination loaded!");

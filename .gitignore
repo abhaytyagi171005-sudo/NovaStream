@@ -29,3 +29,6 @@ backend/**/movies-index.json
 backend/**/tv-index.json
 "*.part" 
 "*.mp4" 
+"*.mp4.part" 
+"frontend/assets/movies/previews/*.mp4" 
+"frontend/assets/movies/previews/*.part" 
