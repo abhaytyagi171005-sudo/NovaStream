@@ -321,18 +321,6 @@ function handleScroll() {
     }, 200); // Wait 200ms after scrolling stops
 }
 
-// ===== END MESSAGE =====
-function showEndMessage() {
-    if (document.querySelector('.search-end')) return;
-    if (document.getElementById('loadingIndicator')) return;
 
-    const endMessage = document.createElement("div");
-    endMessage.className = "search-end";
-    endMessage.innerHTML = `
-        <span class="search-end-icon">🎬</span>
-        You've seen all results (${allResults.length} total)
-    `;
-    searchResults.appendChild(endMessage);
-}
 
 console.log("✅ Search with pagination loaded!");
