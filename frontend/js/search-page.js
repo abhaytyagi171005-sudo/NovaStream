@@ -93,11 +93,11 @@ async function loadMovie() {
             if (similarData.results && similarData.results.length > 0) {
                 // Display similar movies
                 similarData.results.slice(0, 10).forEach((movie, index) => {
-                    if (movie.poster_path) {
+                    if (movie.backdrop_path || movie.poster_path) {
                         const imageUrl = movie.backdrop_path
                             ? `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`
                             : `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-                        console.log(`🖼️ Movie ${index + 1}: ${movie.title} - ${posterUrl}`);
+                        console.log(`🖼️ Movie ${index + 1}: ${movie.title} - ${imageUrl}`);
 
                         const card = document.createElement("div");
                         card.className = "card";
