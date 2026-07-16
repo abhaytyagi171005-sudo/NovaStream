@@ -1,3 +1,12 @@
+html,
+body {
+    overflow-x: hidden;
+    overflow-y: auto !important;
+    /* Allow vertical scrolling */
+    height: auto !important;
+    min-height: 100vh;
+}
+
 body {
     margin: 0;
     background: #0b0b0b;
@@ -35,11 +44,6 @@ body {
     cursor: pointer;
 }
 
-#similarMovies {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
 
 .card img {
     width: 200px;
