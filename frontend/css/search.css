@@ -550,6 +550,7 @@ body {
         font-size: 10px;
     }
 }
+
 /* ===== LOADING INDICATOR ===== */
 .loading-indicator {
     grid-column: 1 / -1;
@@ -572,30 +573,18 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
     font-size: 14px;
     color: #666;
-}
-
-/* ===== END MESSAGE ===== */
-.search-end {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    color: #666;
-    font-size: 14px;
-    border-top: 1px solid #222;
-    margin-top: 20px;
-}
-
-.search-end-icon {
-    font-size: 24px;
-    display: block;
-    margin-bottom: 10px;
 }
 
 /* ===== RETRY BUTTON ===== */

@@ -106,7 +106,6 @@ async function loadPage(query, page) {
     // Check if we've reached max pages
     if (page > MAX_PAGES) {
         hasMoreResults = false;
-        showEndMessage();
         return;
     }
 
@@ -141,7 +140,6 @@ async function loadPage(query, page) {
             hasMoreResults = false;
             isLoading = false;
             hideLoading();
-            showEndMessage();
             return;
         }
 
@@ -188,7 +186,6 @@ async function loadPage(query, page) {
         // Check if we have more pages
         if (page >= totalPages || currentPage > MAX_PAGES) {
             hasMoreResults = false;
-            setTimeout(showEndMessage, 500);
         }
 
         isLoading = false;
