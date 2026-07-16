@@ -15,7 +15,7 @@ document.getElementById("topResult").innerHTML = `
 
 async function loadMovie() {
     try {
-        // First, search for the movie to get its IMDB ID
+        // First, search for the movie to get its details
         const searchResponse = await fetch(
             `https://novastream-o3ri.onrender.com/api/search?q=${encodeURIComponent(movieName)}&limit=20`
         );
@@ -63,14 +63,19 @@ async function loadMovie() {
             </div>
         `;
 
+        console.log("🔍 Searching TMDB for:", top.Title);
+
         // Get movie ID from TMDB using the title
         const tmdbSearch = await fetch(
             `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(top.Title)}&year=${top.Year}`
         );
         const tmdbData = await tmdbSearch.json();
 
+        console.log("📊 TMDB Search Results:", tmdbData);
+
         if (tmdbData.results && tmdbData.results.length > 0) {
             const movieId = tmdbData.results[0].id;
+            console.log("🎬 Found TMDB ID:", movieId);
 
             // Fetch similar movies from TMDB
             const similarResponse = await fetch(
@@ -78,25 +83,33 @@ async function loadMovie() {
             );
             const similarData = await similarResponse.json();
 
+            console.log("📽️ Similar movies found:", similarData.results?.length || 0);
+
+            // Clear loading message
             similarMovies.innerHTML = "";
 
             if (similarData.results && similarData.results.length > 0) {
                 // Display similar movies
                 similarData.results.slice(0, 10).forEach(movie => {
                     if (movie.poster_path) {
-                        similarMovies.innerHTML += `
-                            <div class="card" onclick="window.location.href='search.html?movie=${encodeURIComponent(movie.title)}'">
-                                <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" 
-                                     alt="${movie.title}" 
-                                     onerror="this.parentElement.style.display='none'">
-                                <div class="movie-info">
-                                    <h3>${movie.title}</h3>
-                                    <p>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
-                                </div>
+                        const card = document.createElement("div");
+                        card.className = "card";
+                        card.innerHTML = `
+                            <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" 
+                                 alt="${movie.title}" 
+                                 onerror="this.parentElement.style.display='none'">
+                            <div class="movie-info">
+                                <h3>${movie.title}</h3>
+                                <p>${movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
                             </div>
                         `;
+                        card.onclick = () => {
+                            window.location.href = `search.html?movie=${encodeURIComponent(movie.title)}`;
+                        };
+                        similarMovies.appendChild(card);
                     }
                 });
+                console.log("✅ Similar movies displayed!");
             } else {
                 similarMovies.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
@@ -107,13 +120,13 @@ async function loadMovie() {
         } else {
             similarMovies.innerHTML = `
                 <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
-                    <p>Could not find similar movies</p>
+                    <p>Could not find movie on TMDB</p>
                 </div>
             `;
         }
 
     } catch (error) {
-        console.error(error);
+        console.error("❌ Error:", error);
         document.getElementById("topResult").innerHTML = `<h2 style="padding:40px">Error loading results. Please try again.</h2>`;
         document.getElementById("similarMovies").innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #e50914;">
