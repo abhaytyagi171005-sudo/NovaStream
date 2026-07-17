@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #141414;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 50px;
+    background: linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, transparent 100%);
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: #141414;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #e50914, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #e5e5e5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #fff;
+}
+
+.nav-links a.active {
+    font-weight: 600;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-right i {
+    font-size: 20px;
+    color: #e5e5e5;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.nav-right i:hover {
+    color: #fff;
+}
+
+.profile img {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.profile img:hover {
+    border-color: #fff;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-container {
+    padding-top: 80px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+}
+
+/* ===== SECTIONS ===== */
+.content-section {
+    margin-bottom: 50px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.section-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.section-header .badge {
+    font-size: 20px;
+}
+
+/* ===== SCROLL CONTAINER ===== */
+.scroll-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0 20px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== MOVIE CARD ===== */
+.movie-card {
+    flex: 0 0 200px;
+    min-width: 200px;
+    max-width: 200px;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #2a2a2a;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ===== CARD DETAILS OVERLAY ===== */
+.movie-card .card-details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 14px 16px 14px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+    transform: translateY(20%);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.movie-card:hover .card-details {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.movie-card .card-details h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-card .card-details .meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+
+.movie-card .card-details .meta .rating {
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.movie-card .card-details .meta .year {
+    color: #aaa;
+}
+
+.movie-card .card-details .genres {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.movie-card .card-details .genres span {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #ccc;
+    white-space: nowrap;
+}
+
+.movie-card .card-details .play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.movie-card .card-details .play-btn:hover {
+    background: #e5e5e5;
+}
+
+.movie-card .card-details .play-btn i {
+    font-size: 14px;
+}
+
+/* ===== TOP 10 BADGE ===== */
+.movie-card .rank-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffd700;
+    font-size: 28px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 4px;
+    z-index: 5;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 20px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .main-container {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 70px;
+    }
+
+    .section-header h2 {
+        font-size: 18px;
+    }
+
+    .movie-card {
+        flex: 0 0 150px;
+        min-width: 150px;
+        max-width: 150px;
+        height: 225px;
+    }
+
+    .movie-card .card-details h3 {
+        font-size: 13px;
+    }
+
+    .movie-card .card-details .meta {
+        font-size: 10px;
+    }
+
+    .movie-card .card-details .genres span {
+        font-size: 8px;
+        padding: 1px 6px;
+    }
+
+    .movie-card .card-details .play-btn {
+        font-size: 10px;
+        padding: 3px 10px;
+    }
+
+    .movie-card .rank-badge {
+        font-size: 20px;
+        padding: 2px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-card {
+        flex: 0 0 120px;
+        min-width: 120px;
+        max-width: 120px;
+        height: 180px;
+    }
+
+    .scroll-container {
+        gap: 8px;
+    }
+
+    .section-header h2 {
+        font-size: 16px;
+    }
+}
