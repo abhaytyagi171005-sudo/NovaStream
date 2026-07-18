@@ -131,15 +131,19 @@ body {
     font-size: 20px;
 }
 
-/* ===== SCROLL CONTAINER ===== */
+/* ===== SCROLL CONTAINER - FIXED ===== */
 .scroll-container {
-    display: flex;
+    display: flex !important;
+    flex-direction: row !important;
     gap: 12px;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 10px 0 20px 0;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    width: 100%;
+    min-height: 220px;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -161,18 +165,19 @@ body {
     background: rgba(255, 255, 255, 0.4);
 }
 
-/* ===== MOVIE CARD ===== */
+/* ===== MOVIE CARD - FIXED ===== */
 .movie-card {
-    flex: 0 0 200px;
-    min-width: 200px;
-    max-width: 200px;
-    height: 300px;
+    flex: 0 0 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    height: 300px !important;
     border-radius: 8px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background: #2a2a2a;
+    display: inline-block !important;
 }
 
 .movie-card:hover {
@@ -312,10 +317,10 @@ body {
     }
 
     .movie-card {
-        flex: 0 0 150px;
-        min-width: 150px;
-        max-width: 150px;
-        height: 225px;
+        flex: 0 0 150px !important;
+        min-width: 150px !important;
+        max-width: 150px !important;
+        height: 225px !important;
     }
 
     .movie-card .card-details h3 {
@@ -344,10 +349,10 @@ body {
 
 @media (max-width: 480px) {
     .movie-card {
-        flex: 0 0 120px;
-        min-width: 120px;
-        max-width: 120px;
-        height: 180px;
+        flex: 0 0 120px !important;
+        min-width: 120px !important;
+        max-width: 120px !important;
+        height: 180px !important;
     }
 
     .scroll-container {
