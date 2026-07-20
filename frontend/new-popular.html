@@ -6,6 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NovaStream - New & Popular</title>
     <link rel="stylesheet" href="css/new_pop.css">
+    <style>
+        /* Force all scroll containers to be horizontal */
+        .scroll-container {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            gap: 12px !important;
+            padding: 10px 0 20px 0 !important;
+            width: 100% !important;
+            min-height: 220px !important;
+            scroll-behavior: smooth !important;
+        }
+
+        .movie-card {
+            flex: 0 0 200px !important;
+            min-width: 200px !important;
+            max-width: 200px !important;
+            height: 300px !important;
+            display: inline-block !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            background: #2a2a2a !important;
+            position: relative !important;
+            cursor: pointer !important;
+            transition: transform 0.3s ease !important;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05) !important;
+            z-index: 10 !important;
+        }
+
+        .movie-card img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
