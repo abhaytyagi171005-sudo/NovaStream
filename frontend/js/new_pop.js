@@ -21,46 +21,33 @@ function getGenres(genreIds) {
 function createMovieCard(movie, rank = null) {
     const card = document.createElement('div');
     card.className = 'movie-card';
-
-    // CRITICAL: Force card to be inline and flexible
-    card.style.display = 'inline-block';
-    card.style.flex = '0 0 200px';
-    card.style.minWidth = '200px';
-    card.style.maxWidth = '200px';
-    card.style.height = '300px';
-    card.style.marginRight = '0px';
-    card.style.borderRadius = '8px';
-    card.style.overflow = 'hidden';
-    card.style.position = 'relative';
-    card.style.cursor = 'pointer';
-    card.style.background = '#2a2a2a';
-    card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+    // NO inline styles - CSS handles everything
 
     const posterUrl = movie.poster_path && movie.poster_path.startsWith('/')
         ? `${IMAGE_BASE_URL}${movie.poster_path}`
-        : `https://via.placeholder.com/200x300/2a2a2a/e50914?text=${encodeURIComponent(movie.title.substring(0, 15))}`;
+        : `https://via.placeholder.com/220x320/111/e50914?text=${encodeURIComponent(movie.title.substring(0, 15))}`;
 
     const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
     const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
     const genres = getGenres(movie.genre_ids || []);
 
-    let html = `<img src="${posterUrl}" alt="${movie.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+    let html = `<img src="${posterUrl}" alt="${movie.title}" loading="lazy">`;
 
     if (rank !== null) {
-        html += `<div class="rank-badge" style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.8);color:#ffd700;font-size:28px;font-weight:800;padding:4px 12px;border-radius:4px;z-index:5;text-shadow:0 2px 8px rgba(0,0,0,0.5);">#${rank}</div>`;
+        html += `<div class="rank-badge">#${rank}</div>`;
     }
 
     html += `
-        <div class="card-details" style="position:absolute;bottom:0;left:0;right:0;padding:40px 14px 16px 14px;background:linear-gradient(0deg,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.5) 50%,transparent 100%);transform:translateY(20%);opacity:0;transition:transform 0.4s ease,opacity 0.4s ease;">
-            <h3 style="font-size:15px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;">${movie.title}</h3>
-            <div class="meta" style="display:flex;align-items:center;gap:8px;font-size:12px;color:#aaa;margin-bottom:6px;">
-                <span class="rating" style="color:#ffd700;font-weight:600;">⭐ ${rating}</span>
-                <span class="year" style="color:#aaa;">${year}</span>
+        <div class="card-details">
+            <h3>${movie.title}</h3>
+            <div class="meta">
+                <span class="rating">⭐ ${rating}</span>
+                <span class="year">${year}</span>
             </div>
-            <div class="genres" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">
-                ${genres.map(g => `<span style="font-size:10px;padding:2px 8px;background:rgba(255,255,255,0.15);border-radius:12px;color:#ccc;">${g}</span>`).join('')}
+            <div class="genres">
+                ${genres.map(g => `<span>${g}</span>`).join('')}
             </div>
-            <button class="play-btn" style="display:inline-flex;align-items:center;gap:6px;padding:4px 14px;background:#fff;color:#000;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;transition:background 0.3s;">
+            <button class="play-btn">
                 <i class="fas fa-play"></i> Play
             </button>
         </div>
@@ -68,29 +55,7 @@ function createMovieCard(movie, rank = null) {
 
     card.innerHTML = html;
 
-    // Hover effect for details
-    card.addEventListener('mouseenter', () => {
-        const details = card.querySelector('.card-details');
-        if (details) {
-            details.style.transform = 'translateY(0)';
-            details.style.opacity = '1';
-        }
-        card.style.transform = 'scale(1.05)';
-        card.style.zIndex = '10';
-        card.style.boxShadow = '0 10px 40px rgba(0,0,0,0.8)';
-    });
-
-    card.addEventListener('mouseleave', () => {
-        const details = card.querySelector('.card-details');
-        if (details) {
-            details.style.transform = 'translateY(20%)';
-            details.style.opacity = '0';
-        }
-        card.style.transform = 'scale(1)';
-        card.style.zIndex = 'auto';
-        card.style.boxShadow = 'none';
-    });
-
+    // Event listeners
     card.querySelector('.play-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         console.log(`Playing: ${movie.title}`);
@@ -111,22 +76,18 @@ function loadSection(sectionId, movies, showRank = false) {
         return;
     }
 
-    // CRITICAL: Force container to be horizontal flex
+    // Container styles - matches CSS
     container.style.display = 'flex';
-    container.style.flexDirection = 'row';
-    container.style.flexWrap = 'nowrap';
+    container.style.gap = '20px';
     container.style.overflowX = 'auto';
     container.style.overflowY = 'hidden';
-    container.style.gap = '12px';
     container.style.padding = '10px 0 20px 0';
-    container.style.width = '100%';
-    container.style.minHeight = '220px';
     container.style.scrollBehavior = 'smooth';
 
     container.innerHTML = '';
 
     if (!movies || movies.length === 0) {
-        container.innerHTML = '<div style="color: #666; padding: 20px; white-space: nowrap;">No movies available</div>';
+        container.innerHTML = '<div style="color: #666; padding: 20px;">No movies available</div>';
         return;
     }
 
@@ -160,44 +121,34 @@ async function loadAllSections() {
         // Show loading state
         document.querySelectorAll('.scroll-container').forEach(container => {
             container.innerHTML = `<div style="color: #666; padding: 20px;">Loading...</div>`;
-            // Ensure container is flex even during loading
             container.style.display = 'flex';
-            container.style.flexDirection = 'row';
-            container.style.flexWrap = 'nowrap';
+            container.style.gap = '20px';
             container.style.overflowX = 'auto';
         });
 
         console.log('🚀 Fetching data from TMDB...');
 
-        // 1. Top 10 Shows in India Today
         const topShows = await fetchFromTMDB('/trending/tv/week', '&page=1');
         loadSection('top10-shows', topShows.slice(0, 10), true);
 
-        // 2. New on NovaStream
         const newShows = await fetchFromTMDB('/tv/on_the_air', '&page=1');
         loadSection('new-on-novastream', newShows.slice(0, 15));
 
-        // 3. Coming This Week
         const comingThisWeek = await fetchFromTMDB('/movie/upcoming', '&page=1');
         loadSection('coming-this-week', comingThisWeek.slice(0, 15));
 
-        // 4. Worth the Wait
         const worthTheWait = await fetchFromTMDB('/movie/top_rated', '&page=1');
         loadSection('worth-the-wait', worthTheWait.slice(0, 15));
 
-        // 5. Upcoming Shows
         const upcomingShows = await fetchFromTMDB('/tv/airing_today', '&page=1');
         loadSection('upcoming-shows', upcomingShows.slice(0, 15));
 
-        // 6. Upcoming Movies
         const upcomingMovies = await fetchFromTMDB('/movie/upcoming', '&page=2');
         loadSection('upcoming-movies', upcomingMovies.slice(0, 15));
 
-        // 7. Most Popular TV Shows
         const popularTV = await fetchFromTMDB('/tv/popular', '&page=1');
         loadSection('popular-tvshows', popularTV.slice(0, 15));
 
-        // 8. Most Popular Movies
         const popularMovies = await fetchFromTMDB('/movie/popular', '&page=1');
         loadSection('popular-movies', popularMovies.slice(0, 15));
 
