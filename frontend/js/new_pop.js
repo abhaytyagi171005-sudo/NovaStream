@@ -2,6 +2,7 @@
 const TMDB_API_KEY = 'f08c9127f4fa4a8642bffa57c5b8955e';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const IMAGE_BASE_URL_LANDSCAPE = 'https://image.tmdb.org/t/p/w780';
 
 // ===== GENRE MAP =====
 const genreMap = {
@@ -23,12 +24,15 @@ function createMovieCard(movie, rank = null) {
     const card = document.createElement('div');
     card.className = 'movie-card';
 
-    // Poster URL
+    // Landscape thumbnail URL — prefer backdrop_path (wide key art),
+    // fall back to poster_path (rare, for very new titles), then a placeholder
     let posterUrl;
-    if (movie.poster_path && movie.poster_path.startsWith('/')) {
-        posterUrl = `${IMAGE_BASE_URL}${movie.poster_path}`;
+    if (movie.backdrop_path && movie.backdrop_path.startsWith('/')) {
+        posterUrl = `${IMAGE_BASE_URL_LANDSCAPE}${movie.backdrop_path}`;
+    } else if (movie.poster_path && movie.poster_path.startsWith('/')) {
+        posterUrl = `${IMAGE_BASE_URL_LANDSCAPE}${movie.poster_path}`;
     } else {
-        posterUrl = `https://via.placeholder.com/220x330/1a1a1a/e50914?text=${encodeURIComponent(movie.title.substring(0, 12))}`;
+        posterUrl = `https://via.placeholder.com/300x169/1a1a1a/e50914?text=${encodeURIComponent(movie.title.substring(0, 12))}`;
     }
 
     const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
@@ -158,16 +162,16 @@ function loadSampleData() {
     console.log('📦 Loading sample data...');
 
     const sampleMovies = [
-        { id: 1, title: 'House of the Dragon', poster_path: null, vote_average: 8.5, release_date: '2024-01-01', genre_ids: [18, 10765] },
-        { id: 2, title: 'The Last of Us', poster_path: null, vote_average: 8.9, release_date: '2024-02-01', genre_ids: [18, 10765] },
-        { id: 3, title: 'Silo', poster_path: null, vote_average: 8.2, release_date: '2024-03-01', genre_ids: [878, 18] },
-        { id: 4, title: 'The Bear', poster_path: null, vote_average: 8.8, release_date: '2024-04-01', genre_ids: [35, 18] },
-        { id: 5, title: 'Fallout', poster_path: null, vote_average: 8.4, release_date: '2024-05-01', genre_ids: [18, 10765] },
-        { id: 6, title: 'The Penguin', poster_path: null, vote_average: 8.1, release_date: '2024-06-01', genre_ids: [18, 80] },
-        { id: 7, title: 'Dune: Prophecy', poster_path: null, vote_average: 7.8, release_date: '2024-07-01', genre_ids: [18, 878] },
-        { id: 8, title: 'Shogun', poster_path: null, vote_average: 9.0, release_date: '2024-08-01', genre_ids: [18, 36] },
-        { id: 9, title: 'The Gentlemen', poster_path: null, vote_average: 8.0, release_date: '2024-09-01', genre_ids: [35, 80] },
-        { id: 10, title: 'The Crown', poster_path: null, vote_average: 8.7, release_date: '2024-10-01', genre_ids: [18, 36] },
+        { id: 1, title: 'House of the Dragon', backdrop_path: null, poster_path: null, vote_average: 8.5, release_date: '2024-01-01', genre_ids: [18, 10765] },
+        { id: 2, title: 'The Last of Us', backdrop_path: null, poster_path: null, vote_average: 8.9, release_date: '2024-02-01', genre_ids: [18, 10765] },
+        { id: 3, title: 'Silo', backdrop_path: null, poster_path: null, vote_average: 8.2, release_date: '2024-03-01', genre_ids: [878, 18] },
+        { id: 4, title: 'The Bear', backdrop_path: null, poster_path: null, vote_average: 8.8, release_date: '2024-04-01', genre_ids: [35, 18] },
+        { id: 5, title: 'Fallout', backdrop_path: null, poster_path: null, vote_average: 8.4, release_date: '2024-05-01', genre_ids: [18, 10765] },
+        { id: 6, title: 'The Penguin', backdrop_path: null, poster_path: null, vote_average: 8.1, release_date: '2024-06-01', genre_ids: [18, 80] },
+        { id: 7, title: 'Dune: Prophecy', backdrop_path: null, poster_path: null, vote_average: 7.8, release_date: '2024-07-01', genre_ids: [18, 878] },
+        { id: 8, title: 'Shogun', backdrop_path: null, poster_path: null, vote_average: 9.0, release_date: '2024-08-01', genre_ids: [18, 36] },
+        { id: 9, title: 'The Gentlemen', backdrop_path: null, poster_path: null, vote_average: 8.0, release_date: '2024-09-01', genre_ids: [35, 80] },
+        { id: 10, title: 'The Crown', backdrop_path: null, poster_path: null, vote_average: 8.7, release_date: '2024-10-01', genre_ids: [18, 36] },
     ];
 
     const sectionIds = [
