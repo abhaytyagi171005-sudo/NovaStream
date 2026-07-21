@@ -16,21 +16,20 @@ function createMovieCard(movie, type = 'landscape', rank = null) {
     if (movie.poster_path && movie.poster_path.startsWith('/')) {
         posterUrl = `${IMAGE_BASE_URL}${movie.poster_path}`;
     } else {
-        const width = type === 'portrait' ? 180 : 320;
-        const height = type === 'portrait' ? 270 : 180;
+        const width = type === 'portrait' ? 200 : 320;
+        const height = type === 'portrait' ? 300 : 180;
         posterUrl = `https://via.placeholder.com/${width}x${height}/1a1a1a/e50914?text=${encodeURIComponent(movie.title.substring(0, 12))}`;
     }
 
     let html = `<img src="${posterUrl}" alt="${movie.title}" loading="lazy">`;
 
-    // PORTRAIT: Big Number Overlay (for Top 10)
+    // PORTRAIT: Big Number Overlay (for Top 10) - NETFLIX STYLE
     if (type === 'portrait' && rank !== null) {
         html += `<div class="rank-badge">${rank}</div>`;
     }
 
     // LANDSCAPE: Badge (only for New on NovaStream)
     if (type === 'landscape') {
-        // Randomly assign a badge for demo (simulating Netflix-style badges)
         const badgeText = BADGES[Math.floor(Math.random() * BADGES.length)];
         let badgeClass = '';
         if (badgeText === 'New Episode') badgeClass = 'new-episode';
