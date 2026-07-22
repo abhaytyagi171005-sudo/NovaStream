@@ -1,56 +1,99 @@
 // ===== TMDB CONFIGURATION =====
 const TMDB_API_KEY = 'f08c9127f4fa4a8642bffa57c5b8955e';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';           // portrait posters
+const IMAGE_BASE_URL_LANDSCAPE = 'https://image.tmdb.org/t/p/w780'; // landscape backdrops
 
-// Badge types for New on NovaStream
-const BADGES = ['New Episode', 'Watch Now', 'Recently Added'];
+// ===== IMAGE URL HELPERS =====
+function getImageUrl(movie, orientation) {
+    if (orientation === 'portrait') {
+        if (movie.poster_path && movie.poster_path.startsWith('/')) {
+            return `${IMAGE_BASE_URL}${movie.poster_path}`;
+        }
+        return `https://via.placeholder.com/220x330/1a1a1a/e50914?text=${encodeURIComponent(movie.title.substring(0, 12))}`;
+    }
+
+    // landscape (default)
+    if (movie.backdrop_path && movie.backdrop_path.startsWith('/')) {
+        return `${IMAGE_BASE_URL_LANDSCAPE}${movie.backdrop_path}`;
+    } else if (movie.poster_path && movie.poster_path.startsWith('/')) {
+        return `${IMAGE_BASE_URL_LANDSCAPE}${movie.poster_path}`;
+    }
+    return `https://via.placeholder.com/300x169/1a1a1a/e50914?text=${encodeURIComponent(movie.title.substring(0, 12))}`;
+}
+
+// ===== BADGE HELPER =====
+// NOTE: TMDB has no "new episode" / "recently added" field on these endpoints.
+// This alternates badge styles by index purely for visual variety, matching
+// the reference screenshots. Swap this for real data (e.g. your own watch/
+// episode metadata) whenever you have it.
+function getBadgeHTML(index) {
+    const isNewEpisode = index % 2 === 0;
+    if (isNewEpisode) {
+        return `
+            <div class="badges">
+                <span class="badge badge-new">New Episode</span>
+                <span class="badge badge-watch">Watch Now</span>
+            </div>`;
+    }
+    return `
+        <div class="badges">
+            <span class="badge badge-added">Recently Added</span>
+        </div>`;
+}
 
 // ===== CREATE MOVIE CARD =====
-function createMovieCard(movie, type = 'landscape', rank = null) {
+// options:
+//   rank        - number | null  -> wraps card with a giant rank number (Top 10 rows)
+//   showBadges  - boolean        -> shows always-visible badge pills
+//   index       - number         -> used for badge variety
+//   orientation - 'landscape' | 'portrait'
+function createMovieCard(movie, options = {}) {
+    const {
+        rank = null,
+        showBadges = false,
+        index = 0,
+        orientation = 'landscape'
+    } = options;
+
     const card = document.createElement('div');
-    card.className = 'movie-card';
+    card.className = 'movie-card' + (orientation === 'portrait' ? ' portrait' : '') + (showBadges ? ' with-badges' : '');
 
-    // Poster URL
-    let posterUrl;
-    if (movie.poster_path && movie.poster_path.startsWith('/')) {
-        posterUrl = `${IMAGE_BASE_URL}${movie.poster_path}`;
-    } else {
-        const width = type === 'portrait' ? 200 : 320;
-        const height = type === 'portrait' ? 300 : 180;
-        posterUrl = `https://via.placeholder.com/${width}x${height}/1a1a1a/e50914?text=${encodeURIComponent(movie.title.substring(0, 12))}`;
-    }
+    const imgUrl = getImageUrl(movie, orientation);
+    let html = `<img src="${imgUrl}" alt="${movie.title}" loading="lazy">`;
 
-    let html = `<img src="${posterUrl}" alt="${movie.title}" loading="lazy">`;
-
-    // PORTRAIT: Big Number Overlay (for Top 10) - NETFLIX STYLE
-    if (type === 'portrait' && rank !== null) {
-        html += `<div class="rank-badge">${rank}</div>`;
-    }
-
-    // LANDSCAPE: Badge (only for New on NovaStream)
-    if (type === 'landscape') {
-        const badgeText = BADGES[Math.floor(Math.random() * BADGES.length)];
-        let badgeClass = '';
-        if (badgeText === 'New Episode') badgeClass = 'new-episode';
-        else if (badgeText === 'Watch Now') badgeClass = 'watch-now';
-        else if (badgeText === 'Recently Added') badgeClass = 'recently-added';
-        html += `<div class="badge ${badgeClass}">${badgeText}</div>`;
+    if (showBadges) {
+        html += getBadgeHTML(index);
     }
 
     card.innerHTML = html;
 
-    // Click event
     card.addEventListener('click', () => {
         console.log(`🎬 Clicked: ${movie.title}`);
-        alert(`▶️ Now playing: ${movie.title}`);
     });
+
+    // Top 10 rows: wrap the card with a giant overlapping rank number
+    if (rank !== null) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'top10-item';
+
+        const rankNumber = document.createElement('span');
+        rankNumber.className = 'rank-number';
+        rankNumber.textContent = rank;
+
+        wrapper.appendChild(rankNumber);
+        wrapper.appendChild(card);
+        return wrapper;
+    }
 
     return card;
 }
 
 // ===== LOAD SECTION =====
-function loadSection(sectionId, movies, type = 'landscape', showRank = false) {
+// config: { showRank, showBadges, orientation }
+function loadSection(sectionId, movies, config = {}) {
+    const { showRank = false, showBadges = false, orientation = 'landscape' } = config;
+
     const container = document.getElementById(sectionId);
     if (!container) {
         console.error(`❌ Container not found: ${sectionId}`);
@@ -66,7 +109,7 @@ function loadSection(sectionId, movies, type = 'landscape', showRank = false) {
 
     movies.forEach((movie, index) => {
         const rank = showRank ? index + 1 : null;
-        const card = createMovieCard(movie, type, rank);
+        const card = createMovieCard(movie, { rank, showBadges, index, orientation });
         container.appendChild(card);
     });
 
@@ -97,8 +140,8 @@ async function loadAllSections() {
             newShows,
             comingThisWeek,
             worthTheWait,
-            comingNextWeek,
-            topMovies,
+            upcomingShows,
+            upcomingMovies,
             popularTV,
             popularMovies
         ] = await Promise.all([
@@ -106,35 +149,25 @@ async function loadAllSections() {
             fetchFromTMDB('/tv/on_the_air', '&page=1'),
             fetchFromTMDB('/movie/upcoming', '&page=1'),
             fetchFromTMDB('/movie/top_rated', '&page=1'),
+            fetchFromTMDB('/tv/airing_today', '&page=1'),
             fetchFromTMDB('/movie/upcoming', '&page=2'),
-            fetchFromTMDB('/trending/movie/week', '&page=1'),
             fetchFromTMDB('/tv/popular', '&page=1'),
             fetchFromTMDB('/movie/popular', '&page=1')
         ]);
 
-        // 1. Top 10 Shows - PORTRAIT with numbers
-        loadSection('top10-shows', topShows.slice(0, 10), 'portrait', true);
+        // Section 1: Top 10 -> portrait posters + giant rank numbers
+        loadSection('top10-shows', topShows.slice(0, 10), { showRank: true, orientation: 'portrait' });
 
-        // 2. New on NovaStream - LANDSCAPE with badges
-        loadSection('new-on-novastream', newShows.slice(0, 15), 'landscape');
+        // Section 2: New on NovaStream -> landscape + always-visible badges
+        loadSection('new-on-novastream', newShows.slice(0, 15), { showBadges: true });
 
-        // 3. Coming This Week - LANDSCAPE clean
-        loadSection('coming-this-week', comingThisWeek.slice(0, 15), 'landscape');
-
-        // 4. Worth the Wait - LANDSCAPE clean
-        loadSection('worth-the-wait', worthTheWait.slice(0, 15), 'landscape');
-
-        // 5. Coming Next Week - LANDSCAPE clean
-        loadSection('coming-next-week', comingNextWeek.slice(0, 15), 'landscape');
-
-        // 6. Top 10 Movies - PORTRAIT with numbers
-        loadSection('top10-movies', topMovies.slice(0, 10), 'portrait', true);
-
-        // 7. Most Popular TV Shows - LANDSCAPE clean
-        loadSection('popular-tvshows', popularTV.slice(0, 15), 'landscape');
-
-        // 8. Most Popular Movies - LANDSCAPE clean
-        loadSection('popular-movies', popularMovies.slice(0, 15), 'landscape');
+        // Sections 3-8: plain landscape cards, no badges
+        loadSection('coming-this-week', comingThisWeek.slice(0, 15));
+        loadSection('worth-the-wait', worthTheWait.slice(0, 15));
+        loadSection('upcoming-shows', upcomingShows.slice(0, 15));
+        loadSection('upcoming-movies', upcomingMovies.slice(0, 15));
+        loadSection('popular-tvshows', popularTV.slice(0, 15));
+        loadSection('popular-movies', popularMovies.slice(0, 15));
 
     } catch (error) {
         console.error('❌ Error loading sections:', error);
@@ -147,37 +180,26 @@ function loadSampleData() {
     console.log('📦 Loading sample data...');
 
     const sampleMovies = [
-        { id: 1, title: 'House of the Dragon', poster_path: null, vote_average: 8.5, release_date: '2024-01-01', genre_ids: [18, 10765] },
-        { id: 2, title: 'The Last of Us', poster_path: null, vote_average: 8.9, release_date: '2024-02-01', genre_ids: [18, 10765] },
-        { id: 3, title: 'Silo', poster_path: null, vote_average: 8.2, release_date: '2024-03-01', genre_ids: [878, 18] },
-        { id: 4, title: 'The Bear', poster_path: null, vote_average: 8.8, release_date: '2024-04-01', genre_ids: [35, 18] },
-        { id: 5, title: 'Fallout', poster_path: null, vote_average: 8.4, release_date: '2024-05-01', genre_ids: [18, 10765] },
-        { id: 6, title: 'The Penguin', poster_path: null, vote_average: 8.1, release_date: '2024-06-01', genre_ids: [18, 80] },
-        { id: 7, title: 'Dune: Prophecy', poster_path: null, vote_average: 7.8, release_date: '2024-07-01', genre_ids: [18, 878] },
-        { id: 8, title: 'Shogun', poster_path: null, vote_average: 9.0, release_date: '2024-08-01', genre_ids: [18, 36] },
-        { id: 9, title: 'The Gentlemen', poster_path: null, vote_average: 8.0, release_date: '2024-09-01', genre_ids: [35, 80] },
-        { id: 10, title: 'The Crown', poster_path: null, vote_average: 8.7, release_date: '2024-10-01', genre_ids: [18, 36] },
+        { id: 1, title: 'House of the Dragon', backdrop_path: null, poster_path: null, vote_average: 8.5, release_date: '2024-01-01', genre_ids: [18, 10765] },
+        { id: 2, title: 'The Last of Us', backdrop_path: null, poster_path: null, vote_average: 8.9, release_date: '2024-02-01', genre_ids: [18, 10765] },
+        { id: 3, title: 'Silo', backdrop_path: null, poster_path: null, vote_average: 8.2, release_date: '2024-03-01', genre_ids: [878, 18] },
+        { id: 4, title: 'The Bear', backdrop_path: null, poster_path: null, vote_average: 8.8, release_date: '2024-04-01', genre_ids: [35, 18] },
+        { id: 5, title: 'Fallout', backdrop_path: null, poster_path: null, vote_average: 8.4, release_date: '2024-05-01', genre_ids: [18, 10765] },
+        { id: 6, title: 'The Penguin', backdrop_path: null, poster_path: null, vote_average: 8.1, release_date: '2024-06-01', genre_ids: [18, 80] },
+        { id: 7, title: 'Dune: Prophecy', backdrop_path: null, poster_path: null, vote_average: 7.8, release_date: '2024-07-01', genre_ids: [18, 878] },
+        { id: 8, title: 'Shogun', backdrop_path: null, poster_path: null, vote_average: 9.0, release_date: '2024-08-01', genre_ids: [18, 36] },
+        { id: 9, title: 'The Gentlemen', backdrop_path: null, poster_path: null, vote_average: 8.0, release_date: '2024-09-01', genre_ids: [35, 80] },
+        { id: 10, title: 'The Crown', backdrop_path: null, poster_path: null, vote_average: 8.7, release_date: '2024-10-01', genre_ids: [18, 36] },
     ];
 
-    const sections = [
-        { id: 'top10-shows', type: 'portrait', showRank: true },
-        { id: 'new-on-novastream', type: 'landscape', showRank: false },
-        { id: 'coming-this-week', type: 'landscape', showRank: false },
-        { id: 'worth-the-wait', type: 'landscape', showRank: false },
-        { id: 'coming-next-week', type: 'landscape', showRank: false },
-        { id: 'top10-movies', type: 'portrait', showRank: true },
-        { id: 'popular-tvshows', type: 'landscape', showRank: false },
-        { id: 'popular-movies', type: 'landscape', showRank: false }
-    ];
-
-    sections.forEach((section, index) => {
-        const movies = sampleMovies.map((movie, i) => ({
-            ...movie,
-            id: movie.id + (index * 100),
-            title: `${movie.title}`,
-        }));
-        loadSection(section.id, movies.slice(0, 10), section.type, section.showRank);
-    });
+    loadSection('top10-shows', sampleMovies, { showRank: true, orientation: 'portrait' });
+    loadSection('new-on-novastream', sampleMovies, { showBadges: true });
+    loadSection('coming-this-week', sampleMovies);
+    loadSection('worth-the-wait', sampleMovies);
+    loadSection('upcoming-shows', sampleMovies);
+    loadSection('upcoming-movies', sampleMovies);
+    loadSection('popular-tvshows', sampleMovies);
+    loadSection('popular-movies', sampleMovies);
 }
 
 // ===== NAVBAR SCROLL EFFECT =====
